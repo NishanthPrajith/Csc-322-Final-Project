@@ -1,0 +1,90 @@
+
+.login-page {
+  width: 24%;
+  height: 82vh;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.title {
+  width: 100%;
+  text-align: left;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.form {
+  text-align: center;
+}
+
+.form input {
+  outline: 0;
+  border-radius: 15px;
+  border: 1px #d2d2d7 solid;
+  width: 100%;
+  margin: 0 0 15px;
+  padding: 15px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form button {
+  text-transform: uppercase;
+  outline: 0;
+  border-radius: 15px;
+  background: #0071e3;
+  width: 100%;
+  border: 0;
+  padding: 15px;
+  color: #FFFFFF;
+  font-size: 14px;
+  -webkit-transition: all 0.3 ease;
+  transition: all 0.3 ease;
+  cursor: pointer;
+}
+.form .message {
+  margin: 15px 0 0;
+  color: #b3b3b3;
+  font-size: 12px;
+}
+
+label {
+  font-size: 0.8rem;
+  margin-top: 8px;
+  display: none;
+}
+
+input:focus {
+  padding: 25px 15px 15px 15px;
+}
+
+.Two:focus ~ .one {
+  display: inline;
+  position: absolute;
+  left: 39%;
+  color: #d2d2d7;
+}
+
+input[type = "password"]:focus ~ .two {
+  display:inline;
+  position: absolute;
+  left: 39%;
+  color: #d2d2d7;
+}
+
+.One:focus ~ .three {
+  display:inline;
+  position: absolute;
+  left: 39%;
+  color: #d2d2d7;
+}
+
+.form .message a {
+  color: #0071e3;
+  text-decoration: none;
+}
+.form .register-form {
+  display: none;
+}
