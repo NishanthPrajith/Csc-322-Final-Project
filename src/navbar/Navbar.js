@@ -43,6 +43,11 @@ export default function NavBar() {
                     <Link to = '/contactme' onClick = {closeNavLink}>
                         <p className = "links">Contact Me</p>
                     </Link>
+                    { !userData.getStatus() &&
+                      <Link to = '/admin' onClick = {closeNavLink}>
+                          <p className = "links">Admin</p>
+                      </Link>
+                    }
                 </div>
             </div>
             <div className = "LoginInNav">

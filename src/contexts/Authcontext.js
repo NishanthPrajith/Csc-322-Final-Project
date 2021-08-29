@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
       setCurrentUser(user);
       setLoading(false);
     })
-  })
+  }, [])
 
   const value = {
     currentUser,

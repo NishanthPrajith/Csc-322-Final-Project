@@ -30,6 +30,13 @@
   font-size: 14px;
 }
 
+.error {
+  display: none;
+  margin: 0;
+  margin-bottom: 10%;
+  color: red;
+}
+
 .form button {
   text-transform: uppercase;
   outline: 0;

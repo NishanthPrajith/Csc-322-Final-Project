@@ -1,0 +1,27 @@
+.errorPage {
+  height: 81vh;
+  width: 100%;
+  display: grid;
+  align-items: center;
+}
+
+.errorPage .errorMessage {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 45% 55%;
+  align-items: center;
+  justify-content: center;
+}
+
+.first {
+  display: grid;
+  padding-right: 3%;
+  font-weight: 600;
+  font-size: 1.4rem;
+  justify-content: flex-end;
+}
+
+.second {
+  border-left: 1px solid grey;
+  padding-left: 3%;
+}

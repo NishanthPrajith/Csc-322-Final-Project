@@ -20,7 +20,7 @@ export default function SignIn() {
       await login(emailRef.current.value, passwordRef.current.value);
       await history.push('/');
     } catch(error) {
-      alert("Failed to log in")
+      document.getElementById('error').style.display = "block";
     }
     console.log(auth.currentUser);
   }
@@ -31,10 +31,11 @@ export default function SignIn() {
           <div className ="form">
             <p className = "title"> Sign In </p>
             <form className="login-form" id = "frm1">
-              <input type="text" ref={emailRef} className = "five" placeholder="Username" autoComplete = "off" required/>
-              <label className = "six">Username</label>
+              <input type="text" ref={emailRef} className = "five" placeholder="Email" autoComplete = "off" required/>
+              <label className = "six">Email</label>
               <input type="password" ref={passwordRef} placeholder="Password" autoComplete = "off" required/>
               <label className = "two">Password</label>
+              <p id = "error" className = "error">Account information was entered incorrectly.</p>
               <button onClick = {signIn}>login</button>
               <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p>
             </form>

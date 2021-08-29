@@ -5,6 +5,7 @@ import SignIn from './signIn/SignIn'
 import Footer from './footer/Footer'
 import Home from './home/Home'
 import SignUp from './signUp/SignUp'
+import Error from './error/error.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
@@ -12,6 +13,7 @@ import {
   useLocation
 } from "react-router-dom";
 import { useEffect } from 'react';
+import { userData } from './contexts/userProfile';
 
 function App() {
   const location = useLocation();
@@ -28,12 +30,21 @@ function App() {
           <Route exact path = "/about">
           </Route>
           <Route path = "/projects">
+            <p>Done</p>
           </Route>
           <Route exact path = "/SignIn">
             <SignIn />
           </Route>
           <Route exact path = "/SignUp">
             <SignUp />
+          </Route>
+          { !userData.getStatus() &&
+            <Route exact path = "/admin">
+              <p>Admin</p>
+            </Route>
+          }
+          <Route>
+            <Error />
           </Route>
         </Switch>
       </AuthProvider>

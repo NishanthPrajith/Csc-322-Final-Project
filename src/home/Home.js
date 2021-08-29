@@ -45,7 +45,6 @@ export default function Home() {
           <p> { school.Desc } </p>
         </div>
       ))}
-      <p> { userData.getName() } </p>
     </div>
   )
 }

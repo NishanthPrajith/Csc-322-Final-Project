@@ -15,7 +15,7 @@ export default function SignUp() {
       try {
         await signup(username, pass, name);
       } catch {
-        alert("Failed to create an account");
+        document.getElementById('error').style.display = "block";
       }
     }
 
@@ -27,10 +27,11 @@ export default function SignUp() {
             <form className ="login-form" id = "frm2">
               <input type="text" className = "One" name = "FullName" autoComplete = "off" placeholder="Full Name" required/>
               <label className = "three">Full Name</label>
-              <input type="text" className = "Two" name = "Username" autoComplete = "off" placeholder="Username" required/>
-              <label className = "one">Username</label>
+              <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" required/>
+              <label className = "one">Email</label>
               <input type="password" placeholder="Password" autoComplete = "off" required/>
               <label className = "two">Password</label>
+              <p id = "error" className = "error">Account creation failed. <br></br> Check if exists.</p>
               <button onClick = {register}>Register</button>
               <p className ="message">Already registered? <Link to="/SignIn">Sign In</Link></p>
             </form>
