@@ -1,6 +1,7 @@
 import './home.css'
 
 import { db } from "../firebase.js";
+import { userData } from '../contexts/userProfile';
 import { collection, doc, query, getDocs, onSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 
@@ -37,12 +38,14 @@ export default function Home() {
 
   return (
     <div className = "main">
+
       { schools.map((school) => (
         <div>
           <h1> { school.Name } </h1>
           <p> { school.Desc } </p>
         </div>
       ))}
+      <p> { userData.getName() } </p>
     </div>
   )
 }

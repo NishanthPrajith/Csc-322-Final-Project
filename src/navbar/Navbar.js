@@ -1,17 +1,35 @@
 
 import './navbar.css';
 import { Link } from "react-router-dom";
+import { userData } from '../contexts/userProfile';
+import { useAuth } from "../contexts/Authcontext";
+import { useHistory } from 'react-router-dom';
 
 export default function NavBar() {
+    const history = useHistory();
+    const { logout } = useAuth();
 
     function closeNavLink() {
         window.scroll(0,0);
     }
 
+    async function signOut(event) {
+      closeNavLink();
+      event.preventDefault();
+      try {
+        await logout();
+        history.push('/')
+      } catch {
+        alert("Failed to log out")
+      }
+    }
+
     return (
         <nav>
             <div className = "firstNav">
-                <p className = "logo">Online Store</p>
+                <Link to = '/' onClick = {closeNavLink}>
+                  <p className = "logo">Online Store</p>
+                </Link>
                 <div>
                     <Link to = '/' onClick = {closeNavLink}>
                         <p className = "links">Home</p>
@@ -28,8 +46,13 @@ export default function NavBar() {
                 </div>
             </div>
             <div className = "LoginInNav">
-              <Link to = '/SignIn' onClick = {closeNavLink}>
+              <p className = "displayName"> { userData.getName() } </p>
+              <Link to = '/SignIn' style = {userData.getStatus() ? {} : {display: "none"}} onClick = {closeNavLink}>
                   <p className = "links">Sign In</p>
+              </Link>
+
+              <Link to = '/' style = {userData.getStatus() ? {display: "none"} : {}} onClick = {signOut}>
+                  <p className = "links">Sign Out</p>
               </Link>
             </div>
         </nav>
