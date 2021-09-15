@@ -18,7 +18,7 @@ export default function NavBar() {
       event.preventDefault();
       try {
         await logout();
-        history.push('/')
+        history.push('/');
       } catch {
         alert("Failed to log out")
       }

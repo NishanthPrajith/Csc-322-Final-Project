@@ -4,6 +4,7 @@ class Profile {
   constructor(){
     this.name = "";
     this.checknull = true;
+    this.title = "";
   }
 
   getName() {
