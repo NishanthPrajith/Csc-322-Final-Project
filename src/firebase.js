@@ -19,51 +19,5 @@ const firebaseApp = initializeApp({
 export const db = getFirestore(firebaseApp);
 export const auth = getAuth();
 
-async function run() {
-  await signOut(auth);
-
-  await signInWithEmailAndPassword(auth, "npra7302@taehs.org", "Kidninja")
-    .then((userCredential) => {
-      // Signed in
-      const user = userCredential.user;
-      (console.log(user));
-      // ...
-    })
-    .catch((error) => {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
-
-    await signOut(auth);
-
-    await signInWithEmailAndPassword(auth, "nishanth.prajith@gmail.com", "Testone")
-      .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        (console.log(user));
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-      });
-      console.log(auth.currentUser);
-
-
-      await signOut(auth);
-      console.log(auth.currentUser);
-
-
-      console.log("finished");
-
-}
-
-run();
-
-
-
-
-
-
 
 export default firebaseApp;
