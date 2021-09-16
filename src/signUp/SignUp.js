@@ -9,9 +9,9 @@ export default function SignUp() {
     async function register(event) {
       event.preventDefault();
       var x = document.getElementById("frm2");
-      var name = x.elements[0].value;
+      var name = x.elements[0].value; // user name
       var username = x.elements[1].value; // test this @citymail.cuny.edu
-      var pass = x.elements[2].value;
+      var pass = x.elements[2].value; // user password
       try {
         await signup(username, pass, name);
       } catch {
