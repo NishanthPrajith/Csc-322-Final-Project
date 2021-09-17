@@ -8,10 +8,9 @@ import { useHistory } from 'react-router-dom';
 export default function SignIn() {
   const history = useHistory();
 
-  const [name, setName] = useState("")
-  const [password, setPass] = useState("");
   const { login, currentUser } = useAuth();
   const emailRef = useRef()
+  const [revealpassword, setRevealpassword] = useState("password");
   const passwordRef = useRef()
 
   async function signIn(event) {
@@ -25,6 +24,14 @@ export default function SignIn() {
     console.log(auth.currentUser);
   }
 
+  function revealTwo(){
+    if (revealpassword === "password") {
+      setRevealpassword("text");
+    } else {
+      setRevealpassword("password");
+    }
+  }
+
     return (
       <div>
         <div className ="login-page">
@@ -32,9 +39,11 @@ export default function SignIn() {
             <p className = "title"> Sign In </p>
             <form className="login-form" id = "frm1">
               <input type="text" ref={emailRef} className = "five" placeholder="Email" autoComplete = "off" required/>
-              <label className = "six">Email</label>
-              <input type="password" ref={passwordRef} placeholder="Password" autoComplete = "off" required/>
-              <label className = "two">Password</label>
+              <input type={revealpassword} ref={passwordRef} placeholder="Password" autoComplete = "off" required/>
+              <div className = "reveal">
+                <input type="checkbox" onClick={revealTwo}/>
+                <p>Show password</p>
+              </div>
               <p id = "error" className = "error">Account information was entered incorrectly.</p>
               <button onClick = {signIn}>login</button>
               <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p>
