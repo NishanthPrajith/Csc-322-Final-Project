@@ -4,7 +4,11 @@ import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 
 export default function SignUp() {
-    const { signup } = useAuth()
+    const { signup } = useAuth();
+
+    const [revealDOB, setRevealDOB] = useState("password");
+    const [revealpassword, setRevealpassword] = useState("password");
+
 
     async function register(event) {
       event.preventDefault();
@@ -22,12 +26,19 @@ export default function SignUp() {
       }
     }
 
-    function reveal(){
-      var x = document.getElementById("showtext");
-      if (x.type === "password") {
-        x.type = "text";
+    function revealOne(){
+      if (revealDOB === "password") {
+        setRevealDOB("text");
       } else {
-        x.type = "password";
+        setRevealDOB("password");
+      }
+    }
+
+    function revealTwo(){
+      if (revealpassword === "password") {
+        setRevealpassword("text");
+      } else {
+        setRevealpassword("password");
       }
     }
 
@@ -39,11 +50,12 @@ export default function SignUp() {
             <form className ="login-form" id = "frm2">
              {/* chris is the best Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
-              {/* <label className = "three">First Name</label> */}
+
             {/* Last Name */}
               <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
-              {/* <label className = "three">Last Name</label> */}
+              
             {/* Date of Birth */}
+<<<<<<< haroon
               <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
               {/* <label className = "three">Date of Birth</label> */}
               <img src = "/assets/visibility.png"/>
@@ -52,13 +64,24 @@ export default function SignUp() {
               <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext2" maxlength = "4" placeholder="Last 4 digits of Social Security or CUNY-assigned ID Number" required/>
               {/* <label className = "three">Date of Birth</label> */}
               <input type="checkbox" onclick={reveal}/>Display last 4 digits 
+=======
+              <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
+              
+              <div className = "reveal">
+                <input type="checkbox" onClick={revealOne}/>
+                <p>Show date of birth</p>
+              </div>
+            
+>>>>>>> main
             {/* Email */}
               <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" required/>
-              {/* <label className = "one">Email</label> */}
+              
             {/* Password */}
-              <input type="password" placeholder="Password" autoComplete = "off" id = "showtext1" required/>
-              {/* <label className = "two">Password</label> */}
-              <input type="checkbox" onclick={reveal}/>Show Password
+              <input type={revealpassword} placeholder="Password" autoComplete = "off" id = "showtext1" required/>
+              <div className = "reveal">
+                <input type="checkbox" onClick={revealTwo}/>
+                <p>Show password</p>
+              </div>
               <p id = "error" className = "error">Account creation failed. <br></br> Check if exists.</p>
               <button onClick = {register}>Register</button>
               <p className ="message">Already registered? <Link to="/SignIn">Sign In</Link></p>

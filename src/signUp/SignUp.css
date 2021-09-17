@@ -50,35 +50,27 @@
   font-size: 12px;
 }
 
-input:focus {
-  padding: 25px 15px 15px 15px;
-}
-
-.Two:focus ~ .one {
-  display: inline;
-  position: absolute;
-  left: 39%;
-  color: #d2d2d7;
-}
-
-input[type = "password"]:focus ~ .two {
-  display:inline;
-  position: absolute;
-  left: 39%;
-  color: #d2d2d7;
-}
-
-.One:focus ~ .three {
-  display:inline;
-  position: absolute;
-  left: 39%;
-  color: #d2d2d7;
-}
-
 .form .message a {
   color: #0071e3;
   text-decoration: none;
 }
 .form .register-form {
   display: none;
+}
+
+.reveal {
+  display: grid;
+  grid-template-columns: 10% 90%;
+  margin-bottom: 3%;
+}
+
+.reveal p {
+  padding: 0;
+  margin: 0;
+  text-align: left;
+}
+
+.reveal input[type = "checkbox"] {
+  background-color: red;
+  margin-top: 14%;
 }
