@@ -37,7 +37,7 @@ export default function SignUp() {
           <div className ="form">
             <p className = "title"> Sign Up </p>
             <form className ="login-form" id = "frm2">
-             {/* First Name */}
+             {/* chris is the best Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
               {/* <label className = "three">First Name</label> */}
             {/* Last Name */}
@@ -46,6 +46,7 @@ export default function SignUp() {
             {/* Date of Birth */}
               <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
               {/* <label className = "three">Date of Birth</label> */}
+              <img src = "/assets/visibility.png"/>
               <input type="checkbox" onclick={reveal}/>Display Date of Birth
             {/* SSN */}
               <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext2" maxlength = "4" placeholder="Last 4 digits of Social Security or CUNY-assigned ID Number" required/>

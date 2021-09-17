@@ -50,12 +50,6 @@
   font-size: 12px;
 }
 
-label {
-  font-size: 0.8rem;
-  margin-top: 8px;
-  display: none;
-}
-
 input:focus {
   padding: 25px 15px 15px 15px;
 }
