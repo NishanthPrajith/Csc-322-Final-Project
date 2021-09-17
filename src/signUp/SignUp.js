@@ -48,13 +48,23 @@ export default function SignUp() {
           <div className ="form">
             <p className = "title"> Sign Up </p>
             <form className ="login-form" id = "frm2">
-             {/* First Name */}
+             {/* chris is the best Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
 
             {/* Last Name */}
               <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
               
             {/* Date of Birth */}
+<<<<<<< haroon
+              <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
+              {/* <label className = "three">Date of Birth</label> */}
+              <img src = "/assets/visibility.png"/>
+              <input type="checkbox" onclick={reveal}/>Display Date of Birth
+            {/* SSN */}
+              <input type="password" className = "One" name = "dob" autoComplete = "off" id = "showtext2" maxlength = "4" placeholder="Last 4 digits of Social Security or CUNY-assigned ID Number" required/>
+              {/* <label className = "three">Date of Birth</label> */}
+              <input type="checkbox" onclick={reveal}/>Display last 4 digits 
+=======
               <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
               
               <div className = "reveal">
@@ -62,6 +72,7 @@ export default function SignUp() {
                 <p>Show date of birth</p>
               </div>
             
+>>>>>>> main
             {/* Email */}
               <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" required/>
               

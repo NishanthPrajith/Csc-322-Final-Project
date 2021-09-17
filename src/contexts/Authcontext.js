@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
 
-  async function signup(email, password, name) {
+  async function signup(email, password, name) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
     await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, {
       displayName: name,
@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
     userData.setName(auth);
   }
 
-  async function login(email, password) {
+  async function login(email, password) { 
     await signOut(auth);
 
     await signInWithEmailAndPassword(auth, email, password)
