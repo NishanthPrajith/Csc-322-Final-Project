@@ -48,13 +48,13 @@ export default function SignUp() {
           <div className ="form">
             <p className = "title"> Sign Up </p>
             <form className ="login-form" id = "frm2">
-             {/* First Name-- */}
+             {/* First Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
 
-            {/* Last Name-- */}
+            {/* Last Name */}
               <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
               
-            {/* Date of Birth-- */}
+            {/* Date of Birth */}
               <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
               
               <div className = "reveal">
@@ -62,10 +62,10 @@ export default function SignUp() {
                 <p>Show date of birth</p>
               </div>
             
-            {/* Email-- */}
+            {/* Email */}
               <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" required/>
               
-            {/* Password-- */}
+            {/* Password */}
               <input type={revealpassword} placeholder="Password" autoComplete = "off" id = "showtext1" required/>
               <div className = "reveal">
                 <input type="checkbox" onClick={revealTwo}/>
