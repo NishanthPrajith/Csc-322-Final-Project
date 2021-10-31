@@ -48,31 +48,12 @@ export default function NavBar() {
                     <p className = "logo">CCNY ZERO</p>
                     </Link>
                     <div>
-                        <Link to = '/' onClick = {closeNavLink}>
+                        <Link to = '/SignUp' onClick = {closeNavLink}>
                             <p className = "links">About Us</p>
                         </Link>
                     </div>
                 </div>
             </nav>
-            <div className ="login-page">
-            <div className ="form">
-            <p className = "title"> Sign In </p>
-            <form className="login-form" id = "frm1">
-                <input type="text" ref={emailRef} className = "five" placeholder="Email" autoComplete = "off" required/>
-                <input type={revealpassword} ref={passwordRef} placeholder="Password" autoComplete = "off" required/>
-                <div className = "reveal">
-                <input type="checkbox" onClick={revealTwo}/>
-                <p>Show password</p>
-                </div>
-                <p id = "error" className = "error">Account information was entered incorrectly.</p>
-                <button onClick = {signIn}>Login</button>
-                <p className ="message">Not registered? <Link to="/SignUp">Apply</Link></p>
-            </form>
-            <video width="500" height="500" controls>
-                <source src="http://techslides.com/demos/sample-videos/small.mp4"/>
-                </video> 
-            </div>
-        </div>
       </div>
     )
 }
