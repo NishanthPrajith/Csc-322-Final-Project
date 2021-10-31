@@ -1,28 +1,84 @@
-import React from "react";
+
 import './AboutUs.css';
+import { db } from "../firebase.js";
+import { userData } from '../contexts/userProfile';
+import { collection, doc, query, getDocs, onSnapshot } from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
+
+
 
 
 export default function AboutUs() {
-    return(
+  const [students, setStudents] = useState([]);
+  const [tclasses, setTclasses] = useState([]);
+  const [lcasses, setLclasses] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+
+  async function getStudents(db) {
+    const studentsCol = collection(db, 'TopStudents');
+    setLoading(true);
+    const getData = onSnapshot(studentsCol, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+          cities.push(doc.data());
+      });
+      console.log(cities);
+      setStudents(cities);
+    });
+
+    setLoading(false);
+  }
+  async function getTclasses(db) {
+    const schoolsCol = collection(db, 'TopClasses');
+    setLoading(true);
+    const getData = onSnapshot(schoolsCol, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+          cities.push(doc.data());
+      });
+      console.log(cities);
+      setTclasses(cities);
+    });
+
+    setLoading(false);
+  }
+  async function getLclasses(db) {
+    const schoolsCol = collection(db, 'LowClasses');
+    setLoading(true);
+    const getData = onSnapshot(schoolsCol, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+          cities.push(doc.data());
+      });
+      console.log(cities);
+      setLclasses(cities);
+    });
+
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    setLoading(true);
+    getStudents(db);
+    getTclasses(db);
+    getLclasses(db);
+  }, []);
+
+  if (loading) {
+    return <h1> Loading .. </h1>
+  }
+
+  return (
+    <div className = "main">
+
+      { students.map((student) => (
         <div>
-            <h2>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</h2>
-            <table>
-        <tr>
-            <th>Top Students</th>
-            <th>Top Classes</th>
-            <th>Low Classes</th>
-        </tr>
-        <tr>
-            <td>Alfreds Futterkiste</td>
-            <td>Maria Anders</td>
-            <td>Germany</td>
-        </tr>
-        <tr>
-            <td>Centro comercial Moctezuma</td>
-            <td>Francisco Chang</td>
-            <td>Mexico</td>
-        </tr>
-        </table> 
+          <p> { student.First } </p>
+          <p> { student.Last } </p>
+          <p> { student.GPA } </p>
         </div>
+      ))}
+    </div>
     )
 }
