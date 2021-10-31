@@ -12,8 +12,8 @@ export default function SignUp() {
 
     async function register(event) {
       event.preventDefault();
-      var x = document.getElementById("frm2");
-      var firstname = x.elements[0].value; // user first name
+      var x = document.getElementById("frm2"); //hello
+      var firstname = x.elements[0].value; // user first name  
       var lastname = x.elements[1].value; // user last name
       var dob = x.elements[2].value; // user dob 
       var ssn4 = x.elements[3].value; // user last 4 digits of ssn 
