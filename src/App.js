@@ -6,6 +6,7 @@ import Footer from './footer/Footer'
 import Home from './home/Home'
 import SignUp from './signUp/SignUp'
 import Error from './error/error.js'
+import AboutUs from './aboutus/AboutUs.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
@@ -37,6 +38,9 @@ function App() {
           </Route>
           <Route exact path = "/SignUp">
             <SignUp />
+          </Route>
+          <Route exact path = "/AboutUs">
+            <AboutUs />
           </Route>
           { !userData.getStatus() &&
             <Route exact path = "/admin">

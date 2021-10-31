@@ -48,7 +48,7 @@ export default function NavBar() {
                     <p className = "logo">CCNY ZERO</p>
                     </Link>
                     <div>
-                        <Link to = '/SignUp' onClick = {closeNavLink}>
+                        <Link to = '/AboutUs' onClick = {closeNavLink}>
                             <p className = "links">About Us</p>
                         </Link>
                     </div>
