@@ -54,10 +54,10 @@ export default function Home() {
                         <input type="checkbox" onClick={revealTwo}/>
                         <p>Show password</p>
                         </div>
-                        <p id = "error" className = "error">Account information was entered incorrectly.</p>
+                        <p id = "error" className = "error">Account information does not match.</p>
                         <button onClick = {signIn}>Login</button>
                         <p className ="message">Not registered? <Link to="/SignUp">Apply</Link></p>
-                        <p className ="message">Forgot Password? <Link to="/SignUp">Apply</Link></p>
+                        <p className ="message">Forgot Password? <Link to="/SignUp">Click here</Link></p>
                     </form>
                         <video width="500" height="500" controls>
                             <source src="http://techslides.com/demos/sample-videos/small.mp4"/>
