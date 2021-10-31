@@ -39,12 +39,12 @@ export default function Home() {
   return (
     <div className = "main">
 
-      { schools.map((school) => (
+      {/* { schools.map((school) => (
         <div>
           <h1> { school.Name } </h1>
           <p> { school.Desc } </p>
         </div>
-      ))}
+      ))} */}
     </div>
   )
 }

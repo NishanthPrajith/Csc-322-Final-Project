@@ -1,6 +1,6 @@
 
 import './App.css';
-import NavBar from './navbar/Navbar.js'
+// import NavBar from './navbar/Navbar.js'
 import SignIn from './signIn/SignIn'
 import Footer from './footer/Footer'
 import Home from './home/Home'
@@ -22,7 +22,7 @@ function App() {
     <div className="App">
 
       <AuthProvider>
-      <NavBar />
+      {/* <NavBar /> */}
         <Switch location = {location} key = {location.key}>
           <Route exact path = "/">
             <Home />
