@@ -22,7 +22,7 @@ function App() {
     <div className="App">
 
       <AuthProvider>
-      {/* <NavBar /> */}
+      {/* <NavBar /> */} lol
         <Switch location = {location} key = {location.key}>
           <Route exact path = "/">
             <Home />
