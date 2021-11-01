@@ -16,12 +16,12 @@ export default function SignUp() {
       var x = document.getElementById("frm2"); //hello
       var firstname = x.elements[0].value; // user first name  
       var lastname = x.elements[1].value; // user last name
-      var dob = x.elements[2].value; // user dob 
-      var ssn4 = x.elements[3].value; // user last 4 digits of ssn 
+      var gpa = x.elements[2].value; // user gpa 
+      var dob = x.elements[3].value; // user dob 
       var username = x.elements[4].value; // test this @citymail.cuny.edu
       var pass = x.elements[5].value; // user password
       try {
-        await signup(username, pass, firstname, lastname,dob, ssn4);
+        await signup(username, pass, firstname, lastname,gpa,dob);
       } catch {
         document.getElementById('error').style.display = "block";
       }
@@ -47,7 +47,7 @@ export default function SignUp() {
       <div>
         <div className ="login-page">
           <div className ="form">
-            <p className = "title"> Sign Up, Please select desired role below (can only choose 1)</p>
+            <p className = "title"> Sign Up</p>
             <form className ="login-form" id = "frm2">
              {/* First Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
@@ -56,7 +56,7 @@ export default function SignUp() {
               <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
 
             {/* GPA */}
-            <input type="number" autoComplete = "off" placeholder="GPA" required/>
+            <input type="number" autoComplete = "off" name = "gpa" min="0" max="4" placeholder="GPA" required/>
               
             {/* Date of Birth */}
               <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
@@ -73,10 +73,11 @@ export default function SignUp() {
               <input type={revealpassword} placeholder="Password" autoComplete = "off" id = "showtext1" required/>
               <div className = "reveal">
                 <input type="checkbox" onClick={revealTwo}/>
-                <p>Show password</p>
-                <input type="checkbox" />
+                <p>Show password</p><br></br><br></br>
+                <center>Please only select one option below</center>
+                <input type="radio" name="role"/>
                 <p>Student</p>
-                <input type="checkbox" />
+                <input type="radio" name="role" />
                 <p>Instructor</p>
               </div>
               <p id = "error" className = "error">Account creation failed. <br></br> Check if exists.</p>
