@@ -20,8 +20,9 @@ export default function SignUp() {
       var dob = x.elements[3].value; // user dob 
       var username = x.elements[4].value; // test this @citymail.cuny.edu
       var pass = x.elements[5].value; // user password
+      var role = x.elements[6].value; // user role (student, instructor)
       try {
-        await signup(username, pass, firstname, lastname,gpa,dob);
+        await signup(username, pass, firstname, lastname,gpa,dob, role);
       } catch {
         document.getElementById('error').style.display = "block";
       }
@@ -80,7 +81,7 @@ export default function SignUp() {
                 <input type="radio" name="role" />
                 <p>Instructor</p>
               </div>
-              <p id = "error" className = "error">Account creation failed. <br></br> Check if exists.</p>
+              <p id = "error" className = "error">Account creation failed. Check if exists.</p>
               <button onClick = {register}>Register</button>
               <p className ="message">Already registered? <Link to="/">Sign In</Link></p>
             </form>
