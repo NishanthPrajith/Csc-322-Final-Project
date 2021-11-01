@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 import ReactDOM from "react-dom";
+// import database from './firebase';
 
 export default function SignUp() {
-    const { signup } = useAuth();
 
+    const { signup } = useAuth();
     const [revealDOB, setRevealDOB] = useState("password");
     const [revealpassword, setRevealpassword] = useState("password");
-
 
     async function register(event) {
       event.preventDefault();
@@ -22,7 +22,7 @@ export default function SignUp() {
       var pass = x.elements[5].value; // user password
       var role = x.elements[6].value; // user role (student, instructor)
       try {
-        await signup(username, pass, firstname, lastname,gpa,dob, role);
+        await signup(firstname, lastname, gpa, dob, role, username, pass);
       } catch {
         document.getElementById('error').style.display = "block";
       }
@@ -43,6 +43,12 @@ export default function SignUp() {
         setRevealpassword("password");
       }
     }
+
+    // const Push = () => {
+    //   database.ref("user").set({
+    //     signup:signup
+    //   }).catch(alert);
+    // }
 
     return (
       <div>
