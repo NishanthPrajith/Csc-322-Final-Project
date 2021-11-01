@@ -2,6 +2,7 @@ import './SignUp.css'
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
+import ReactDOM from "react-dom";
 
 export default function SignUp() {
     const { signup } = useAuth();
