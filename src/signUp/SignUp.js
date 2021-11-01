@@ -46,13 +46,16 @@ export default function SignUp() {
       <div>
         <div className ="login-page">
           <div className ="form">
-            <p className = "title"> Sign Up </p>
+            <p className = "title"> Sign Up, Please select desired role below (can only choose 1)</p>
             <form className ="login-form" id = "frm2">
              {/* First Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
 
             {/* Last Name */}
               <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
+
+            {/* GPA */}
+            <input type="number" autoComplete = "off" placeholder="GPA" required/>
               
             {/* Date of Birth */}
               <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
@@ -70,6 +73,10 @@ export default function SignUp() {
               <div className = "reveal">
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p>
+                <input type="checkbox" />
+                <p>Student</p>
+                <input type="checkbox" />
+                <p>Instructor</p>
               </div>
               <p id = "error" className = "error">Account creation failed. <br></br> Check if exists.</p>
               <button onClick = {register}>Register</button>
