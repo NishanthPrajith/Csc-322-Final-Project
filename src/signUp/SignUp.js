@@ -29,11 +29,11 @@ export default function SignUp() {
       var lastname = x.elements[1].value; // user last name
       var gpa = x.elements[2].value; // user gpa 
       var dob = x.elements[3].value; // user dob 
-      var email = x.elements[4].value; // test this @citymail.cuny.edu
-      var password = x.elements[5].value; // user password
-      var role = x.elements[6].value; // user role (student, instructor)
+      var email = x.elements[5].value; // test this @citymail.cuny.edu
+      var password = x.elements[6].value; // user password
+      var role = x.elements[8].value; // user role (student, instructor)
       try {
-        console.log("test");
+        console.log(role);
         await signup(firstname, lastname, email, password, role, gpa, dob);
       } catch {
         document.getElementById('error').style.display = "block";
