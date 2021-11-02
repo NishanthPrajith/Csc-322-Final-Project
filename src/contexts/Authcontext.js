@@ -15,10 +15,13 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true)
 
   async function signup(firstname, lastname, email, password, role, gpa, dob) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
-   
-    createUserWithEmailAndPassword(auth,email, password)
+   var ret="jigga";
+   const ret2 = createUserWithEmailAndPassword(auth,email, password)
     .then((userCredential) => {
-      return userCredential.user.uid
+      let ret1 = userCredential.user.uid
+      console.log(ret1)
+      return ret1
+
       if (userCredential && userCredential.user) {
         console.log("Hello!");
         // db.collection("/Users")
@@ -37,6 +40,8 @@ export function AuthProvider({ children }) {
     .catch((error) => {
       console.log(error.message)
     });
+    console.log(ret2)
+    return ret2
   }
 
   async function login(email, password) { 

@@ -37,12 +37,15 @@ export default function SignUp() {
       try {
         const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
         // Add a new document with a generated id.
-        const docRef = await addDoc(collection(db, "Users"), {
+        let data = {
           firstname: firstname,
           lastname: lastname,
-          useruiid: useruiid
-        });
-        console.log("Document written with ID: ", docRef.id);
+          email: email,
+          password: password,
+          gpa:gpa,
+          dob:dob
+        }
+        await setDoc(doc(db, "Users", useruiid), data);
       } catch {
         document.getElementById('error').style.display = "block";
       }
