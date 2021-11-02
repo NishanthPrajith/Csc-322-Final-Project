@@ -17,7 +17,7 @@ export default function SignIn() {
     event.preventDefault();
     try {
       await login(emailRef.current.value, passwordRef.current.value);
-      await history.push('/');
+      await history.push('AboutUs');
     } catch(error) {
       document.getElementById('error').style.display = "block";
     }
@@ -31,8 +31,6 @@ export default function SignIn() {
       setRevealpassword("password");
     }
   }
-
-  
 
     return (
       <div>

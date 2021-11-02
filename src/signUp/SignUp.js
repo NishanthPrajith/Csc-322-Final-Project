@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useEffect, useState } from 'react';
 import ReactDOM from "react-dom";
-import { db } from '../firebase';
+
 
 export default function SignUp() {
 
@@ -29,11 +29,12 @@ export default function SignUp() {
       var lastname = x.elements[1].value; // user last name
       var gpa = x.elements[2].value; // user gpa 
       var dob = x.elements[3].value; // user dob 
-      var username = x.elements[4].value; // test this @citymail.cuny.edu
-      var pass = x.elements[5].value; // user password
+      var email = x.elements[4].value; // test this @citymail.cuny.edu
+      var password = x.elements[5].value; // user password
       var role = x.elements[6].value; // user role (student, instructor)
       try {
-        await signup(firstname, lastname, gpa, dob, role, username, pass);
+        console.log("test");
+        await signup(firstname, lastname, email, password, role, gpa, dob);
       } catch {
         document.getElementById('error').style.display = "block";
       }
@@ -71,7 +72,7 @@ export default function SignUp() {
             <input type="number" autoComplete = "off" name = "gpa" min="0" max="4" placeholder="GPA" />
               
             {/* Date of Birth */}
-              <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" />
+              <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxLength = "10" placeholder="Date of Birth (MM-DD-YYYY)" />
               
               <div className = "reveal">
                 <input type="checkbox" onClick={revealOne}/>
@@ -93,7 +94,7 @@ export default function SignUp() {
                 <p>Instructor</p>
               </div>
               <p id = "error" className = "error">Account creation failed. Check if exists.</p>
-              <button onClick = {db.pull}>Register</button>
+              <button onClick = {register}>Register</button>
               <p className ="message">Already registered? <Link to="/">Sign In</Link></p>
             </form>
           </div>
