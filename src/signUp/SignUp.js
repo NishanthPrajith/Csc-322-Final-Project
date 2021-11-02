@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 import ReactDOM from "react-dom";
-// import database from './firebase';
+import { db } from '../firebase';
 
 export default function SignUp() {
 

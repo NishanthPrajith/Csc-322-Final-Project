@@ -72,8 +72,8 @@ export default function AboutUs() {
   return (
     <div className = "main">
       <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
-      <span className="tstudents">
-        <table>
+        <div className= "students">
+        <table className = "x" >
           <tr><th>First Name</th><th>Last Name</th><th>GPA</th></tr>
         { students.map((student) => (
           <tr>
@@ -83,9 +83,8 @@ export default function AboutUs() {
           </tr>
         ))}
         </table>
-      </span>
-      <span className="tclasses">
-        <table>
+        </div>
+        <table className = "x">
           <tr><th>Course</th><th>Rating</th></tr>
         { tclasses.map((tclass) => (
           <tr>
@@ -94,9 +93,7 @@ export default function AboutUs() {
           </tr>
         ))}
         </table>
-      </span>
-      <span>
-        <table>
+        <table className = "x">
           <tr><th>Course</th><th>Rating</th></tr>
         { lclasses.map((lclass) => (
           <tr>
@@ -105,7 +102,6 @@ export default function AboutUs() {
           </tr>
         ))}
         </table>
-      </span>
     </div>
     )
 }

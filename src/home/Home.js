@@ -59,7 +59,7 @@ export default function Home() {
                         <p className ="message">Not registered? <Link to="/SignUp">Apply</Link></p>
                         <p className ="message">Forgot Password? <Link to="/SignUp">Click here</Link></p>
                     </form>
-                        <video width="500" height="500" controls>
+                        <video width="500" height="500" controls autoPlay muted>
                             <source src="http://techslides.com/demos/sample-videos/small.mp4"/>
                             </video> 
                 </div>

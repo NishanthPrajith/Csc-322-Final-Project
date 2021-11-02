@@ -1,1 +1,14 @@
-
+.x{
+    float: left;
+    padding-right: 200px;
+    text-align: center;
+}
+.students{
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 25%;
+    margin-bottom: 0%;
+}
+.main{
+    margin-bottom: 0%;
+}
