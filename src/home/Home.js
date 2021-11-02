@@ -12,7 +12,8 @@ import SignIn from '../signIn/SignIn';
 export default function Home() {
   return (
     <div className = "main">
-      <SignIn />      
+      <SignIn /> 
+      <iframe width="420" height="315"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>     
     </div>
   )
 }
