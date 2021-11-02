@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
 import { auth } from '../firebase';
-
+import ReactPlayer from 'react-player'
 
 export default function Home() {
   const history = useHistory();
@@ -42,6 +42,9 @@ export default function Home() {
     }
   }
 
+  //<video width="500" height="500" controls autoPlay muted>
+  //<source src="http://techslides.com/demos/sample-videos/small.mp4"/>
+  //</video> 
   return (
     <div className = "main">
       <div className ="login-page">
@@ -59,9 +62,16 @@ export default function Home() {
                         <p className ="message">Not registered? <Link to="/SignUp">Apply</Link></p>
                         <p className ="message">Forgot Password? <Link to="/SignUp">Click here</Link></p>
                     </form>
-                        <video width="500" height="500" controls autoPlay muted>
-                            <source src="http://techslides.com/demos/sample-videos/small.mp4"/>
-                            </video> 
+                    <ReactPlayer
+                        url="https://streamable.com/qmjm4q"
+                        controls
+                        playing = 'true'
+                        muted = 'true'
+                        playbackRate = {1}
+                        width = "500px"
+                        height = "500px"
+                        volume = '0.5'
+                    />   
                 </div>
             </div>
     </div>
