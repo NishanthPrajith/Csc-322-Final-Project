@@ -1,7 +1,7 @@
 import './SignUp.css'
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactDOM from "react-dom";
 import { db } from '../firebase';
 
@@ -10,6 +10,17 @@ export default function SignUp() {
     const { signup } = useAuth();
     const [revealDOB, setRevealDOB] = useState("password");
     const [revealpassword, setRevealpassword] = useState("password");
+
+    // function App(){
+    //   const [Firstname, firstname]=useState(
+    //   {});
+    //   useEffect(() => {
+    //     db.collection("Account").onSnapshot(snapshot => {
+    //       "frm2".firstname(snapshot.document.map(document=>document.data()))
+    //     })
+
+    //   }
+    //    ) }
 
     async function register(event) {
       event.preventDefault();
@@ -44,12 +55,6 @@ export default function SignUp() {
       }
     }
 
-    // const Push = () => {
-    //   database.ref("user").set({
-    //     signup:signup
-    //   }).catch(alert);
-    // }
-
     return (
       <div>
         <div className ="login-page">
@@ -60,13 +65,13 @@ export default function SignUp() {
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
 
             {/* Last Name */}
-              <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" required/>
+              <input type="text" className = "One" name = "lname" autoComplete = "off" placeholder="Last Name" />
 
             {/* GPA */}
-            <input type="number" autoComplete = "off" name = "gpa" min="0" max="4" placeholder="GPA" required/>
+            <input type="number" autoComplete = "off" name = "gpa" min="0" max="4" placeholder="GPA" />
               
             {/* Date of Birth */}
-              <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" required/>
+              <input type={revealDOB} className = "One" name = "dob" autoComplete = "off" id = "showtext"  maxlength = "10" placeholder="Date of Birth (MM-DD-YYYY)" />
               
               <div className = "reveal">
                 <input type="checkbox" onClick={revealOne}/>
@@ -74,10 +79,10 @@ export default function SignUp() {
               </div>
             
             {/* Email */}
-              <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" required/>
+              <input type="text" className = "Two" name = "Email" autoComplete = "off" placeholder="Email" />
               
             {/* Password */}
-              <input type={revealpassword} placeholder="Password" autoComplete = "off" id = "showtext1" required/>
+              <input type={revealpassword} placeholder="Password" autoComplete = "off" id = "showtext1" />
               <div className = "reveal">
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p><br></br><br></br>
@@ -88,7 +93,7 @@ export default function SignUp() {
                 <p>Instructor</p>
               </div>
               <p id = "error" className = "error">Account creation failed. Check if exists.</p>
-              <button onClick = {register}>Register</button>
+              <button onClick = {db.pull}>Register</button>
               <p className ="message">Already registered? <Link to="/">Sign In</Link></p>
             </form>
           </div>
