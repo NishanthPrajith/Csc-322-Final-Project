@@ -36,7 +36,6 @@ export default function SignUp() {
       var role = x.elements[8].value; // user role (student, instructor)
       try {
         const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
-        // Add a new document with a generated id.
         let data = {
           firstname: firstname,
           lastname: lastname,
