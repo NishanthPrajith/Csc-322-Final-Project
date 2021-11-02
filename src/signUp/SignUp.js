@@ -13,17 +13,6 @@ export default function SignUp() {
     const [revealDOB, setRevealDOB] = useState("password");
     const [revealpassword, setRevealpassword] = useState("password");
 
-    // function App(){
-    //   const [Firstname, firstname]=useState(
-    //   {});
-    //   useEffect(() => {
-    //     db.collection("Account").onSnapshot(snapshot => {
-    //       "frm2".firstname(snapshot.document.map(document=>document.data()))
-    //     })
-
-    //   }
-    //    ) }
-
     async function register(event) {
       event.preventDefault();
       var x = document.getElementById("frm2"); //hello
@@ -42,7 +31,8 @@ export default function SignUp() {
           email: email,
           password: password,
           gpa:gpa,
-          dob:dob
+          dob:dob,
+          role:role
         }
         await setDoc(doc(db, "Users", useruiid), data);
       } catch {
@@ -98,9 +88,9 @@ export default function SignUp() {
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p><br></br><br></br>
                 <center>Please only select one option below</center>
-                <input type="radio" name="role"/>
+                <input type="radio" name="role" value="0" checked={true} required/>
                 <p>Student</p>
-                <input type="radio" name="role" />
+                <input type="radio" name="role" value="1" required/>
                 <p>Instructor</p>
               </div>
               <p id = "error" className = "error">Account creation failed. Check if exists.</p>
