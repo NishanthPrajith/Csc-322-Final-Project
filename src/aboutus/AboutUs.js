@@ -19,12 +19,15 @@ export default function AboutUs() {
     const studentsCol = collection(db, 'TopStudents');
     setLoading(true);
     const getData = onSnapshot(studentsCol, (querySnapshot) => {
-      const cities = [];
+      const student = [];
       querySnapshot.forEach((doc) => {
-          cities.push(doc.data());
+          student.push(doc.data());
       });
-      console.log(cities);
-      setStudents(cities);
+      student.sort((a,b)=> {
+        return (a.GPA<b.GPA) ? 1:-1
+      })
+      console.log(student);
+      setStudents(student);
     });
 
     setLoading(false);
@@ -33,12 +36,15 @@ export default function AboutUs() {
     const schoolsCol = collection(db, 'TopClasses');
     setLoading(true);
     const getData = onSnapshot(schoolsCol, (querySnapshot) => {
-      const cities = [];
+      const topratingclass = [];
       querySnapshot.forEach((doc) => {
-          cities.push(doc.data());
+          topratingclass.push(doc.data());
       });
-      console.log(cities);
-      setTclasses(cities);
+      topratingclass.sort((a,b)=> {
+        return (a.Rating<b.Rating) ? 1:-1
+      })
+      console.log(topratingclass);
+      setTclasses(topratingclass);
     });
 
     setLoading(false);
@@ -47,12 +53,15 @@ export default function AboutUs() {
     const schoolsCol = collection(db, 'LowClasses');
     setLoading(true);
     const getData = onSnapshot(schoolsCol, (querySnapshot) => {
-      const cities = [];
+      const lowratingclass = [];
       querySnapshot.forEach((doc) => {
-          cities.push(doc.data());
+          lowratingclass.push(doc.data());
       });
-      console.log(cities);
-      setLclasses(cities);
+      lowratingclass.sort((a,b)=> {
+        return (a.Rating>b.Rating) ? 1:-1
+      })
+      console.log(lowratingclass);
+      setLclasses(lowratingclass);
     });
 
     setLoading(false);
