@@ -90,7 +90,7 @@ export default function SignUp() {
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p><br></br><br></br>
                 <center className="classNameMessage">Please only select one option below</center>
-                <input type="radio" name="role" value="0"  required/>
+                <input type="radio" name="role" value="0" checked required/>
                 <p>Student</p>
                 <input type="radio" name="role" value="1" required/>
                 <p>Instructor</p>
