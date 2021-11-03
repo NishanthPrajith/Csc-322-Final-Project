@@ -13,7 +13,6 @@ export default function Home() {
   return (
     <div className = "main">
       <SignIn /> 
-      <iframe width="420" height="315"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>     
     </div>
   )
 }
