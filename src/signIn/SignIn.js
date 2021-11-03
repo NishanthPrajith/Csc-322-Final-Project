@@ -47,10 +47,16 @@ export default function SignIn() {
               </div>
               <p id = "error" className = "error">Account information was entered incorrectly.</p>
               <button onClick = {signIn}>login</button>
-              <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p>
+              <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p><br></br>
             </form>
-            <iframe width="420" height="315"src="https://www.youtube.com/embed/tgbNymZ7vqY"></iframe>   
-          </div>
+            </div>
+            <iframe className ="videoHome"
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/RcnksOUugcA"
+              frameborder="0"
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>   
+          
         </div>
       </div>
       </div>
