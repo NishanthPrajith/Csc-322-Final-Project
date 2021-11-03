@@ -34,6 +34,7 @@ export default function SignIn() {
 
     return (
       <div>
+        <div className = "signInFirstHeader">
         <div className ="login-page">
           <div className ="form">
             <p className = "title"> Sign In </p>
@@ -48,8 +49,10 @@ export default function SignIn() {
               <button onClick = {signIn}>login</button>
               <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p>
             </form>
+            
           </div>
         </div>
+      </div>
       </div>
     )
 }
