@@ -26,8 +26,7 @@ export default function AboutUs() {
       student.sort((a,b)=> {
         return (a.GPA<b.GPA) ? 1:-1
       })
-      console.log(student);
-      setStudents(student);
+      setStudents(student.slice(0,5));
     });
 
     setLoading(false);
@@ -43,14 +42,13 @@ export default function AboutUs() {
       topratingclass.sort((a,b)=> {
         return (a.Rating<b.Rating) ? 1:-1
       })
-      console.log(topratingclass);
-      setTclasses(topratingclass);
+      setTclasses(topratingclass.slice(0,5));
     });
 
     setLoading(false);
   }
   async function getLclasses(db) {
-    const schoolsCol = collection(db, 'LowClasses');
+    const schoolsCol = collection(db, 'TopClasses');
     setLoading(true);
     const getData = onSnapshot(schoolsCol, (querySnapshot) => {
       const lowratingclass = [];
@@ -60,8 +58,7 @@ export default function AboutUs() {
       lowratingclass.sort((a,b)=> {
         return (a.Rating>b.Rating) ? 1:-1
       })
-      console.log(lowratingclass);
-      setLclasses(lowratingclass);
+      setLclasses(lowratingclass.slice(0,5));
     });
 
     setLoading(false);
@@ -176,7 +173,7 @@ export default function AboutUs() {
             <tr><th>Course</th><th>Rating</th></tr>
           { lclasses.map((lclass) => (
             <tr>
-              <td> { lclass.Class } </td>
+              <td> { lclass.Course } </td>
               <td> { lclass.Rating } </td>
             </tr>
           ))}
