@@ -89,7 +89,7 @@ export default function SignUp() {
               <div className = "reveal">
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p><br></br><br></br>
-                <center>Please only select one option below</center>
+                <center className="classNameMessage">Please only select one option below</center>
                 <input type="radio" name="role" value="0"  required/>
                 <p>Student</p>
                 <input type="radio" name="role" value="1" required/>
