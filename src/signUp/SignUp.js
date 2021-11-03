@@ -22,7 +22,7 @@ export default function SignUp() {
       var dob = x.elements[3].value; // user dob 
       var email = x.elements[5].value; // test this @citymail.cuny.edu
       var password = x.elements[6].value; // user password
-      var role = x.elements[8].value; // user role (student, instructor)
+      var role = document.querySelector('input[name="role"]:checked').value // user role (student==0, instructor==1)
       try {
         const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
         let data = {
@@ -88,7 +88,7 @@ export default function SignUp() {
                 <input type="checkbox" onClick={revealTwo}/>
                 <p>Show password</p><br></br><br></br>
                 <center>Please only select one option below</center>
-                <input type="radio" name="role" value="0" checked={true} required/>
+                <input type="radio" name="role" value="0"  required/>
                 <p>Student</p>
                 <input type="radio" name="role" value="1" required/>
                 <p>Instructor</p>
