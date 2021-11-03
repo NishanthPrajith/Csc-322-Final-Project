@@ -46,7 +46,7 @@
 }
 .form .message {
   margin: 15px 0 0;
-  color: #b3b3b3;
+  color: #0a0a0a;
   font-size: 12px;
 }
 
@@ -73,4 +73,17 @@
 .reveal input[type = "checkbox"] {
   background-color: red;
   margin-top: 14%;
+}
+
+.signUpFirstHeader {
+  height: 76vh;
+  display: grid;
+  align-items: flex-end;
+  padding: 0% 3.5% 10% 3.5%;
+  background-image: url("https://dbukjj6eu5tsf.cloudfront.net/ccnyathletics.com/images/2019/7/10/CCNY_CAMPUS.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: 100%;
+  background-blend-mode: screen;
+  background-color: rgba(255, 255, 255, 0.75);
 }

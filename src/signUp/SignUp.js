@@ -58,9 +58,11 @@ export default function SignUp() {
 
     return (
       <div>
+        <h1>The City College of New York </h1>
+        <div className = "signUpFirstHeader">
         <div className ="login-page">
+        <center><h1>Sign Up </h1></center>
           <div className ="form">
-            <p className = "title"> Sign Up</p>
             <form className ="login-form" id = "frm2">
              {/* First Name */}
               <input type="text" className = "One" name = "fname" autoComplete = "off" placeholder="First Name" required/>
@@ -95,9 +97,11 @@ export default function SignUp() {
               </div>
               <p id = "error" className = "error">Account creation failed. Check if exists.</p>
               <button onClick = {register}>Register</button>
-              <p className ="message">Already registered? <Link to="/">Sign In</Link></p>
+              <p className ="message" > Already registered? <Link to="/">Sign In</Link></p>
             </form>
           </div>
+      </div>
+        
         </div>
       </div>
     )
