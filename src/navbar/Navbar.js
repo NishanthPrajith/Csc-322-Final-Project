@@ -28,7 +28,7 @@ export default function NavBar() {
         <nav>
             <div className = "firstNav">
                 <Link to = '/' onClick = {closeNavLink}>
-                  <p className = "logo">CCNY ZERO</p>
+                  <p className = "logo">CCNYZero</p>
                 </Link>
                 <div>
                     <Link to = '/' onClick = {closeNavLink}>

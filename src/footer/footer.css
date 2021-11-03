@@ -3,5 +3,7 @@ footer {
   background-color: #f5f5f7;
   display: grid;
   justify-content: center;
+  align-items: center;
+  clear: both;
   color: #86868b;
 }
