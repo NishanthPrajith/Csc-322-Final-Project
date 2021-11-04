@@ -1,0 +1,9 @@
+.introMessage {
+  font-style: italic;
+  text-align: center;
+  font-size: 1.3rem;
+  right: "center";
+  top: "center";
+  height: 30vh;
+  color: black;
+}

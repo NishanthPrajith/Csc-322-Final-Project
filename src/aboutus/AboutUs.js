@@ -82,6 +82,7 @@ export default function AboutUs() {
           <h1> Welcome to The City College of New York </h1>
         </div>
       </div>
+      
 
       <div className = "AboutFourthHeader">
         <div className = "one">
