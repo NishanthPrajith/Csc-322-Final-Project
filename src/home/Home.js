@@ -13,7 +13,7 @@ import InstructorView from '../instructorView/instructorView';
 export default function Home() {
   return (
     <div className = "main">
-      <InstructorView /> 
+      <SignIn /> 
     </div>
   )
 }
