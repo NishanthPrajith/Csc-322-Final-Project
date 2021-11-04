@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react"
 import { auth } from "../firebase"
 import { db } from "../firebase"
 import { collection, doc, query, getDocs, onSnapshot,setDoc  } from 'firebase/firestore';
-import { updateProfile, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { updateProfile, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail} from 'firebase/auth';
 import { userData } from './userProfile';
 const AuthContext = React.createContext()
 
@@ -45,10 +45,18 @@ export function AuthProvider({ children }) {
     userData.setName(auth);
   }
 
-  function resetPassword(email) {
-    return auth.sendPasswordResetEmail(email)
-  }
+  async function resetPassword(email) {
 
+    await sendPasswordResetEmail(auth, email)
+        .then(function (user) {
+          alert('Check your inbox for further instructions')
+        }).catch(function (e) {
+          console.log(e)
+        })
+    
+  }
+  
+  
   function updateEmail(email) {
     return currentUser.updateEmail(email)
   }

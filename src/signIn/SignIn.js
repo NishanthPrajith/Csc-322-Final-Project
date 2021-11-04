@@ -48,6 +48,7 @@ export default function SignIn() {
               <p id = "error" className = "error">Account information was entered incorrectly.</p>
               <button onClick = {signIn}>login</button>
               <p className ="message">Not registered? <Link to="/SignUp">Create an account</Link></p><br></br>
+              <p className ="message">Forgot Password? <Link to="/ForgotPassword">Reset Password</Link></p><br></br>
             </form>
             </div>
             <iframe className ="videoHome"
