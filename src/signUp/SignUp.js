@@ -16,13 +16,16 @@ export default function SignUp() {
     async function register(event) {
       event.preventDefault();
       var x = document.getElementById("frm2"); //hello
-      var firstname = x.elements[0].value; // user first name  
+      var firstname = x.elements[0].value; // user first name 
       var lastname = x.elements[1].value; // user last name
       var gpa = x.elements[2].value; // user gpa 
       var dob = x.elements[3].value; // user dob 
       var email = x.elements[5].value; // test this @citymail.cuny.edu
       var password = x.elements[6].value; // user password
       var role = document.querySelector('input[name="role"]:checked').value // user role (student==0, instructor==1)
+      if(firstname==="" || lastname===""|| gpa===""|| dob===""|| email===""|| password===""|| role===""){
+        alert("Missing Information, Enter correct Information!");
+      } 
       try {
         const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
         let data = {
@@ -36,7 +39,7 @@ export default function SignUp() {
         }
         await setDoc(doc(db, "Users", useruiid), data);
       } catch {
-        document.getElementById('error').style.display = "block";
+        // document.getElementById('error').style.display = "block";
       }
     }
 
