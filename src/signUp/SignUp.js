@@ -5,10 +5,13 @@ import { doc, setDoc,collection, addDoc } from "firebase/firestore";
 import { useAuth } from "../contexts/Authcontext"
 import { useEffect, useState } from 'react';
 import ReactDOM from "react-dom";
+import React from 'react';
+import {Redirect} from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 
 export default function SignUp() {
-
+    let history = useHistory();
     const { signup } = useAuth();
     const [revealDOB, setRevealDOB] = useState("password");
     const [revealpassword, setRevealpassword] = useState("password");
@@ -28,7 +31,7 @@ export default function SignUp() {
       } 
       try {
         const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
-        let data = {
+        var data = {
           firstname: firstname,
           lastname: lastname,
           email: email,
@@ -39,7 +42,19 @@ export default function SignUp() {
         }
         await setDoc(doc(db, "Users", useruiid), data);
       } catch {
-        // document.getElementById('error').style.display = "block";
+        document.getElementById('error').style.display = "block";
+      }
+      if(role==='0'){
+      history.push({
+        pathname: '/Studentview',
+        state: data // your data array of objects
+      });
+      }
+      else{
+        history.push({
+          pathname: '/Instructorview',
+          state: data // your data array of objects
+        });
       }
     }
 

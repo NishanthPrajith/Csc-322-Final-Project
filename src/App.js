@@ -7,6 +7,8 @@ import SignUp from './signUp/SignUp'
 import ForgotPassword from './forgotPassword/ForgotPassword'
 import Error from './error/error.js'
 import AboutUs from './aboutus/AboutUs.js'
+import StudentView from './studentView/studentView.js'
+import InstructorView from './instructorView/instructorView.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
@@ -27,6 +29,12 @@ function App() {
         <Switch location = {location} key = {location.key}>
           <Route exact path = "/">
             <Home />
+          </Route>
+          <Route exact path = "/Studentview">
+            <StudentView />
+          </Route>
+          <Route exact path = "/Instructorview">
+            <InstructorView />
           </Route>
           <Route exact path = "/about">
           </Route>
