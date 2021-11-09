@@ -4,6 +4,8 @@ import { useAuth } from "../contexts/Authcontext"
 import { useState, useRef } from 'react';
 import { auth } from '../firebase';
 import { useHistory } from 'react-router-dom';
+import { db } from "../firebase.js";
+import { collection, doc, query, getDoc, onSnapshot } from 'firebase/firestore';
 
 export default function SignIn() {
   const history = useHistory();
@@ -16,12 +18,24 @@ export default function SignIn() {
   async function signIn(event) {
     event.preventDefault();
     try {
-      await login(emailRef.current.value, passwordRef.current.value);
-      await history.push('AboutUs');
+      const useruiid = await login(emailRef.current.value, passwordRef.current.value);
+      const docRef = doc(db, "Users", useruiid);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+      if(docSnap.data().role==='0'){
+        await history.push('Studentview');
+      }
+      else if(docSnap.data().role==='1'){
+        await history.push('Instructorview');
+      }
+      else  await history.push('Admin');
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+    }
     } catch(error) {
       document.getElementById('error').style.display = "block";
     }
-    console.log(auth.currentUser);
   }
 
   function revealTwo(){

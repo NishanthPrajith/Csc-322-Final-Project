@@ -30,13 +30,16 @@ export function AuthProvider({ children }) {
   async function login(email, password) { 
     await signOut(auth);
 
-    await signInWithEmailAndPassword(auth, email, password)
+    const ret2 = signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        // ...
+        let ret1 = userCredential.user.uid
+      return ret1
       })
-      userData.setName(auth);
+      .catch((error) => {
+        console.log(error.message)
+      });
+      // userData.setName(auth);
+      return ret2
   }
 
   async function logout() {
