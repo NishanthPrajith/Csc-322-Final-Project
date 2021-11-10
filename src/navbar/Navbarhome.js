@@ -16,30 +16,6 @@ export default function NavBar() {
         window.scroll(0,0);
     }
 
-  const { login, currentUser } = useAuth();
-  const emailRef = useRef()
-  const [revealpassword, setRevealpassword] = useState("password");
-  const passwordRef = useRef()
-
-  async function signIn(event) {
-    event.preventDefault();
-    try {
-      await login(emailRef.current.value, passwordRef.current.value);
-      await history.push('/');
-    } catch(error) {
-      document.getElementById('error').style.display = "block";
-    }
-    console.log(auth.currentUser);
-  }
-
-  function revealTwo(){
-    if (revealpassword === "password") {
-      setRevealpassword("text");
-    } else {
-      setRevealpassword("password");
-    }
-  }
-
     return (
         <div>
             <nav>
@@ -51,7 +27,21 @@ export default function NavBar() {
                         <Link to = '/AboutUs' onClick = {closeNavLink}>
                             <p className = "links">About Us</p>
                         </Link>
+                        { (userData.getRole()==1) &&
+                          <Link to = '/admin' onClick = {closeNavLink}>
+                              <p className = "links">Admin</p>
+                          </Link>
+                        }
+                        {
+                          userData.getStatus() && <p> {userData.getName()} </p>
+                        }
+                        { (userData.getRole()==0) &&
+                          <Link to = '/Studentview' onClick = {closeNavLink}>
+                              <p className = "links">Student</p>
+                          </Link>
+                        }
                     </div>
+                    
                 </div>
             </nav>
       </div>

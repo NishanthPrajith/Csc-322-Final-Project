@@ -3,8 +3,8 @@
 class Profile {
   constructor(){
     this.name = "";
-    this.checknull = true;
-    this.title = "";
+    this.staus = false;
+    this.role = -1;
   }
 
   getName() {
@@ -12,17 +12,21 @@ class Profile {
   }
 
   getStatus() {
-    return this.checknull;
+    return this.status;
   }
-
-  setName(auth) {
-    if(auth.currentUser != null) {
-      this.name = auth.currentUser.displayName;
-      this.checknull = false;
-    } else {
-      this.name = "";
-      this.checknull = true;
-    }
+  getRole(){
+    return this.role;
+  }
+  setRole(role){
+    console.log(role);
+    this.role=role;
+  }
+  setName(name){
+    console.log(name)
+    this.name=name;
+  }
+  setStatus(v) {
+    this.status = v;
   }
 }
 

@@ -30,12 +30,6 @@ function App() {
           <Route exact path = "/">
             <Home />
           </Route>
-          <Route exact path = "/Studentview">
-            <StudentView />
-          </Route>
-          <Route exact path = "/Instructorview">
-            <InstructorView />
-          </Route>
           <Route exact path = "/about">
           </Route>
           <Route path = "/projects">
@@ -53,10 +47,20 @@ function App() {
           <Route exact path = "/ForgotPassword">
             <ForgotPassword />
           </Route>
-          { !userData.getStatus() &&
+          { (userData.getRole() == 2) &&
             <Route exact path = "/admin">
               <p>Admin</p>
             </Route>
+          }
+          { (userData.getRole() == 0) &&
+            <Route exact path = "/Studentview">
+              <StudentView />
+            </Route>
+          }
+          { (userData.getRole() == 1) &&
+          <Route exact path = "/Instructorview">
+            <InstructorView />
+          </Route>
           }
           <Route>
             <Error />

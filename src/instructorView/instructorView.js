@@ -56,28 +56,12 @@ export default function InstructorView() {
     }
     return (
         <div>
-            <nav>
-                <div className = "firstNav">
-                    <Link to = '/' onClick = {closeNavLink}>
-                      <p className = "logo">CCNYZero</p>
-                    </Link>
-                    <div>
-                        <Link to = '/AboutUs' onClick = {closeNavLink}>
-                            <p className = "links">About Us</p>
-
-                        </Link>
-                    </div>
-                    <button onClick = {getCourses}>Schedule</button>
+           <button onClick = {getCourses}>Schedule</button>
                     <button onClick = {getCourses}>Roster</button>
                     <button onClick = {getCourses}>Grades</button>
                     <div>
                     <p className = "introMessage">Hello, Instructor{Instructor}</p>
                     </div>
-                  
-                </div>
-            </nav>
-
-
       </div>
     )
 }

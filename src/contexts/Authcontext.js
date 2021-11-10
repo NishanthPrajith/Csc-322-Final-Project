@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
     const ret2 = signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         let ret1 = userCredential.user.uid
+        
       return ret1
       })
       .catch((error) => {
