@@ -33,3 +33,7 @@ nav a {
 .firstNav div p {
   margin: 0;
 }
+.username{
+  position: absolute;
+  right: 30px;
+}

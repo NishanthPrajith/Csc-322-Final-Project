@@ -33,7 +33,7 @@ export default function NavBar() {
                           </Link>
                         }
                         {
-                          userData.getStatus() && <p> {userData.getName()} </p>
+                          userData.getStatus() && <p className="username"> {userData.getName()} </p>
                         }
                         { (userData.getRole()==0) &&
                           <Link to = '/Studentview' onClick = {closeNavLink}>
