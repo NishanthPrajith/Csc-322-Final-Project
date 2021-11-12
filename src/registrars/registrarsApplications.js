@@ -45,8 +45,8 @@ export default function RegistrarsApplications() {
         //         })
         // })
     }
-    async function Reject(){
-        await deleteDoc(doc(db, "Users", userData.getUd()));
+    async function Reject(v){
+        await deleteDoc(doc(db, "Users", v));
     }
     return (
 
@@ -71,8 +71,8 @@ export default function RegistrarsApplications() {
                         <td> {user.dob} </td>
                         <td> {user.email} </td>
                         <td> {user.role} </td>                         
-                        {/* <button onClick={Accept}>Accept</button>
-                        <button onClick={Reject()}>Reject</button> */}
+                        <button onClick={() => Accept(user.useruiid)}>Accept</button>
+                        <button onClick={() => Reject(user.useruiid)}>Reject</button>  
                     </tr>
                 ))}
             </table>
