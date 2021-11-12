@@ -1,0 +1,24 @@
+.xApplication {
+    float: left;
+    width: 35%;
+    margin: 0% 33%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xApplication tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .xApplication th {
+    background-color: #7d5cc6;
+    color: white;
+    padding: 2% 0%;
+    width: 33%;
+  }
+  
+  .xApplication td {
+    padding: 2% 0%;
+  }
+  

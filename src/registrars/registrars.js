@@ -1,4 +1,4 @@
-import './studentView.css'
+import './registrars.css'
 import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
@@ -9,7 +9,7 @@ import { db } from "../firebase.js";
 import { collection, doc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import { getDatabase, ref, set } from "firebase/database";
 
-export default function studentView() {
+export default function registrars() {
 
     // const [Student, Student] = useState('');
     // const [CurrentClasses, setCurrentClasses] = useState([]);
@@ -20,6 +20,6 @@ export default function studentView() {
     //     var myUserId = firebase.auth().currentUser.uid;
     // }
     return (
-        <h1>STUDENT VIEW</h1>
+        <h1>REGISTRARS VIEW</h1>
     );
 }

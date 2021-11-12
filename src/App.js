@@ -8,6 +8,8 @@ import ForgotPassword from './forgotPassword/ForgotPassword'
 import Error from './error/error.js'
 import AboutUs from './aboutus/AboutUs.js'
 import StudentView from './studentView/studentView.js'
+import Registrars from './registrars/registrars.js'
+import RegistrarsApplications from './registrars/registrarsApplications.js'
 import InstructorView from './instructorView/instructorView.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
@@ -25,42 +27,47 @@ function App() {
     <div className="App">
 
       <AuthProvider>
-      <NavBarHome />
-        <Switch location = {location} key = {location.key}>
-          <Route exact path = "/">
+        <NavBarHome />
+        <Switch location={location} key={location.key}>
+          <Route exact path="/">
             <Home />
           </Route>
-          <Route exact path = "/about">
+          <Route exact path="/about">
           </Route>
-          <Route path = "/projects">
+          <Route path="/projects">
             <p>Done</p>
           </Route>
-          <Route exact path = "/SignIn">
+          <Route exact path="/SignIn">
             <SignIn />
           </Route>
-          <Route exact path = "/SignUp">
+          <Route exact path="/SignUp">
             <SignUp />
           </Route>
-          <Route exact path = "/AboutUs">
+          <Route exact path="/AboutUs">
             <AboutUs />
           </Route>
-          <Route exact path = "/ForgotPassword">
+          <Route exact path="/ForgotPassword">
             <ForgotPassword />
           </Route>
-          { (userData.getRole() == 2) &&
-            <Route exact path = "/admin">
-              <p>Admin</p>
+          {(userData.getRole() == 2) &&
+            <Route exact path="/Registrars">
+              <Registrars />
             </Route>
           }
-          { (userData.getRole() == 0) &&
-            <Route exact path = "/Studentview">
+          {(userData.getRole() == 2) &&
+            <Route exact path="/RegistrarsApplication">
+              <RegistrarsApplications />
+            </Route>
+          }
+          {(userData.getRole() == 0) &&
+            <Route exact path="/Studentview">
               <StudentView />
             </Route>
           }
-          { (userData.getRole() == 1) &&
-          <Route exact path = "/Instructorview">
-            <InstructorView />
-          </Route>
+          {(userData.getRole() == 1) &&
+            <Route exact path="/Instructorview">
+              <InstructorView />
+            </Route>
           }
           <Route>
             <Error />
