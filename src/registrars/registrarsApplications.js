@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
-import { auth } from '../firebase';
+import firebaseApp, { auth } from '../firebase';
 import { db } from "../firebase.js";
-import { collection, doc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import { getDatabase, ref, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 
 export default function RegistrarsApplications() {
+    let history = useHistory();
     const [user, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -35,11 +36,17 @@ export default function RegistrarsApplications() {
         return <h1> Loading .. </h1>
     }
 
-    function accept() {
-        
+    function Accept() {
+        // useEffect(()=>{
+        //     const user= [];
+        //     db.collection('Users').get()
+        //         .then(snapshot => {
+        //             snapshot.docs.forEach()
+        //         })
+        // })
     }
-    function reject() {
-
+    async function Reject(){
+        await deleteDoc(doc(db, "Users", userData.getUd()));
     }
     return (
 
@@ -63,9 +70,9 @@ export default function RegistrarsApplications() {
                         <td> {user.gpa} </td>
                         <td> {user.dob} </td>
                         <td> {user.email} </td>
-                        <td> {user.role} </td>
-                        <button onClick={accept}>Accept</button>
-                        <button onClick={reject}>Reject</button>
+                        <td> {user.role} </td>                         
+                        {/* <button onClick={Accept}>Accept</button>
+                        <button onClick={Reject()}>Reject</button> */}
                     </tr>
                 ))}
             </table>

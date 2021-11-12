@@ -38,7 +38,8 @@ export default function SignUp() {
         password: password,
         gpa: gpa,
         dob: dob,
-        role: role
+        role: role,
+        useruiid: useruiid
       }
       await setDoc(doc(db, "Users", useruiid), data);
     } catch {

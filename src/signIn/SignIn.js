@@ -23,6 +23,7 @@ export default function SignIn() {
       const docRef = doc(db, "Users", useruiid);
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
+        userData.setUd(useruiid);
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
         userData.setStatus(true);
         if (docSnap.data().role === '0') {
