@@ -1,4 +1,4 @@
-import './instructorView.css'
+import './instructorView.css';
 import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
@@ -55,7 +55,6 @@ export default function InstructorViewb() {
         }); 
         
     }
-
 
     async function getCourseNames() {
         let documentRef = firestore.doc('Instructor/John Smith/');

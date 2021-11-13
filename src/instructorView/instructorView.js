@@ -57,11 +57,13 @@ export default function InstructorView() {
     return (
         <div>
            <button onClick = {getCourses}>Schedule</button>
+           <div className="instructorButtons">
                     <button onClick = {getCourses}>Roster</button>
                     <button onClick = {getCourses}>Grades</button>
                     <div>
-                    <p className = "introMessage">Hello, Instructor{Instructor}</p>
-                    </div>
+                   
+            </div>
+      </div>
       </div>
     )
 }

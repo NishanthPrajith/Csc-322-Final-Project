@@ -1,9 +1,19 @@
 .introMessage {
   font-style: italic;
-  text-align: center;
+  align-self: "flex-end";
   font-size: 1.3rem;
-  right: "center";
-  top: "center";
-  height: 30vh;
+  position: relative;
+  top: -75px;
+  left: 1700px;
+  color: black;
+}
+
+.instructorButtons button {
+  font-style: times;
+  align-self: "flex-end";
+  font-size: 1.3rem;
+  position: relative;
+  top: -50px;
+  left: 800px;
   color: black;
 }
