@@ -20,9 +20,13 @@ export default function SignIn() {
     event.preventDefault();
     try {
       const useruiid = await login(emailRef.current.value, passwordRef.current.value);
-      const docRef = doc(db, "Users", useruiid);
+      const docRef = doc(db, "Admin", useruiid);
+      const docRef1 = doc(db, "Students", useruiid);
+      const docRef2 = doc(db, "Instructor", useruiid);
       const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      const docSnap1 = await getDoc(docRef1);
+      const docSnap2 = await getDoc(docRef2);
+      if (docSnap.exists()|| docSnap1.exists()|| docSnap2.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
         userData.setStatus(true);
@@ -85,4 +89,7 @@ export default function SignIn() {
       </div>
     </div>
   )
+    // eat my ass they said I was a big 
+    // adbadjnsjdn
+    //szDJKhkszhzhksjfhjzkskhj
 }
