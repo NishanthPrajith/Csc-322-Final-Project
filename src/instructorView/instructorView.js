@@ -56,14 +56,13 @@ export default function InstructorView() {
     }
     return (
         <div>
-           <button onClick = {getCourses}>Schedule</button>
-           <div className="instructorButtons">
+            <div className="instructorButtons">
+                    <button onClick = {getCourses}>Schedule</button>
                     <button onClick = {getCourses}>Roster</button>
                     <button onClick = {getCourses}>Grades</button>
-                    <div>
+                    
                    
             </div>
-      </div>
       </div>
     )
 }

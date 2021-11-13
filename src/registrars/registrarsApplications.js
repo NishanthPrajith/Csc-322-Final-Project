@@ -3,15 +3,16 @@ import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
+import { getAuth, deleteUser } from "firebase/auth";
 import firebaseApp, { auth } from '../firebase';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot, addDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot, addDoc, setDoc } from 'firebase/firestore';
 import { getDatabase, ref, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 
 export default function RegistrarsApplications() {
     let history = useHistory();
-    const [user, setUser] = useState([]);
+    const [User, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
 
     async function getUser(db) {
@@ -36,25 +37,34 @@ export default function RegistrarsApplications() {
         return <h1> Loading .. </h1>
     }
 
-    async function Accept(a, b, c, d, e, f, g, v ){
-        const collectionRef = collection(db, "Students");
-        const collectionRef2 = collection(db, "Instructor");
+    async function Accept(a, b, c, d, e, f, g, useruiid){
+        // const collectionRef = collection(db, "Students");
+        // const collectionRef2 = collection(db, "Instructor");
+        // const id = db.collection('Students').doc().id
+        console.log(a, b, c, d, e, f, g, useruiid);
         if(f == "0"){
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Student", password: g}
-            await addDoc(collectionRef, payload);
-            await deleteDoc(doc(db, "Users", v));
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Student", password: g,useruiid:useruiid}
+            console.log(useruiid);
+            // payload sets fields
+            await setDoc(doc(db, "Students", useruiid), payload);
+            await deleteDoc(doc(db, "Users",useruiid ));
+
         }else{
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g}
-            await addDoc(collectionRef2, payload);
-            await deleteDoc(doc(db, "Users", v));
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g,useruiid:useruiid}
+            console.log(useruiid);
+            await setDoc(doc(db, "Instructor", useruiid), payload);
+            await deleteDoc(doc(db, "Users", useruiid));
         }
+
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
         // Adjusts role depending on input
     }
 
     async function Reject(v){
-        await deleteDoc(doc(db, "Users", v));
+        // const userEmail = request.body.userEmail();
+        await deleteDoc(doc(db, "Users"));
+        
     }
     return (
 
@@ -70,7 +80,7 @@ export default function RegistrarsApplications() {
                     <th>Email</th>
                     <th>Role</th>
                 </tr>
-                {user.map((user) => (
+                {User.map((user) => (
                     <tr>
                         <td> {user.firstname} </td>
                         <td> {user.lastname} </td>
@@ -80,8 +90,10 @@ export default function RegistrarsApplications() {
                         <td> {user.role} </td>                         
                         <button onClick={() => Accept(user.firstname, 
                                                       user.lastname, 
-                                                      user.gpa, user.dob, 
-                                                      user.email, user.role, 
+                                                      user.gpa, 
+                                                      user.dob, 
+                                                      user.email, 
+                                                      user.role, 
                                                       user.password, 
                                                       user.useruiid
                                                       )}>Accept</button>

@@ -30,39 +30,22 @@ export default function SignIn() {
         userData.setUd(useruiid);
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
         userData.setStatus(true);
-        if (docSnap.data().role === '0') {
-          userData.setRole(0);
-          await history.push('Studentview');
-        }
-        else if (docSnap.data().role === '1') {
-          userData.setRole(1);
-          await history.push('Instructorview');
-        }
-        else {
-          userData.setRole(2);
-          await history.push('Registrars');
-        }
+        userData.setRole(2);
+        await history.push('Registrars');
       }
-      if (docSnap.exists()|| docSnap1.exists()|| docSnap2.exists()) {
+      else if (docSnap1.exists()) {
         userData.setUd(useruiid);
-        userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
+        userData.setName(docSnap1.data().firstname + " " + docSnap1.data().lastname);
         userData.setStatus(true);
-        if (docSnap.data().role === '0') {
-          userData.setRole(0);
-          await history.push('Studentview');
-        }
-        else if (docSnap.data().role === '1') {
-          userData.setRole(1);
-          await history.push('Instructorview');
-        }
-        else {
-          userData.setRole(2);
-          await history.push('Registrars');
-        }
+        userData.setRole(0);
+        await history.push('Studentview');
       }
-      else {
-        // doc.data() will be undefined in this case
-        console.log("No such document!");
+      else if (docSnap2.exists()) {
+        userData.setUd(useruiid);
+        userData.setName(docSnap2.data().firstname + " " + docSnap2.data().lastname);
+        userData.setStatus(true);
+        userData.setRole(1);
+        await history.push('Instructorview');
       }
     } catch (error) {
       document.getElementById('error').style.display = "block";
