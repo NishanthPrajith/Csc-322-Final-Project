@@ -50,6 +50,7 @@ export default function RegistrarsApplications() {
         }
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
+        // Adjusts role depending on input
     }
 
     async function Reject(v){
