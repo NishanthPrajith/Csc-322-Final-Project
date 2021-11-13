@@ -26,6 +26,23 @@ export default function SignIn() {
       const docSnap = await getDoc(docRef);
       const docSnap1 = await getDoc(docRef1);
       const docSnap2 = await getDoc(docRef2);
+      if (docSnap.exists()) {
+        userData.setUd(useruiid);
+        userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
+        userData.setStatus(true);
+        if (docSnap.data().role === '0') {
+          userData.setRole(0);
+          await history.push('Studentview');
+        }
+        else if (docSnap.data().role === '1') {
+          userData.setRole(1);
+          await history.push('Instructorview');
+        }
+        else {
+          userData.setRole(2);
+          await history.push('Registrars');
+        }
+      }
       if (docSnap.exists()|| docSnap1.exists()|| docSnap2.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
@@ -42,7 +59,8 @@ export default function SignIn() {
           userData.setRole(2);
           await history.push('Registrars');
         }
-      } else {
+      }
+      else {
         // doc.data() will be undefined in this case
         console.log("No such document!");
       }
@@ -89,7 +107,8 @@ export default function SignIn() {
       </div>
     </div>
   )
-    // eat my ass they said I was a big 
+   
     // adbadjnsjdn
     //szDJKhkszhzhksjfhjzkskhj
+    // addedd a comment
 }
