@@ -38,10 +38,6 @@ export default function RegistrarsApplications() {
     }
 
     async function Accept(a, b, c, d, e, f, g, useruiid){
-        // const collectionRef = collection(db, "Students");
-        // const collectionRef2 = collection(db, "Instructor");
-        // const id = db.collection('Students').doc().id
-        console.log(a, b, c, d, e, f, g, useruiid);
         if(f == "0"){
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Student", password: g,useruiid:useruiid}
             console.log(useruiid);
@@ -55,7 +51,6 @@ export default function RegistrarsApplications() {
             await setDoc(doc(db, "Instructor", useruiid), payload);
             await deleteDoc(doc(db, "Users", useruiid));
         }
-
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
         // Adjusts role depending on input
