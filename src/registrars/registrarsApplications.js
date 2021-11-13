@@ -38,9 +38,16 @@ export default function RegistrarsApplications() {
 
     async function Accept(a, b, c, d, e, f, g, v ){
         const collectionRef = collection(db, "Students");
-        const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: f, password: g}
-        await addDoc(collectionRef, payload);
-        await deleteDoc(doc(db, "Users", v));
+        const collectionRef2 = collection(db, "Instructor");
+        if(f == "0"){
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Student", password: g}
+            await addDoc(collectionRef, payload);
+            await deleteDoc(doc(db, "Users", v));
+        }else{
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g}
+            await addDoc(collectionRef2, payload);
+            await deleteDoc(doc(db, "Users", v));
+        }
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
     }
