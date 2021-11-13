@@ -1,7 +1,7 @@
 .xApplication {
     float: left;
     width: 35%;
-    margin: 0% 33%;
+    margin: 0% 0%;
     border: none;
     border-collapse: collapse;
   }
@@ -19,6 +19,6 @@
   }
   
   .xApplication td {
-    padding: 2% 0%;
+    padding: 0% 0%;
   }
   

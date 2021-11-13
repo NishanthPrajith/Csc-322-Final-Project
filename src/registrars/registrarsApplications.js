@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
 import firebaseApp, { auth } from '../firebase';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot, addDoc } from 'firebase/firestore';
 import { getDatabase, ref, set } from "firebase/database";
 import { useState, useEffect } from 'react';
 
@@ -36,15 +36,15 @@ export default function RegistrarsApplications() {
         return <h1> Loading .. </h1>
     }
 
-    function Accept() {
-        // useEffect(()=>{
-        //     const user= [];
-        //     db.collection('Users').get()
-        //         .then(snapshot => {
-        //             snapshot.docs.forEach()
-        //         })
-        // })
+    async function Accept(a, b, c, d, e, f, g, v ){
+        const collectionRef = collection(db, "Students");
+        const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: f, password: g}
+        await addDoc(collectionRef, payload);
+        await deleteDoc(doc(db, "Users", v));
+        // First await call will add a document to our Student collection
+        // Second await call will remove the student from "Users" collection 
     }
+
     async function Reject(v){
         await deleteDoc(doc(db, "Users", v));
     }
@@ -61,7 +61,6 @@ export default function RegistrarsApplications() {
                     <th>DOB</th>
                     <th>Email</th>
                     <th>Role</th>
-                    <th>Decision</th>
                 </tr>
                 {user.map((user) => (
                     <tr>
@@ -71,7 +70,13 @@ export default function RegistrarsApplications() {
                         <td> {user.dob} </td>
                         <td> {user.email} </td>
                         <td> {user.role} </td>                         
-                        <button onClick={() => Accept(user.useruiid)}>Accept</button>
+                        <button onClick={() => Accept(user.firstname, 
+                                                      user.lastname, 
+                                                      user.gpa, user.dob, 
+                                                      user.email, user.role, 
+                                                      user.password, 
+                                                      user.useruiid
+                                                      )}>Accept</button>
                         <button onClick={() => Reject(user.useruiid)}>Reject</button>  
                     </tr>
                 ))}
@@ -80,5 +85,3 @@ export default function RegistrarsApplications() {
 
     );
 }
-
-
