@@ -11,7 +11,7 @@ import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
 import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
-import InstructorView from './instructorView/instructorView.js'
+import InstructorView from './instructorView/InstructorView.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
