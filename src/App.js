@@ -7,6 +7,7 @@ import SignUp from './signUp/SignUp'
 import ForgotPassword from './forgotPassword/ForgotPassword'
 import Error from './error/error.js'
 import AboutUs from './aboutus/AboutUs.js'
+import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
 import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
@@ -50,6 +51,9 @@ function App() {
           </Route>
           <Route exact path="/ForgotPassword">
             <ForgotPassword />
+          </Route>
+          <Route exact path="/ReSubmitpass">
+            <ReSubmitPass/>
           </Route>
           {(userData.getRole() == 2) &&
             <Route exact path="/Registrars">
