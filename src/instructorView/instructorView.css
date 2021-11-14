@@ -1,10 +1,10 @@
 .introMessage {
   font-style: italic;
   align-self: "flex-end";
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   position: relative;
-  top: -75px;
-  left: 1700px;
+  top: -125px;
+  left: 1500px;
   color: black;
 }
 
@@ -16,4 +16,22 @@
   top: -50px;
   left: 800px;
   color: black;
+}
+
+.tab-list {  border-bottom: 1px solid #000;
+  padding-left: 0;
+  left: 800px;
+}
+
+.tab-list-item {
+  display: inline-block;
+  list-style: none;
+  margin-bottom: -1px;
+  padding: 0.5rem 0.75rem;
+}
+
+.tab-list-active {
+  background-color: yellow;
+  border: solid #000;
+  border-width: 1px 1px 0 1px;
 }

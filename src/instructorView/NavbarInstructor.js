@@ -14,14 +14,14 @@ export default function NavbarInstructor() {
     }
 
     async function signOut(event) {
-      closeNavLink();
-      event.preventDefault();
-      try {
-        await logout();
-        history.push('/');
-      } catch {
-        alert("Failed to log out")
-      }
+        event.preventDefault();
+        try {
+            await logout();
+            closeNavLink();
+            history.push('/');
+        } catch {
+            alert("Failed to log out");
+        }
     }
 
     return (
@@ -51,11 +51,7 @@ export default function NavbarInstructor() {
                 </div>
             </div>
             <div className = "LoginInNav">
-              <p className = "displayName"> { userData.getName() } </p>
-              <Link to = '/SignIn' style = {userData.getStatus() ? {} : {display: "none"}} onClick = {closeNavLink}>
-                  <p className = "links">Sign In</p>
-              </Link>
-
+              <p className = "displayName"> { userData.data().firstname + ' ' + userData.data().lastname } </p>
               <Link to = '/' style = {userData.getStatus() ? {display: "none"} : {}} onClick = {signOut}>
                   <p className = "links">Sign Out</p>
               </Link>

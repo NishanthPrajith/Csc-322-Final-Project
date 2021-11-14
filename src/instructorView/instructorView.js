@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from 'react';
 import { auth } from '../firebase';
 import { db } from "../firebase.js";
 import { collection, doc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
+import Tabs from '../components/Tabs';
 
 export default function InstructorView() {
     const [Instructor, setInstructor] = useState('');
@@ -71,6 +72,15 @@ export default function InstructorView() {
 
     // }
 
+    async function getRoster (db) {
+
+    }
+
+    async function getGrades(db) {
+
+
+    }
+
     useEffect(() => {
         setLoading(true);
         // getStudents(db);
@@ -80,12 +90,18 @@ export default function InstructorView() {
 
     return (
         <div>
-            <div className="instructorButtons">
-                <button onClick = {getCourses}>Schedule</button>
-                <button onClick = {getCourses}>Roster</button>
-                <button onClick = {getCourses}>Grades</button>                  
-            </div>
-            <p>Hello, Instructor {Instructor}</p>
+            <Tabs>
+                <div label="Schedule" onClick = {getCourses}>
+                    {/* <button onClick = {getCourses}>Schedule</button>                  */}
+                </div>
+                <div label= "Roster" onClick = {getRoster}>                    
+                    {/* <button onClick = {getRoster}>Roster</button> */}
+                </div>
+                <div label = "Grades" onClick = {getGrades}>
+                    {/* <button onClick = {getGrades}>Grades</button> */}
+                </div>                
+            </Tabs>    
+            <p className ="introMessage">Hello, Instructor: {Instructor}</p>
         </div>
     )
 };
