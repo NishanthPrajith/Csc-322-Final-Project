@@ -31,7 +31,36 @@
 }
 
 .tab-list-active {
-  background-color: yellow;
+  background-color: #7d5cc6;
   border: solid #000;
   border-width: 1px 1px 0 1px;
+}
+
+.CourseStyle th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.CourseStyle td {
+  padding: 2% 0%;
+}
+
+.CourseStyle {
+  float: left;
+  width: 90%;
+  margin: 0% 1.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.CourseStyle tr {
+  width: 100%;
+  text-align: center;
+}
+
+.schedule Schedule{
+  font-style: italic;
+  color: white;
 }
