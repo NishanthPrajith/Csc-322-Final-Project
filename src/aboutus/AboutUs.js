@@ -142,12 +142,14 @@ export default function AboutUs() {
           </div>
         </div>
       </div>
-      <iframe className="videoHome"
+      <div className="videoHome">
+      <iframe
             width="560"
             height="315"
             src="https://www.youtube.com/embed/RcnksOUugcA"
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
+      </div>
       <div className= "students">
         <h2>Top students and Top Classes</h2>
         <table className = "x">

@@ -140,3 +140,8 @@
   font-size: 1.1rem;
   line-height: 2;
 }
+
+.videoHome{
+  margin-left: 650px;
+  justify-content: center;
+}
