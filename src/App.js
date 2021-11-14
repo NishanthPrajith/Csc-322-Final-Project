@@ -46,7 +46,7 @@ function App() {
             <AboutUs />
           </Route>
           <Route exact path="/instructorView">
-            <instructorView />
+            <InstructorView />
           </Route>
           <Route exact path="/ForgotPassword">
             <ForgotPassword />

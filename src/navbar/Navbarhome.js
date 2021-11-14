@@ -26,8 +26,8 @@ export default function NavBar() {
               <p className="links">About Us</p>
             </Link>
             {(userData.getRole() == 1) &&
-              <Link to='/admin' onClick={closeNavLink}>
-                <p className="links">Admin</p>
+              <Link to='/instructorView' onClick={closeNavLink}>
+                <p className="links">Instructor</p>
               </Link>
             }
             {

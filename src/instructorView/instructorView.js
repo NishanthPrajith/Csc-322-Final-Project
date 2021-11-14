@@ -15,7 +15,8 @@ export default function InstructorView() {
     const [CurrentRoster, setCurrentRoster] = useState([]);
     const [Loading, setLoading] = useState('false');
 
-    
+    //setInstructor(userData.getName());
+
     async function GetInfo(db){
         const { login, currentUser } = useAuth();
         const {emailRef, passwordRef} = useRef();
@@ -83,15 +84,16 @@ export default function InstructorView() {
 
     useEffect(() => {
         setLoading(true);
+        // GetInfo(db)
         // getStudents(db);
         // getTclasses(db);
         // getLclasses(db);
       }, []);
 
     return (
-        <div>
+        <div className= "HomePage">
             <Tabs>
-                <div className= "schedule" label="Schedule" onClick = {getCourses}>
+                <div label="Schedule" onClick = {getCourses}>
                     <table className = "CourseStyle">
                         <tr>
                             <th>Class</th>
@@ -118,7 +120,7 @@ export default function InstructorView() {
                     {/* <button onClick = {getGrades}>Grades</button> */}
                 </div>                
             </Tabs>    
-            <p className ="introMessage">Hello, Instructor: {Instructor}</p>
+            <p className ="introMessage">Hello, Instructor: {Instructor}</p>            
         </div>
     )
 };
