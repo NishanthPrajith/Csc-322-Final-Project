@@ -4,6 +4,15 @@ class Profile {
     this.staus = false;
     this.role = -1;
     this.ud = "";
+    this.empl = 0;
+  }
+  getEmpl() {
+    return this.empl;
+  }
+
+  setEmpl(v){
+    console.log(v)
+    this.empl=v;
   }
 
   getName() {

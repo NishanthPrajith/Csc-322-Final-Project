@@ -11,13 +11,13 @@ import StudentView from './studentView/studentView.js'
 import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
 import InstructorView from './instructorView/instructorView.js'
+import NewAcceptedStudent from './studentView/newAcceptedStudent.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
   Switch,
   useLocation
 } from "react-router-dom";
-import { useEffect } from 'react';
 import { userData } from './contexts/userProfile';
 
 function App() {
@@ -62,6 +62,11 @@ function App() {
           {(userData.getRole() == 0) &&
             <Route exact path="/Studentview">
               <StudentView />
+            </Route>
+          }
+          {(userData.getRole() == 0) &&
+            <Route exact path="/NewAcceptedStudent">
+              <NewAcceptedStudent />
             </Route>
           }
           {(userData.getRole() == 1) &&

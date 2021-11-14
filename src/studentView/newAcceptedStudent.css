@@ -1,0 +1,24 @@
+.xNewStudent th {
+    background-color: #7d5cc6;
+    color: rgb(250, 250, 250);
+    padding: 0% 0%;
+    width: 33%;
+  }
+  
+  .xNewStudent td {
+    padding: 1% 0%;
+  }
+  
+  .xNewStudent {
+    float: left;
+    width: 30%;
+    margin: 0% 3.5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xNewStudent tr {
+    width: 100%;
+    text-align: center;
+    margin: 0% 3.5%;
+  }

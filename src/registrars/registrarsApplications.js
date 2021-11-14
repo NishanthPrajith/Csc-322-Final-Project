@@ -1,13 +1,7 @@
 import './registrarsApplications.css';
-import { Link } from "react-router-dom";
-import { userData } from '../contexts/userProfile';
-import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
-import { getAuth, deleteUser } from "firebase/auth";
-import firebaseApp, { auth } from '../firebase';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, query, getDoc, getDocs, onSnapshot, addDoc, setDoc } from 'firebase/firestore';
-import { getDatabase, ref, set } from "firebase/database";
+import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 export default function RegistrarsApplications() {
@@ -37,16 +31,16 @@ export default function RegistrarsApplications() {
         return <h1> Loading .. </h1>
     }
 
-    async function Accept(a, b, c, d, e, f, g, useruiid){
+    async function Accept(a, b, c, d, e, f, g ,useruiid, h){
         if(f == "0"){
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Student", password: g,useruiid:useruiid}
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h}
             console.log(useruiid);
             // payload sets fields
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
-
+            
         }else{
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g,useruiid:useruiid}
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
             console.log(useruiid);
             await setDoc(doc(db, "Instructor", useruiid), payload);
             await deleteDoc(doc(db, "Users", useruiid));
@@ -61,6 +55,7 @@ export default function RegistrarsApplications() {
         await deleteDoc(doc(db, "Users"));
         
     }
+    // empl: h,
     return (
 
         <div>
@@ -90,7 +85,9 @@ export default function RegistrarsApplications() {
                                                       user.email, 
                                                       user.role, 
                                                       user.password, 
-                                                      user.useruiid
+                                                      user.useruiid,
+                                                      user.empl
+                                                      
                                                       )}>Accept</button>
                         <button onClick={() => Reject(user.useruiid)}>Reject</button>  
                     </tr>

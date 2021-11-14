@@ -2,15 +2,13 @@ import './SignIn.css'
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useState, useRef } from 'react';
-import { auth } from '../firebase';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
-import { collection, doc, query, getDoc, onSnapshot } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { userData } from '../contexts/userProfile';
 
 export default function SignIn() {
   const history = useHistory();
-
   const { login, currentUser } = useAuth();
   const emailRef = useRef()
   const [revealpassword, setRevealpassword] = useState("password");
@@ -37,8 +35,9 @@ export default function SignIn() {
         userData.setUd(useruiid);
         userData.setName(docSnap1.data().firstname + " " + docSnap1.data().lastname);
         userData.setStatus(true);
+        // userData.setEmpl(docSnap.data().empl);
         userData.setRole(0);
-        await history.push('Studentview');
+        await history.push('NewAcceptedStudent');
       }
       else if (docSnap2.exists()) {
         userData.setUd(useruiid);
@@ -90,8 +89,4 @@ export default function SignIn() {
       </div>
     </div>
   )
-   
-    // adbadjnsjdn
-    //szDJKhkszhzhksjfhjzkskhj
-    // addedd a comment
 }

@@ -4,8 +4,6 @@ import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
 import { useHistory } from 'react-router-dom';
-import { useState, useRef } from 'react';
-import { auth } from '../firebase';
 
 
 export default function NavBar() {

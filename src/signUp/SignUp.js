@@ -1,13 +1,12 @@
 import './SignUp.css'
 import { Link } from "react-router-dom";
 import { db } from "../firebase"
-import { doc, setDoc, collection, addDoc } from "firebase/firestore";
+import { doc, setDoc} from "firebase/firestore";
 import { useAuth } from "../contexts/Authcontext"
-import { useEffect, useState } from 'react';
-import ReactDOM from "react-dom";
+import { useState } from 'react';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
 import { useHistory } from "react-router-dom";
+import { userData } from '../contexts/userProfile';
 
 
 export default function SignUp() {
@@ -25,12 +24,13 @@ export default function SignUp() {
     var dob = x.elements[3].value; // user dob 
     var email = x.elements[5].value; // test this @citymail.cuny.edu
     var password = x.elements[6].value; // user password
-    var role = document.querySelector('input[name="role"]:checked').value // user role (student==0, instructor==1)
+    var role = document.querySelector('input[name="role"]:checked').value; // user role (student==0, instructor==1)
+    var empl = Math.floor(10000000 + Math.random() * 90000000);
     if (firstname === "" || lastname === "" || gpa === "" || dob === "" || email === "" || password === "" || role === "") {
       alert("Missing Information, Enter correct Information!");
     }
     try {
-      const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob);
+      const useruiid = await signup(firstname, lastname, email, password, role, gpa, dob, empl);
       var data = {
         firstname: firstname,
         lastname: lastname,
@@ -39,15 +39,18 @@ export default function SignUp() {
         gpa: gpa,
         dob: dob,
         role: role,
-        useruiid: useruiid
+        useruiid: useruiid,
+        empl: empl
       }
+      console.log(empl);
+      userData.setEmpl(empl);
       await setDoc(doc(db, "Users", useruiid), data);
     } catch {
       document.getElementById('error').style.display = "block";
     }
     if (role === '0') {
       history.push({
-        pathname: '/Studentview',
+        pathname: '/NewAcceptedStudent',
         state: data // your data array of objects
       });
     }
