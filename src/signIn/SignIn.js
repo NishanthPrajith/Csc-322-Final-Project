@@ -35,9 +35,9 @@ export default function SignIn() {
         userData.setUd(useruiid);
         userData.setName(docSnap1.data().firstname + " " + docSnap1.data().lastname);
         userData.setStatus(true);
-        // userData.setEmpl(docSnap.data().empl);
+        userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
-        await history.push('NewAcceptedStudent');
+        await history.push('Studentview');
       }
       else if (docSnap2.exists()) {
         userData.setUd(useruiid);

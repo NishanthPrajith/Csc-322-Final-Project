@@ -42,15 +42,13 @@ export default function SignUp() {
         useruiid: useruiid,
         empl: empl
       }
-      console.log(empl);
-      userData.setEmpl(empl);
       await setDoc(doc(db, "Users", useruiid), data);
     } catch {
       document.getElementById('error').style.display = "block";
     }
     if (role === '0') {
       history.push({
-        pathname: '/NewAcceptedStudent',
+        pathname: '/Studentview',
         state: data // your data array of objects
       });
     }

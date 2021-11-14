@@ -20,6 +20,10 @@ export default function studentView() {
     //     var myUserId = firebase.auth().currentUser.uid;
     // }
     return (
-        <h1>STUDENT VIEW</h1>
+        <div>
+        <h1>Welcome!</h1>
+              <p>{userData.getName()}</p>
+              <p>{userData.getEmpl()}</p>
+        </div>
     );
 }

@@ -3,6 +3,7 @@ import { auth } from "../firebase"
 import { db } from "../firebase"
 import { collection, doc, query, getDocs, onSnapshot,setDoc  } from 'firebase/firestore';
 import { updateProfile, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail} from 'firebase/auth';
+import { useHistory } from "react-router-dom";
 import { userData } from './userProfile';
 const AuthContext = React.createContext()
 
@@ -11,6 +12,7 @@ export function useAuth() {
 }
 
 export function AuthProvider({ children }) {
+  let history = useHistory();
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
 
@@ -48,6 +50,8 @@ export function AuthProvider({ children }) {
     await signOut(auth);
     console.log("logged out");
     userData.setName(auth);
+    userData.setRole(-1);
+    await history.push('/');
   }
 
   async function resetPassword(email) {
