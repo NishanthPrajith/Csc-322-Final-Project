@@ -2,6 +2,9 @@ import './registrarsApplications.css';
 import { db } from "../firebase.js";
 import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
+import React from 'react';
+import emailjs from 'emailjs-com';
+
 
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
@@ -48,8 +51,33 @@ export default function RegistrarsApplications() {
         // Adjusts role depending on input
     }
 
-    async function Reject(v){
-        await deleteDoc(doc(db, "Users",v));
+    async function sendEmail(a,b,c,d){
+        var templateParams = {
+            name: a + " " + b,
+            message: "Sorry to inform you, however, due to your gpa we can not accept you into this program and you have been rejected.",
+            from_name: " CCNYZero"
+            };
+        var templateParams2 = {
+            name: a + " " + b,
+            message: "Sorry to inform you, however, our program has already been filled. ",
+            from_name: " CCNYZero"
+            };
+        if(parseInt(c) < 1.9){
+            emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
+        }else{
+            emailjs.send('gmail', 'template_g5n9s3v', templateParams2, 'user_n9Gt3cMzwdE1CRjrKfdqY')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            });
+        }
+            await deleteDoc(doc(db, "Users",d));
     }
     return (
 
@@ -84,7 +112,12 @@ export default function RegistrarsApplications() {
                                                       user.empl
                                                       
                                                       )}>Accept</button>
-                        <button onClick={() => Reject(user.useruiid)}>Reject</button>  
+                        {/* <button onClick={() => Reject(user.useruiid)}>Reject</button> */}
+                        <button onClick={() => sendEmail(user.firstname,
+                                                         user.lastname,
+                                                         user.gpa,
+                                                         user.useruiid
+                                                         )}>Reject</button>  
                     </tr>
                 ))}
             </table>
