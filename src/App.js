@@ -11,7 +11,7 @@ import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
 import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
-import InstructorView from './instructorView/InstructorView.js'
+import InstructorView from './instructorView/instructorView.js'
 import { AuthProvider } from "./contexts/Authcontext"
 import {
   Route,
@@ -46,7 +46,7 @@ function App() {
           <Route exact path="/AboutUs">
             <AboutUs />
           </Route>
-          <Route exact path="/instructorView">
+          <Route exact path="/InstructorView">
             <InstructorView />
           </Route>
           <Route exact path="/ForgotPassword">
