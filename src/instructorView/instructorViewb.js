@@ -26,14 +26,17 @@ export default function InstructorViewb() {
     //writeUserData(398393, 'John Doe', 'fdjlfdjdfl@yahoo.com');
     
     async function getCourses() {
-        var myUserId = firebase.auth().currentUser.uid;
+        //var myUserId = firebase.auth().currentUser.uid;
         //var myReviews = firebase.firestore().collectionGroup('Instructor')
         //.where('collection', '==', myUserId);
         //myReviews.get().then(function (querySnapshot) {
     // Do something with these reviews!
-        const UserRef = collection(db, "Instructor");
+        //const UserRef = collection(db, "Instructor");
         //const q  = query(UserRef, where (""))
-        const instructorNames = collection(db, 'Instructor');
+        //const instructorName = collection(db, 'Instructor').where('collection', '==', myUserId);
+        //instructorName.get().then(function (querySnapshot) {
+
+        //});
         // const docSnap = await getDoc(docRef);
 
         // if(docSnap.exists()){
@@ -46,24 +49,24 @@ export default function InstructorViewb() {
 
         const currentCourses = [];
         setLoading(true);
-        const getDataCourses = onSnapshot(docSnap, (querySnapshot) => {
+        /*const getDataCourses = onSnapshot(docSnap, (querySnapshot) => {
           docSnap.forEach((doc) => {
               currentCourses.push(doc.data());
           });
           setCurrentClasses(currentCourses);
           return CurrentClasses;
-        }); 
+        }); */
         
     }
 
-    async function getCourseNames() {
+  /*  async function getCourseNames() {
         let documentRef = firestore.doc('Instructor/John Smith/');
         documentRef.listCollections().then(collections => {
         for (let collection of collections) {
-        console.log(`Found subcollection with id: ${collection.id}`);
+        console.log(`Found subcollection with id: ${collection.id}`); 
   }
-});
-    }
+}); 
+    } */
     function closeNavLink() {
         window.scroll(0,0);
     }

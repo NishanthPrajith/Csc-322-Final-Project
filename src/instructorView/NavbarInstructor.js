@@ -34,14 +34,14 @@ export default function NavbarInstructor() {
                     <Link to = '/' onClick = {closeNavLink}>
                         <p className = "links">Home</p>
                     </Link>
-                    <Link to = '/about' onClick = {closeNavLink}>
-                        <p className = "links">About Me</p>
+                    <Link to = '/Schedule' onClick = {closeNavLink}>
+                        <p className = "links">Schedule</p>
                     </Link>
-                    <Link to = '/projects' onClick = {closeNavLink}>
-                        <p className = "links">Projects</p>
+                    <Link to = '/Roster' onClick = {closeNavLink}>
+                        <p className = "links">Roster</p>
                     </Link>
-                    <Link to = '/contactme' onClick = {closeNavLink}>
-                        <p className = "links">Contact Me</p>
+                    <Link to = '/Grades' onClick = {closeNavLink}>
+                        <p className = "links">Grades</p>
                     </Link>
                     { !userData.getStatus() &&
                       <Link to = '/admin' onClick = {closeNavLink}>
