@@ -6,7 +6,6 @@ import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 import React from 'react';
 import { useHistory } from "react-router-dom";
-import { userData } from '../contexts/userProfile';
 
 
 export default function SignUp() {
@@ -46,15 +45,22 @@ export default function SignUp() {
     } catch {
       document.getElementById('error').style.display = "block";
     }
-    if (role === '0') {
+    if((firstname === "" || lastname === "" || gpa === "" || dob === "" || email === "" || password === "" || role === "")){
+      history.push({
+        pathname: '/SignUp',
+        state: data // your data array of objects
+      });
+    }
+    else if (role === '0') {
       history.push({
         pathname: '/ReSubmitpass',
         state: data // your data array of objects
       });
     }
     else if (role === '1') {
+      alert("Submission to be an instructor is now pending approval by Registrars.");
       history.push({
-        pathname: '/Instructorview',
+        pathname: '/SignUp',
         state: data // your data array of objects
       });
     }

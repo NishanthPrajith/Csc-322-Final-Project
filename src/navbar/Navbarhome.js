@@ -1,13 +1,9 @@
-import React, { Component } from 'react'
 import './navbarhome.css';
 import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
-import { useHistory } from 'react-router-dom';
-
 
 export default function NavBar() {
-  const history = useHistory();
   const { logout } = useAuth();
 
   function closeNavLink() {
@@ -34,7 +30,7 @@ export default function NavBar() {
               userData.getStatus() && <p className="username"> {userData.getName()} </p>
             }
              {
-              userData.getStatus() && <button onClick={() => logout()} className="username"> Sign Out</button>
+              userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
             }
             {(userData.getRole() == 0) &&
               <Link to='/Studentview' onClick={closeNavLink}>

@@ -21,9 +21,17 @@ export default function SignIn() {
       const docRef = doc(db, "Admin", useruiid);
       const docRef1 = doc(db, "Students", useruiid);
       const docRef2 = doc(db, "Instructor", useruiid);
+      const docRef3 = doc(db, "Users", useruiid);
       const docSnap = await getDoc(docRef);
       const docSnap1 = await getDoc(docRef1);
       const docSnap2 = await getDoc(docRef2);
+      const docSnap3 = await getDoc(docRef3);
+      if(docSnap3.exists()){
+        alert("Error: Account does not exist OR account still pending approval by Registrars");
+        history.push({
+          pathname: '/SignIn'
+        });
+      }
       if (docSnap.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
@@ -31,7 +39,7 @@ export default function SignIn() {
         userData.setRole(2);
         await history.push('Registrars');
       }
-      else if (docSnap1.exists()) {
+      if (docSnap1.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap1.data().firstname + " " + docSnap1.data().lastname);
         userData.setStatus(true);
@@ -39,7 +47,7 @@ export default function SignIn() {
         userData.setRole(0);
         await history.push('Studentview');
       }
-      else if (docSnap2.exists()) {
+      if (docSnap2.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap2.data().firstname + " " + docSnap2.data().lastname);
         userData.setStatus(true);
@@ -72,7 +80,7 @@ export default function SignIn() {
                 <input type="checkbox" onClick={revealTwo} />
                 <p>Show password</p>
               </div>
-              <p id="error" className="error">Account information was entered incorrectly.</p>
+              <p id="error" className="error">Account information was entered incorrectly or account does not exist.</p>
               <button onClick={signIn}>login</button>
               <p className="message">Not registered? <Link to="/SignUp">Create an account</Link></p><br></br>
               <p className="message">Forgot Password? <Link to="/ForgotPassword">Reset Password</Link></p><br></br>

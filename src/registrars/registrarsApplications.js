@@ -1,11 +1,9 @@
 import './registrarsApplications.css';
-import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
 import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 
 export default function RegistrarsApplications() {
-    let history = useHistory();
     const [User, setUser] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -51,11 +49,8 @@ export default function RegistrarsApplications() {
     }
 
     async function Reject(v){
-        // const userEmail = request.body.userEmail();
-        await deleteDoc(doc(db, "Users"));
-        
+        await deleteDoc(doc(db, "Users",v));
     }
-    // empl: h,
     return (
 
         <div>
