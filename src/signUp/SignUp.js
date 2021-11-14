@@ -48,7 +48,7 @@ export default function SignUp() {
     }
     if (role === '0') {
       history.push({
-        pathname: '/Studentview',
+        pathname: '/ReSubmitpass',
         state: data // your data array of objects
       });
     }
@@ -122,7 +122,7 @@ export default function SignUp() {
                 <p>Instructor</p>
               </div>
               <p id="error" className="error">Account creation failed. Check if exists.</p>
-              <button onClick={register}>Register</button>
+              <Link to="/ReSubmitpass"><button onClick={register}>Register</button></Link>
               <p className="message" > Already registered? <Link to="/">Sign In</Link></p>
             </form>
           </div>
