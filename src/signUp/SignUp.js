@@ -6,6 +6,7 @@ import { useAuth } from "../contexts/Authcontext"
 import { useState } from 'react';
 import React from 'react';
 import { useHistory } from "react-router-dom";
+import validator from 'validator';
 
 
 export default function SignUp() {
@@ -19,8 +20,18 @@ export default function SignUp() {
     var x = document.getElementById("frm2"); //hello
     var firstname = x.elements[0].value; // user first name 
     var lastname = x.elements[1].value; // user last name
-    var gpa = x.elements[2].value; // user gpa 
+    var gpa = x.elements[2].value; // user gpa
+    console.log(gpa);
+    if(parseFloat(gpa)>4){
+      // alert the user that he is out of range
+      alert("GPA out of range! (4)");
+      // set the gpa back to ""
+      gpa="";
+    } 
     var dob = x.elements[3].value; // user dob 
+    if (!validator.isDate(dob)) {
+      alert('Enter Valid Date!')
+    }
     var email = x.elements[5].value; // test this @citymail.cuny.edu
     var password = x.elements[6].value; // user password
     var role = document.querySelector('input[name="role"]:checked').value; // user role (student==0, instructor==1)
@@ -106,7 +117,7 @@ export default function SignUp() {
               <input type="number" autoComplete="off" name="gpa" min="0" max="4" placeholder="GPA" required />
 
               {/* Date of Birth */}
-              <input type={revealDOB} className="One" name="dob" autoComplete="off" id="showtext" maxLength="10" placeholder="Date of Birth (MM-DD-YYYY)" required />
+              <input type={revealDOB} className="One" name="dob" autoComplete="off" id="showtext" maxLength="10" placeholder="Date of Birth (YYYY-MM-DD)" required />
 
               <div className="reveal">
                 <input type="checkbox" onClick={revealOne} />

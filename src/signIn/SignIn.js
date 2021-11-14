@@ -86,13 +86,6 @@ export default function SignIn() {
               <p className="message">Forgot Password? <Link to="/ForgotPassword">Reset Password</Link></p><br></br>
             </form>
           </div>
-          <iframe className="videoHome"
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/RcnksOUugcA"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
-
         </div>
       </div>
     </div>
