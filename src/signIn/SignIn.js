@@ -45,6 +45,10 @@ export default function SignIn() {
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
+      //         // Set the "capital" field of the city 'DC'
+      // db.collection("Users").doc(useruiid).update({
+      //   password: passwordRef
+      // });
         await history.push('Studentview');
       }
       if (docSnap2.exists()) {

@@ -81,11 +81,9 @@ export function AuthProvider({ children }) {
     const user = auth.currentUser;
     updatePassword(user, password).then(() => {
         // Update successful.
-        // await setDoc(doc(citiesRef, "SF"), {
-        //   name: "San Francisco", state: "CA", country: "USA",
-        //   capital: false, population: 860000,
-        //   regions: ["west_coast", "norcal"] });
-      
+        db.collection("Users").doc(user.uid).update({
+          password: password
+        });
         console.log("updatepassword")
         // Set the "capital" field of the city 'DC'
       }).catch((error) => {
