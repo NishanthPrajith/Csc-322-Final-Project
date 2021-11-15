@@ -1,17 +1,3 @@
-import React, { useContext, useState, useEffect } from "react"
-import { auth } from "../firebase"
-import { updateProfile, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,updatePassword,getAuth} from 'firebase/auth';
-import { useHistory } from "react-router-dom";
-import { userData } from './userProfile';
-import { db } from "../firebase"
-import { collection, doc, setDoc } from "firebase/firestore"; 
-
-const AuthContext = React.createContext()
-
-export function useAuth() {
-  return useContext(AuthContext)
-}
-
 export function AuthProvider({ children }) {
   let history = useHistory();
   const citiesRef = collection(db, "Users");
@@ -71,27 +57,23 @@ export function AuthProvider({ children }) {
     
   }
   
-  
   function updateEmail(email) {
     return currentUser.updateEmail(email)
   }
 
-  function resetPassword(password) {
+  async function resetPassword(password) {
     console.log("im in updatepassword")
     const user = auth.currentUser;
     updatePassword(user, password).then(() => {
-        // Update successful.
-        db.collection("Users").doc(user.uid).update({
-          password: password
-        });
-        console.log("updatepassword")
-        // Set the "capital" field of the city 'DC'
+      var data = {
+        password: password,
+      };
+      updateDoc(doc(db, "Users", user.uid), data);
       }).catch((error) => {
         console.log(error);
       });
       console.log("done updatepassword")
-    // return currentUser.updatePassword(password)
-  }
+  };
 
   useEffect(() => {
     onAuthStateChanged(auth, user => {
