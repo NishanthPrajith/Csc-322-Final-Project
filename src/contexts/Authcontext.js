@@ -1,3 +1,17 @@
+import React, { useContext, useState, useEffect } from "react"
+import { auth } from "../firebase"
+import { updateProfile, onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,updatePassword,getAuth} from 'firebase/auth';
+import { useHistory } from "react-router-dom";
+import { userData } from './userProfile';
+import { db } from "../firebase"
+import { collection, doc, setDoc, updateDoc} from "firebase/firestore"; 
+
+const AuthContext = React.createContext()
+
+export function useAuth() {
+  return useContext(AuthContext)
+}
+
 export function AuthProvider({ children }) {
   let history = useHistory();
   const citiesRef = collection(db, "Users");
