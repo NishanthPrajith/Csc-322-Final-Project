@@ -37,3 +37,29 @@
     border: 1px solid #999;
     font-size: 20px;
   }
+
+  .xCourses {
+    float: left;
+    width: 35%;
+    margin: 1% 0%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xCourses tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .xCourses th {
+    position: center;
+    background-color: #7d5cc6;
+    color: rgb(22, 10, 10);
+    padding: 2% 10%;
+    width: 40%;
+  }
+  
+  .xCourses td {
+    padding: 2% 1%;
+  }
+  

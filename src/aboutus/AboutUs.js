@@ -1,7 +1,6 @@
 import './AboutUs.css';
 import { db } from "../firebase.js";
-import { userData } from '../contexts/userProfile';
-import { collection, doc, query, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 
 
@@ -15,7 +14,7 @@ export default function AboutUs() {
   async function getStudents(db) {
     const studentsCol = collection(db, 'TopStudents');
     setLoading(true);
-    const getData = onSnapshot(studentsCol, (querySnapshot) => {
+   onSnapshot(studentsCol, (querySnapshot) => {
       const student = [];
       querySnapshot.forEach((doc) => {
           student.push(doc.data());
@@ -31,7 +30,7 @@ export default function AboutUs() {
   async function getTclasses(db) {
     const schoolsCol = collection(db, 'TopClasses');
     setLoading(true);
-    const getData = onSnapshot(schoolsCol, (querySnapshot) => {
+    onSnapshot(schoolsCol, (querySnapshot) => {
       const topratingclass = [];
       querySnapshot.forEach((doc) => {
           topratingclass.push(doc.data());
@@ -47,7 +46,7 @@ export default function AboutUs() {
   async function getLclasses(db) {
     const schoolsCol = collection(db, 'TopClasses');
     setLoading(true);
-    const getData = onSnapshot(schoolsCol, (querySnapshot) => {
+    onSnapshot(schoolsCol, (querySnapshot) => {
       const lowratingclass = [];
       querySnapshot.forEach((doc) => {
           lowratingclass.push(doc.data());
@@ -141,6 +140,7 @@ export default function AboutUs() {
       </div>
       <div className="videoHome">
       <iframe
+            title='video'
             width="560"
             height="315"
             src="https://www.youtube.com/embed/RcnksOUugcA"

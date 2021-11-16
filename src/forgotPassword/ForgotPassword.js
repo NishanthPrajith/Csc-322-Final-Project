@@ -1,8 +1,8 @@
 import './ForgotPassword.css'
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
-import { useState, useRef } from 'react';
-import firebaseApp, { auth } from '../firebase';
+import { useRef } from 'react';
+import { auth } from '../firebase';
 
 
 

@@ -4,7 +4,7 @@ import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firesto
 import { useState, useEffect } from 'react';
 import React from 'react';
 import emailjs from 'emailjs-com';
-import courseAssignPopup from './courseAssignPopup';
+import CourseAssignPopup from './courseAssignPopup';
 
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
@@ -13,15 +13,14 @@ export default function RegistrarsApplications() {
     const [loading, setLoading] = useState(false);
 
     const togglecourseAssignPopup = () => {
-        console.log("im in this function");
         setIsOpen(!isOpen);
-      }
+    }
  
       
     async function getUser(db) {
         const studentsCol = collection(db, 'Users');
         setLoading(true);
-        const getData = onSnapshot(studentsCol, (querySnapshot) => {
+        onSnapshot(studentsCol, (querySnapshot) => {
             const user = [];
             querySnapshot.forEach((doc) => {
                 user.push(doc.data());
@@ -34,7 +33,7 @@ export default function RegistrarsApplications() {
     async function getCourses(db) {
         const courses = collection(db, 'classes');
         setLoading(true);
-        const getData = onSnapshot(courses, (querySnapshot) => {
+        onSnapshot(courses, (querySnapshot) => {
             const course = [];
             querySnapshot.forEach((doc) => {
                 course.push(doc.data());
@@ -55,7 +54,7 @@ export default function RegistrarsApplications() {
     }
 
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
-        if(f == "0"){
+        if(f === "0"){
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h}
             console.log(useruiid);
             // payload sets fields
@@ -64,12 +63,10 @@ export default function RegistrarsApplications() {
             
         }else{
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
-            console.log(useruiid);
-            console.log("I am here");
+             // first make the alert dialog/popup appear
             togglecourseAssignPopup();
-            console.log("I am here after ");
-            // first make the alert dialog/popup appear
             // then we want to display the classes
+            
             // then we want to assign the selected classes to the instructor
             // then close the alert box and return to the page
            // await setDoc(doc(db, "Instructor", useruiid), payload); // add more stuff so it goes to the collection in instructor
@@ -78,6 +75,10 @@ export default function RegistrarsApplications() {
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
         // Adjusts role depending on input
+    }
+
+    async function Assign(){
+
     }
 
     async function sendEmail(a,b,c,d){
@@ -150,11 +151,33 @@ export default function RegistrarsApplications() {
                     </tr>
                 ))}
             </table>
-            {isOpen && <courseAssignPopup
+            {isOpen && <CourseAssignPopup
             content={<>
-                <b>Design your Popup</b>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                <button>Test button</button>
+                <p>Assign course(s) to this instructor</p>
+                <table className="xCourses">
+                <tr>
+                    <th>Class</th>
+                    <th>Day/Time</th>
+                    <th>Room</th>
+                    <th>Section</th>
+                    <th>Size</th>
+                </tr>
+                {courses.map((course) => (
+                    <tr>
+                        <td> {course.Class} </td>
+                        <td> {course.DayTime} </td>
+                        <td> {course.Room} </td>
+                        <td> {course.Section} </td>
+                        <td> {course.Size} </td>
+                        <button onClick={() => Assign(course.Class, 
+                                                      course.DayTime, 
+                                                      course.Room, 
+                                                      course.Section, 
+                                                      course.Size
+                                                      )}>Assign Course</button>
+                    </tr>
+                ))}
+            </table>
             </>}
             handleClose={togglecourseAssignPopup}
             />}

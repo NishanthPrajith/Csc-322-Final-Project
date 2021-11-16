@@ -10,7 +10,6 @@ export default function Regclasssetup(){
     const dayRef = useRef();
     const roomRef = useRef();
     const sizeRef = useRef();
-    const insRef = useRef();
     const history = useHistory();
 
     async function createClass(event) {
@@ -22,7 +21,6 @@ export default function Regclasssetup(){
             DayTime: dayRef.current.value,
             Room: roomRef.current.value,
             Size: sizeRef.current.value,
-            Instructor: insRef.current.value
           });
           console.log("Document written with ID: ", docRef.id);
           alert("Class Created Sucessfully");
@@ -44,7 +42,6 @@ export default function Regclasssetup(){
               <input type="text" ref={dayRef} className="five" placeholder="Days & Time" autoComplete="off" required />
               <input type="number" ref={roomRef} className="five" placeholder="Room" autoComplete="off" required />
               <input type="number" ref={sizeRef} className="five" placeholder="Class Size" autoComplete="off" required />
-              <input type="text" ref={insRef} placeholder="Instructor" autoComplete="off" required />
               <p id="error" className="error">Failed to add class, try again</p>
               <button  onClick={createClass}>Create</button>
             </form>

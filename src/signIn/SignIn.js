@@ -9,7 +9,7 @@ import { userData } from '../contexts/userProfile';
 
 export default function SignIn() {
   const history = useHistory();
-  const { login, currentUser } = useAuth();
+  const { login} = useAuth();
   const emailRef = useRef();
   const [revealpassword, setRevealpassword] = useState("password");
   const passwordRef = useRef();

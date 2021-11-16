@@ -21,7 +21,7 @@ export default function NavBar() {
             <Link to='/AboutUs' onClick={closeNavLink}>
               <p className="links">About Us</p>
             </Link>
-            {(userData.getRole() == 1) &&
+            {(userData.getRole() === 1) &&
               <Link to='/instructorView' onClick={closeNavLink}>
                 <p className="links">Instructor</p>
               </Link>
@@ -32,17 +32,17 @@ export default function NavBar() {
              {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
             }
-            {(userData.getRole() == 0) &&
+            {(userData.getRole() === 0) &&
               <Link to='/Studentview' onClick={closeNavLink}>
                 <p className="links">Student</p>
               </Link>
             }
-            {(userData.getRole() == 2) &&
+            {(userData.getRole() === 2) &&
               <Link to='/RegistrarsApplication' onClick={closeNavLink}>
                 <p className="links">Review Applications</p>
               </Link>
             }
-            {(userData.getRole() == 2) &&
+            {(userData.getRole() === 2) &&
               <Link to='/Registrarscomplains' onClick={closeNavLink}>
                 <p className="links">Review Complains</p>
               </Link>

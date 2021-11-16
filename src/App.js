@@ -57,32 +57,32 @@ function App() {
           <Route exact path="/ReSubmitpass">
             <ReSubmitPass/>
           </Route>
-          {(userData.getRole() == 2) &&
+          {(userData.getRole() === 2) &&
             <Route exact path="/Registrars">
               <Registrars />
             </Route>
           }
-          {(userData.getRole() == 2) &&
+          {(userData.getRole() === 2) &&
             <Route exact path="/RegistrarsApplication">
               <RegistrarsApplications />
             </Route>
           }
-          {(userData.getRole() == 2) &&
+          {(userData.getRole() === 2) &&
             <Route exact path="/Regclasssetup">
               <Regclasssetup/>
             </Route>
           }
-          {(userData.getRole() == 2) &&
+          {(userData.getRole() === 2) &&
             <Route exact path="/Registrarscomplains">
               <Registrarscomplain/>
             </Route>
           }
-          {(userData.getRole() == 0) &&
+          {(userData.getRole() === 0) &&
             <Route exact path="/Studentview">
               <StudentView />
             </Route>
           }
-          {(userData.getRole() == 1) &&
+          {(userData.getRole() === 1) &&
             <Route exact path="/Instructorview">
               <InstructorView />
             </Route>

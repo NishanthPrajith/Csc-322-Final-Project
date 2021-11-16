@@ -1,10 +1,9 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
-import { useState, useRef } from 'react';
-import firebaseApp, { auth } from '../firebase';
+import { useRef } from 'react';
+import { auth } from '../firebase';
 import { useHistory } from 'react-router-dom';
-import { db } from "../firebase"
-import { doc, setDoc} from "firebase/firestore";
+
 
 export default function ForgotPassword() {
     const history = useHistory();
