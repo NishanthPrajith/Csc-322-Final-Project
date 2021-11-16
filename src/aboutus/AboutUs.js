@@ -143,7 +143,7 @@ export default function AboutUs() {
             title='video'
             width="560"
             height="315"
-            src="https://www.youtube.com/embed/RcnksOUugcA"
+            src="https://www.youtube.com/embed/V2NaL8P8Lhs"
             frameborder="0"
             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
       </div>
