@@ -1,17 +1,15 @@
 import './Regclasssetup.css'
-import { Link } from "react-router-dom";
-import { useAuth } from "../contexts/Authcontext"
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
-import { doc, getDocm, collection, addDoc } from 'firebase/firestore';
-import { userData } from '../contexts/userProfile';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function Regclasssetup(){
     const classRef = useRef();
     const secRef = useRef();
     const dayRef = useRef();
     const roomRef = useRef();
+    const sizeRef = useRef();
     const insRef = useRef();
     const history = useHistory();
 
@@ -23,6 +21,7 @@ export default function Regclasssetup(){
             Section: secRef.current.value,
             DayTime: dayRef.current.value,
             Room: roomRef.current.value,
+            Size: sizeRef.current.value,
             Instructor: insRef.current.value
           });
           console.log("Document written with ID: ", docRef.id);
@@ -44,8 +43,9 @@ export default function Regclasssetup(){
               <input type="text" ref={secRef} placeholder="Section" autoComplete="off" required />
               <input type="text" ref={dayRef} className="five" placeholder="Days & Time" autoComplete="off" required />
               <input type="number" ref={roomRef} className="five" placeholder="Room" autoComplete="off" required />
+              <input type="number" ref={sizeRef} className="five" placeholder="Class Size" autoComplete="off" required />
               <input type="text" ref={insRef} placeholder="Instructor" autoComplete="off" required />
-              <p id="error" className="error">Account information was entered incorrectly or account does not exist.</p>
+              <p id="error" className="error">Failed to add class, try again</p>
               <button  onClick={createClass}>Create</button>
             </form>
           </div>
