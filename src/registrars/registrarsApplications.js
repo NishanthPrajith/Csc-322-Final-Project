@@ -4,12 +4,20 @@ import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firesto
 import { useState, useEffect } from 'react';
 import React from 'react';
 import emailjs from 'emailjs-com';
-
+import courseAssignPopup from './courseAssignPopup';
 
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
+    const [courses, setCourses] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    const togglecourseAssignPopup = () => {
+        console.log("im in this function");
+        setIsOpen(!isOpen);
+      }
+ 
+      
     async function getUser(db) {
         const studentsCol = collection(db, 'Users');
         setLoading(true);
@@ -20,11 +28,25 @@ export default function RegistrarsApplications() {
             });
             setUser(user);
         });
-
         setLoading(false);
     }
+
+    async function getCourses(db) {
+        const courses = collection(db, 'classes');
+        setLoading(true);
+        const getData = onSnapshot(courses, (querySnapshot) => {
+            const course = [];
+            querySnapshot.forEach((doc) => {
+                course.push(doc.data());
+            });
+            setCourses(course);
+        });
+        setLoading(false);
+    }
+
     useEffect(() => {
         setLoading(true);
+        getCourses(db);
         getUser(db);
     }, []);
 
@@ -43,8 +65,15 @@ export default function RegistrarsApplications() {
         }else{
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
             console.log(useruiid);
-            await setDoc(doc(db, "Instructor", useruiid), payload);
-            await deleteDoc(doc(db, "Users", useruiid));
+            console.log("I am here");
+            togglecourseAssignPopup();
+            console.log("I am here after ");
+            // first make the alert dialog/popup appear
+            // then we want to display the classes
+            // then we want to assign the selected classes to the instructor
+            // then close the alert box and return to the page
+           // await setDoc(doc(db, "Instructor", useruiid), payload); // add more stuff so it goes to the collection in instructor
+            // await deleteDoc(doc(db, "Users", useruiid));
         }
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
@@ -121,7 +150,14 @@ export default function RegistrarsApplications() {
                     </tr>
                 ))}
             </table>
+            {isOpen && <courseAssignPopup
+            content={<>
+                <b>Design your Popup</b>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                <button>Test button</button>
+            </>}
+            handleClose={togglecourseAssignPopup}
+            />}
         </div>
-
     );
 }

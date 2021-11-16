@@ -1,11 +1,8 @@
-
 import './AboutUs.css';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
 import { collection, doc, query, getDocs, onSnapshot } from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
-
-
 
 
 export default function AboutUs() {
