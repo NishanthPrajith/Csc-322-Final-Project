@@ -11,6 +11,8 @@ import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
 import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
+import Regclasssetup from './registrars/Regclasssetup.js';
+import Registrarscomplain from './registrars/registrarscomplain.js';
 import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
 import {
@@ -63,6 +65,16 @@ function App() {
           {(userData.getRole() == 2) &&
             <Route exact path="/RegistrarsApplication">
               <RegistrarsApplications />
+            </Route>
+          }
+          {(userData.getRole() == 2) &&
+            <Route exact path="/Regclasssetup">
+              <Regclasssetup/>
+            </Route>
+          }
+          {(userData.getRole() == 2) &&
+            <Route exact path="/Registrarscomplains">
+              <Registrarscomplain/>
             </Route>
           }
           {(userData.getRole() == 0) &&

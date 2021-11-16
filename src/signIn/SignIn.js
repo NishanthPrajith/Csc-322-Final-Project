@@ -10,22 +10,24 @@ import { userData } from '../contexts/userProfile';
 export default function SignIn() {
   const history = useHistory();
   const { login, currentUser } = useAuth();
-  const emailRef = useRef()
+  const emailRef = useRef();
   const [revealpassword, setRevealpassword] = useState("password");
-  const passwordRef = useRef()
+  const passwordRef = useRef();
 
   async function signIn(event) {
     event.preventDefault();
     try {
       const useruiid = await login(emailRef.current.value, passwordRef.current.value);
-      const docRef = doc(db, "Admin", useruiid);
-      const docRef1 = doc(db, "Students", useruiid);
-      const docRef2 = doc(db, "Instructor", useruiid);
-      const docRef3 = doc(db, "Users", useruiid);
-      const docSnap = await getDoc(docRef);
-      const docSnap1 = await getDoc(docRef1);
-      const docSnap2 = await getDoc(docRef2);
-      const docSnap3 = await getDoc(docRef3);
+      const docRef = doc(db, "Admin", useruiid); // admin
+      const docRef1 = doc(db, "Students", useruiid); //student
+      const docRef2 = doc(db, "Instructor", useruiid); // Instructor
+      const docRef3 = doc(db, "Users", useruiid); // Users
+      var docRef4 = doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4" ); // grading period
+      const docSnap = await getDoc(docRef); // admin
+      const docSnap1 = await getDoc(docRef1); //student
+      const docSnap2 = await getDoc(docRef2); // Instructor
+      const docSnap3 = await getDoc(docRef3); // Users
+      var docSnap4 = await getDoc(docRef4); // grading period
       if(docSnap3.exists()){
         alert("Error: Account does not exist OR account still pending approval by Registrars");
         history.push({
@@ -37,6 +39,7 @@ export default function SignIn() {
         userData.setName(docSnap.data().firstname + " " + docSnap.data().lastname);
         userData.setStatus(true);
         userData.setRole(2);
+        userData.setPeriod(parseInt(docSnap4.data().classsetup));
         await history.push('Registrars');
       }
       if (docSnap1.exists()) {
@@ -45,10 +48,6 @@ export default function SignIn() {
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
-      //         // Set the "capital" field of the city 'DC'
-      // db.collection("Users").doc(useruiid).update({
-      //   password: passwordRef
-      // });
         await history.push('Studentview');
       }
       if (docSnap2.exists()) {

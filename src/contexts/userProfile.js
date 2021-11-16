@@ -5,6 +5,7 @@ class Profile {
     this.role = -1;
     this.ud = "";
     this.empl = 0;
+    this.period = 0;
   }
   getEmpl() {
     return this.empl;
@@ -13,6 +14,14 @@ class Profile {
   setEmpl(v){
     console.log(v)
     this.empl=v;
+  }
+  getPeriod() {
+    return this.period;
+  }
+
+  setPeriod(v){
+    console.log(v)
+    this.period=v;
   }
 
   getName() {
