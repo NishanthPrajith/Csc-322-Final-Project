@@ -20,7 +20,6 @@
 
 .tab-list {  border-bottom: 1px solid #000;
   padding-left: 0;
-  left: 800px;
 }
 
 .tab-list-item {
@@ -49,8 +48,8 @@
 
 .CourseStyle {
   float: left;
-  width: 90%;
-  margin: 0% 1.5%;
+  width: 55%;
+  margin: 0% 0.25%;
   border: none;
   border-collapse: collapse;
 }
@@ -63,5 +62,13 @@
 .schedule Schedule{
   font-style: italic;
   color: white;
+}
+
+.HomePage {
+  background-image: url("http://www.nycbw.com/files/The-City-College-of-New-York.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: 100%;
+  background-blend-mode: screen;
 }
 

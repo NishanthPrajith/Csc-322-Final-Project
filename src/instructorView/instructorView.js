@@ -89,24 +89,24 @@ export default function InstructorView() {
         <div className= "HomePage">
             <Tabs>
                 <div label="Schedule" onClick = {getCourses}>
-                    <table className = "CourseStyle">
-                        <tr>
-                            <th>Class</th>
-                            <th>Time</th>
-                            <th>Location</th>
-                            <th>Meeting Times</th>
-                            <th> Enrolled</th>
-                        </tr>
+                        <table className = "CourseStyle">
+                            <tr>
+                                <th>Class</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                                <th>Meeting Times</th>
+                                <th> Enrolled</th>
+                            </tr>
                         { CurrentClasses.map((Class) => (
-                        <tr>
-                            <td> { Class.name } </td>
-                            <td> { Class.time } </td>
-                            <td> { Class.location } </td>
-                            <td> { Class.date } </td>
-                            <td> {Class.Enrolled } </td>
-                        </tr>
+                            <tr>
+                                <td> { Class.name } </td>
+                                <td> { Class.time } </td>
+                                <td> { Class.location } </td>
+                                <td> { Class.date } </td>
+                                <td> {Class.Enrolled } </td>
+                            </tr>
                         ))}
-                    </table>
+                        </table>
                 </div>
                 <div label= "Roster" onClick = {getRoster}>                    
                     {/* <button onClick = {getRoster}>Roster</button> */}
