@@ -6,13 +6,20 @@ import React from 'react';
 import emailjs from 'emailjs-com';
 import CourseAssignPopup from './courseAssignPopup';
 
+var ud;
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false);
 
-    const togglecourseAssignPopup = () => {
+    const togglecourseAssignPopup = (a) => {
+        setIsOpen(!isOpen);
+        console.log("line 18"+a);
+        ud = a;
+        console.log("line 20"+ud)
+    }
+    const togglecourseAssignclosePopup = () => {
         setIsOpen(!isOpen);
     }
  
@@ -60,14 +67,16 @@ export default function RegistrarsApplications() {
             // payload sets fields
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
-            
         }else{
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
              // first make the alert dialog/popup appear
-            togglecourseAssignPopup();
-            // then we want to display the classes
+             const userid = useruiid;
+             console.log(useruiid);
+            togglecourseAssignPopup(useruiid);
+            // then we want to display the classes -- done
             
             // then we want to assign the selected classes to the instructor
+
             // then close the alert box and return to the page
            // await setDoc(doc(db, "Instructor", useruiid), payload); // add more stuff so it goes to the collection in instructor
             // await deleteDoc(doc(db, "Users", useruiid));
@@ -77,8 +86,21 @@ export default function RegistrarsApplications() {
         // Adjusts role depending on input
     }
 
-    async function Assign(){
-
+    async function Assign(a,b,c,d,f){
+        // in this function we will assign the accepted instructor the classes
+        console.log(a,b,c,d,f);
+        console.log(ud);
+        // got the information, now to push this data to the instructor
+        try{
+        await setDoc(doc(db, "Instructor", ud,"Courses",a), {
+            DayTime: b,
+            Room: c,
+            Secion: d,
+            Size: f
+          });
+        }catch{
+            alert("Error");
+        }
     }
 
     async function sendEmail(a,b,c,d){
@@ -140,7 +162,6 @@ export default function RegistrarsApplications() {
                                                       user.password, 
                                                       user.useruiid,
                                                       user.empl
-                                                      
                                                       )}>Accept</button>
                         {/* <button onClick={() => Reject(user.useruiid)}>Reject</button> */}
                         <button onClick={() => sendEmail(user.firstname,
@@ -179,7 +200,7 @@ export default function RegistrarsApplications() {
                 ))}
             </table>
             </>}
-            handleClose={togglecourseAssignPopup}
+            handleClose={togglecourseAssignclosePopup}
             />}
         </div>
     );
