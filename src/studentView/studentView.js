@@ -1,11 +1,13 @@
 import './studentView.css'
 import { userData } from '../contexts/userProfile';
+import { useState } from 'react';
+import Tabs from '../components/Tabs';
 export default function studentView() {
 
-     const [Student, Student] = useState('');
-     const [CurrentClasses, setCurrentClasses] = useState([]);
-     const [CurrentRoster, setCurrentRoster] = useState([]);
-     const [Loading, setLoading] = useState('false');
+    //  const [Student, setStudent] = useState('');
+     //   const [CurrentClasses, setCurrentClasses] = useState([]);
+    //  const [CurrentRoster, setCurrentRoster] = useState([]);
+    //  const [Loading, setLoading] = useState('false');
 
      async function getCourses(db) {
     //     var myUserId = firebase.auth().currentUser.uid;
@@ -33,7 +35,7 @@ export default function studentView() {
                                 <th>Meeting Times</th>
                                 <th> Enrolled</th>
                             </tr>
-                        { CurrentClasses.map((Class) => (
+                        {/* { CurrentClasses.map((Class) => (
                             <tr>
                                 <td> { Class.name } </td>
                                 <td> { Class.time } </td>
@@ -41,7 +43,7 @@ export default function studentView() {
                                 <td> { Class.date } </td>
                                 <td> {Class.Enrolled } </td>
                             </tr>
-                        ))}
+                        ))} */}
                         </table>
                 </div>
                 <div label= "Enroll" onClick = {getEnroll}>                    
