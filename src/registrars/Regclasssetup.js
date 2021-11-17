@@ -2,7 +2,7 @@ import './Regclasssetup.css'
 import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc,setDoc,doc } from 'firebase/firestore';
 
 export default function Regclasssetup(){
     const classRef = useRef();
@@ -14,15 +14,14 @@ export default function Regclasssetup(){
 
     async function createClass(event) {
         event.preventDefault();
+        var data = {  Class: classRef.current.value,
+          Section: secRef.current.value,
+          DayTime: dayRef.current.value,
+          Room: roomRef.current.value,
+          Size: sizeRef.current.value}
+          console.log(classRef.current.value);
         try{
-        const docRef = await addDoc(collection(db, "classes"), {
-            Class: classRef.current.value,
-            Section: secRef.current.value,
-            DayTime: dayRef.current.value,
-            Room: roomRef.current.value,
-            Size: sizeRef.current.value,
-          });
-          console.log("Document written with ID: ", docRef.id);
+          await setDoc(doc(db, "classes",classRef.current.value), data);
           alert("Class Created Sucessfully");
           await history.push('Regclasssetup');   
         }catch{

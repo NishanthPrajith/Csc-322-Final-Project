@@ -19,9 +19,9 @@ export default function RegistrarsApplications() {
         ud = a;
         console.log("line 20"+ud);
     }
-    const togglecourseAssignclosePopup = () => {
+    async function togglecourseAssignclosePopup () {
         setIsOpen(!isOpen);
-        // await deleteDoc(doc(db, "Users", ud));
+        await deleteDoc(doc(db, "Users", ud));
     }
  
       
@@ -75,19 +75,12 @@ export default function RegistrarsApplications() {
              console.log(useruiid);     
             togglecourseAssignPopup(useruiid);
             // then we want to display the classes -- done
-            
             // then we want to assign the selected classes to the instructor-- done
-
             // then close the alert box and return to the page--done 
             // update user fields and then delte the doc
-
-            //
-            const updateCourseInstructor = doc(db, "Instructor", useruiid);
-                // Set the "capital" field of the city 'DC'
-                await updateDoc(updateCourseInstructor, {
+            await setDoc(doc(db, "Instructor", useruiid), {
                     payload
                 });
-            // await deleteDoc(doc(db, "Users", useruiid));
         }
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
@@ -96,8 +89,6 @@ export default function RegistrarsApplications() {
 
     async function Assign(a,b,c,d,f){
         // in this function we will assign the accepted instructor the classes
-        console.log(a,b,c,d,f);
-        console.log(ud);
         // got the information, now to push this data to the instructor
         try{
         await setDoc(doc(db, "Instructor", ud, "Courses", a), {
@@ -106,9 +97,7 @@ export default function RegistrarsApplications() {
             Secion: d,
             Size: f
           });
-          await deleteDoc(doc(db, "classes", courses.useruiid));
-            //await deleteDoc(doc(db, "Users",d));
-              
+          await deleteDoc(doc(db, "classes", a));
         }catch{
             alert("Error");
         }
@@ -175,7 +164,6 @@ export default function RegistrarsApplications() {
                                                       user.useruiid,
                                                       user.empl
                                                       )}>Accept</button>
-                        {/* <button onClick={() => Reject(user.useruiid)}>Reject</button> */}
                         <button onClick={() => sendEmail(user.firstname,
                                                          user.lastname,
                                                          user.gpa,
