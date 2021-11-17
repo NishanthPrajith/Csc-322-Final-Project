@@ -1,6 +1,6 @@
 import './registrarsApplications.css';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, onSnapshot, setDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import emailjs from 'emailjs-com';
@@ -17,10 +17,11 @@ export default function RegistrarsApplications() {
         setIsOpen(!isOpen);
         console.log("line 18"+a);
         ud = a;
-        console.log("line 20"+ud)
+        console.log("line 20"+ud);
     }
     const togglecourseAssignclosePopup = () => {
         setIsOpen(!isOpen);
+        // await deleteDoc(doc(db, "Users", ud));
     }
  
       
@@ -71,14 +72,21 @@ export default function RegistrarsApplications() {
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
              // first make the alert dialog/popup appear
              const userid = useruiid;
-             console.log(useruiid);
+             console.log(useruiid);     
             togglecourseAssignPopup(useruiid);
             // then we want to display the classes -- done
             
-            // then we want to assign the selected classes to the instructor
+            // then we want to assign the selected classes to the instructor-- done
 
-            // then close the alert box and return to the page
-           // await setDoc(doc(db, "Instructor", useruiid), payload); // add more stuff so it goes to the collection in instructor
+            // then close the alert box and return to the page--done 
+            // update user fields and then delte the doc
+
+            //
+            const updateCourseInstructor = doc(db, "Instructor", useruiid);
+                // Set the "capital" field of the city 'DC'
+                await updateDoc(updateCourseInstructor, {
+                    payload
+                });
             // await deleteDoc(doc(db, "Users", useruiid));
         }
         // First await call will add a document to our Student collection
@@ -92,12 +100,15 @@ export default function RegistrarsApplications() {
         console.log(ud);
         // got the information, now to push this data to the instructor
         try{
-        await setDoc(doc(db, "Instructor", ud,"Courses",a), {
+        await setDoc(doc(db, "Instructor", ud, "Courses", a), {
             DayTime: b,
             Room: c,
             Secion: d,
             Size: f
           });
+          await deleteDoc(doc(db, "classes", courses.useruiid));
+            //await deleteDoc(doc(db, "Users",d));
+              
         }catch{
             alert("Error");
         }
@@ -133,7 +144,7 @@ export default function RegistrarsApplications() {
     }
     return (
 
-        <div>
+        <div className = "applicationHeading">
             <h1>Pending applications</h1>
             <p>Key: Role 1: Instructor, Role 0: Student</p>
             <table className="xApplication">
@@ -152,7 +163,8 @@ export default function RegistrarsApplications() {
                         <td> {user.gpa} </td>
                         <td> {user.dob} </td>
                         <td> {user.email} </td>
-                        <td> {user.role} </td>                         
+                        <td> {user.role} </td>  
+                        <td>                       
                         <button onClick={() => Accept(user.firstname, 
                                                       user.lastname, 
                                                       user.gpa, 
@@ -168,7 +180,7 @@ export default function RegistrarsApplications() {
                                                          user.lastname,
                                                          user.gpa,
                                                          user.useruiid
-                                                         )}>Reject</button>  
+                                                         )}>Reject</button>  </td>
                     </tr>
                 ))}
             </table>
@@ -182,6 +194,7 @@ export default function RegistrarsApplications() {
                     <th>Room</th>
                     <th>Section</th>
                     <th>Size</th>
+                    <th></th>
                 </tr>
                 {courses.map((course) => (
                     <tr>
@@ -190,12 +203,12 @@ export default function RegistrarsApplications() {
                         <td> {course.Room} </td>
                         <td> {course.Section} </td>
                         <td> {course.Size} </td>
-                        <button onClick={() => Assign(course.Class, 
+                        <td><button onClick={() => Assign(course.Class, 
                                                       course.DayTime, 
                                                       course.Room, 
                                                       course.Section, 
                                                       course.Size
-                                                      )}>Assign Course</button>
+                                                      )}>Assign Course</button></td>
                     </tr>
                 ))}
             </table>

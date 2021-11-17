@@ -38,9 +38,16 @@
     font-size: 20px;
   }
 
+  .xCourses button {
+    background-color: green;
+    color: white;
+    border-radius: 50px;
+    border-color: green;
+  }
+
   .xCourses {
     float: left;
-    width: 35%;
+    width: 100%;
     margin: 1% 0%;
     border: none;
     border-collapse: collapse;
@@ -55,11 +62,11 @@
     position: center;
     background-color: #7d5cc6;
     color: rgb(22, 10, 10);
-    padding: 2% 10%;
-    width: 40%;
+    width: 16.67%;
+    padding: 1% 0%;
   }
   
-  .xCourses td {
+  .xCourses tr td {
     padding: 2% 1%;
   }
   

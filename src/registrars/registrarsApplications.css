@@ -1,7 +1,7 @@
 .xApplication {
     float: left;
-    width: 35%;
-    margin: 0% 0%;
+    width: 90%;
+    margin: 2% 5%;
     border: none;
     border-collapse: collapse;
   }
@@ -14,11 +14,14 @@
   .xApplication th {
     background-color: #7d5cc6;
     color: rgb(22, 10, 10);
-    padding: 2% 0%;
-    width: 33%;
+    padding: 1% 0%;
+    width: 14.29%;
   }
   
   .xApplication td {
-    padding: 0% 0%;
+    padding: 2% 0%;
   }
   
+  .applicationHeading h1, .applicationHeading p {
+    padding-left: 5%;
+  }

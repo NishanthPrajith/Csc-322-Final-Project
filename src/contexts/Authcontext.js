@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
 
-  async function signup(email, password, gpa, empl) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
+  async function signup(firstname, lastname, email, password, role, gpa, dob, empl) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
 
    const ret2 = createUserWithEmailAndPassword(auth,email, password)
     .then((userCredential) => {
