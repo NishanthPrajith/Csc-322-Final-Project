@@ -45,6 +45,11 @@ export default function SignIn() {
       if (docSnap1.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap1.data().firstname + " " + docSnap1.data().lastname);
+        userData.setFirstname(docSnap1.data().firstname);
+        userData.setLastname(docSnap1.data().lastname);
+        userData.setDob(docSnap1.data().DateofBirth);
+        userData.setEmail(docSnap1.data().Email);
+        userData.setGPA(docSnap1.data().GPA);
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
@@ -53,6 +58,10 @@ export default function SignIn() {
       if (docSnap2.exists()) {
         userData.setUd(useruiid);
         userData.setName(docSnap2.data().firstname + " " + docSnap2.data().lastname);
+        userData.setFirstname(docSnap2.data().firstname);
+        userData.setLastname(docSnap2.data().lastname);
+        userData.setDob(docSnap2.data().DateofBirth);
+        userData.setEmail(docSnap2.data().Email);
         userData.setStatus(true);
         userData.setRole(1);
         await history.push('Instructorview');

@@ -12,20 +12,20 @@ export default function InstructorView() {
 
     //setInstructor(userData.getName());
 
-    async function GetInfo(db){
-        const { login, currentUser } = useAuth();
-        const {emailRef, passwordRef} = useRef();
-        try{
-            const useruiid = await login(emailRef.current.value, passwordRef.current.value);
-            const docRef = doc(db, "Instructor", useruiid);
-            const docSnap = await getDoc(docRef);
-            if(docSnap.exists())
-                setInstructor(docSnap.data().firstname + ' ' + docSnap.data().lastname);  
-        }
-        catch (error) {
-            document.getElementById('error').style.display = "block";
-        }        
-    }
+    // async function GetInfo(db){
+    //     const { login, currentUser } = useAuth();
+    //     const {emailRef, passwordRef} = useRef();
+    //     try{
+    //         const useruiid = await login(emailRef.current.value, passwordRef.current.value);
+    //         const docRef = doc(db, "Instructor", useruiid);
+    //         const docSnap = await getDoc(docRef);
+    //         if(docSnap.exists())
+    //             setInstructor(docSnap.data().firstname + ' ' + docSnap.data().lastname);  
+    //     }
+    //     catch (error) {
+    //         document.getElementById('error').style.display = "block";
+    //     }        
+    // }
 
      async function getCourses(db) {
     //     const docRef = doc(db, "Instructor", "{Instructor.name}", "Courses", "CurrentCourses")

@@ -25,7 +25,12 @@ export default function NavBar() {
             </Link>
             {(userData.getRole() === 1) &&
               <Link to='/instructorView' onClick={closeNavLink}>
-                <p className="links">Instructor</p>
+                <p className="links">Instructor Center</p>
+              </Link>
+            }
+            {(userData.getRole() === 1) &&
+              <Link to='/Instructoraboutme' onClick={closeNavLink}>
+                <p className="links">My Information</p>
               </Link>
             }
             {
@@ -39,7 +44,12 @@ export default function NavBar() {
             }
             {(userData.getRole() === 0) &&
               <Link to='/Studentview' onClick={closeNavLink}>
-                <p className="links">Student</p>
+                <p className="links">Student Center</p>
+              </Link>
+            }
+            {(userData.getRole() === 0) &&
+              <Link to='/Studentaboutme' onClick={closeNavLink}>
+                <p className="links">My Information</p>
               </Link>
             }
             {(userData.getRole() === 2) &&

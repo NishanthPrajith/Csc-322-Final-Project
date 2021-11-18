@@ -72,15 +72,13 @@ export default function RegistrarsApplications() {
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
              // first make the alert dialog/popup appear
              const userid = useruiid;
-             console.log(useruiid);     
+            //  console.log(useruiid);     
             togglecourseAssignPopup(useruiid);
             // then we want to display the classes -- done
             // then we want to assign the selected classes to the instructor-- done
             // then close the alert box and return to the page--done 
             // update user fields and then delte the doc
-            await setDoc(doc(db, "Instructor", useruiid), {
-                    payload
-                });
+            await setDoc(doc(db, "Instructor", useruiid), payload);
         }
         // First await call will add a document to our Student collection
         // Second await call will remove the student from "Users" collection 
