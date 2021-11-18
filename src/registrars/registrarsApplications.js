@@ -93,7 +93,8 @@ export default function RegistrarsApplications() {
             DayTime: b,
             Room: c,
             Secion: d,
-            Size: f
+            Size: f,
+            Instructor: ud
           });
           await deleteDoc(doc(db, "classes", a));
         }catch{
