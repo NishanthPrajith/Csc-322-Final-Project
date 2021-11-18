@@ -14,9 +14,11 @@ export default function NavBar() {
     <div>
       <nav>
         <div className="firstNav">
+          { !userData.getStatus() &&
           <Link to='/' onClick={closeNavLink}>
             <p className="logo">CCNYZero</p>
           </Link>
+          }
           <div>
             <Link to='/AboutUs' onClick={closeNavLink}>
               <p className="links">About Us</p>
@@ -30,7 +32,7 @@ export default function NavBar() {
               userData.getStatus() && <p className="username"> {userData.getName()} </p>
             }
             {
-              userData.getStatus() && <p className="empl"> {userData.getEmpl()} </p>
+              (userData.getRole() === 0) && <p className="empl"> {userData.getEmpl()} </p>
             }
              {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
