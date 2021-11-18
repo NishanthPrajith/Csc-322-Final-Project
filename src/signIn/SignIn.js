@@ -40,7 +40,7 @@ export default function SignIn() {
         userData.setStatus(true);
         userData.setRole(2);
         userData.setPeriod(parseInt(docSnap4.data().classsetup));
-        await history.push('Registrars');
+        await history.push('RegistrarsApplication');
       }
       if (docSnap1.exists()) {
         userData.setUd(useruiid);

@@ -4,55 +4,48 @@ import { useState } from 'react';
 import Tabs from '../components/Tabs';
 export default function studentView() {
 
-    //  const [Student, setStudent] = useState('');
-     //   const [CurrentClasses, setCurrentClasses] = useState([]);
-    //  const [CurrentRoster, setCurrentRoster] = useState([]);
-    //  const [Loading, setLoading] = useState('false');
+    // //  const [Student, setStudent] = useState('');
+    //  //   const [CurrentClasses, setCurrentClasses] = useState([]);
+    // //  const [CurrentRoster, setCurrentRoster] = useState([]);
+    // //  const [Loading, setLoading] = useState('false');
 
-     async function getCourses(db) {
-    //     var myUserId = firebase.auth().currentUser.uid;
-     }
+    //  async function getCourses(db) {
+    // //     var myUserId = firebase.auth().currentUser.uid;
+    //  }
 
-    async function getEnroll(db) {
+    // async function getEnroll(db) {
 
-    }
+    // }
 
-    async function getGrades(db){
+    // async function getGrades(db){
 
-    }
+        // var e = document.getElementById("dd1");
+        // var strUser = e;
+        // console.log(strUser); // en
+    
+        function la(src){
+        console.log(src); 
+        }
+
+        // <select defaultValue={this.state.selectValue} 
+ // onChange={this.handleChange} 
+ 
     return (
         <div>
         <h1>Welcome!</h1>
-              <p>{ userData.getName() }</p>
-              <p>{ userData.getEmpl() }</p>
-              <Tabs>
-                <div label="Schedule" onClick = {getCourses}>
-                        <table className = "CourseStyle">
-                            <tr>
-                                <th>Class</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Meeting Times</th>
-                                <th> Enrolled</th>
-                            </tr>
-                        {/* { CurrentClasses.map((Class) => (
-                            <tr>
-                                <td> { Class.name } </td>
-                                <td> { Class.time } </td>
-                                <td> { Class.location } </td>
-                                <td> { Class.date } </td>
-                                <td> {Class.Enrolled } </td>
-                            </tr>
-                        ))} */}
-                        </table>
-                </div>
-                <div label= "Enroll" onClick = {getEnroll}>                    
-
-                </div>
-                <div label = "Grades" onClick = {getGrades}>
-
-                </div>                
-                </Tabs>      
+              {/* <form classname="dd" id="dd1"> */}
+                    <label for="options">Choose an option:</label>
+                        <select >
+                            <option value="" selected="selected"></option>
+                            <option value="record">Record</option>
+                            <option value="drop" >Drop</option>
+                            <option value="enroll">Enroll</option>
+                            <option value="grades">Grades</option>
+                            <option value="complain">Complain</option>
+                            <option value="rate">Rate</option>
+                        </select>
+                        {/* <input type="submit" value="Submit"/> */}
+            {/* </form>    */}
         </div>
 
     

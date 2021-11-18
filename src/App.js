@@ -9,7 +9,6 @@ import Error from './error/error.js'
 import AboutUs from './aboutus/AboutUs.js'
 import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
-import Registrars from './registrars/registrars.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
 import Regclasssetup from './registrars/Regclasssetup.js';
 import Registrarscomplain from './registrars/registrarscomplain.js';
@@ -57,11 +56,6 @@ function App() {
           <Route exact path="/ReSubmitpass">
             <ReSubmitPass/>
           </Route>
-          {(userData.getRole() === 2) &&
-            <Route exact path="/Registrars">
-              <Registrars />
-            </Route>
-          }
           {(userData.getRole() === 2) &&
             <Route exact path="/RegistrarsApplication">
               <RegistrarsApplications />

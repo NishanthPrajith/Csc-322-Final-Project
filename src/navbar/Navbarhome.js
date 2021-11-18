@@ -29,6 +29,9 @@ export default function NavBar() {
             {
               userData.getStatus() && <p className="username"> {userData.getName()} </p>
             }
+            {
+              userData.getStatus() && <p className="empl"> {userData.getEmpl()} </p>
+            }
              {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
             }
