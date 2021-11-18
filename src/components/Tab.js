@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import "./Tab.css"
 
 class Tab extends Component {
     static propTypes = {
@@ -30,6 +31,7 @@ class Tab extends Component {
   
       return (
         <li
+          class = "noselect"
           className={className}
           onClick={onClick}
         >

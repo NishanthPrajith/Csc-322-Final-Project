@@ -15,26 +15,26 @@
     border-width: 1px 1px 0 1px;
   }
   
-  .CourseStyle th {
+  .CourseStyler th {
     background-color: #7d5cc6;
     color: white;
     padding: 2% 0%;
     width: 20%;
   }
   
-  .CourseStyle td {
+  .CourseStyler td {
     padding: 2% 0%;
   }
   
-  .CourseStyle {
+  .CourseStyler {
     float: left;
-    width: 55%;
-    margin: 0% 0.25%;
+    width: 90%;
+    margin: 1.5% 2.5%;
     border: none;
     border-collapse: collapse;
   }
   
-  .CourseStyle tr {
+  .CourseStyler tr {
     width: 100%;
     text-align: center;
   }

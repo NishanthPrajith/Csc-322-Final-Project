@@ -2,12 +2,14 @@ import './studentView.css'
 import { userData } from '../contexts/userProfile';
 import { useState } from 'react';
 import Tabs from '../components/Tabs';
-export default function studentView() {
+import { getDoc } from '@firebase/firestore';
+export default function StudentView() {
 
-    // //  const [Student, setStudent] = useState('');
-    //  //   const [CurrentClasses, setCurrentClasses] = useState([]);
-    // //  const [CurrentRoster, setCurrentRoster] = useState([]);
-    // //  const [Loading, setLoading] = useState('false');
+   const [Student, setStudent] = useState('');
+   const [CurrentClasses, setCurrentClasses] = useState([]);
+   const [CurrentRoster, setCurrentRoster] = useState([]);
+   const [Loading, setLoading] = useState('false');
+
 
     //  async function getCourses(db) {
     // //     var myUserId = firebase.auth().currentUser.uid;
@@ -17,7 +19,7 @@ export default function studentView() {
 
     // }
 
-    // async function getGrades(db){
+     async function getWarnings(db){
 
         // var e = document.getElementById("dd1");
         // var strUser = e;
@@ -26,15 +28,53 @@ export default function studentView() {
         function la(src){
         console.log(src); 
         }
+     }
+    async function getCourses(db){
+            
+        
+            function la(src){
+            console.log(src); 
+            }
+        }
+    async function getRoster(db){
 
+        // var e = document.getElementById("dd1");
+        // var strUser = e;
+        // console.log(strUser); // en
+    
+        function la(src){
+        console.log(src); 
+        }                    
+    }
         // <select defaultValue={this.state.selectValue} 
  // onChange={this.handleChange} 
  
     return (
         <div>
         <h1>Welcome!</h1>
-              {/* <form classname="dd" id="dd1"> */}
-                    <label for="options">Choose an option:</label>
+        <Tabs>
+                <div label="Schedule" onClick = {getCourses}>
+                        <table className = "CourseStyler">
+                            <tr>
+                                <th>Class</th>
+                                <th>Time</th>
+                                <th>Location</th>
+                                <th>Meeting Times</th>
+                                <th> Enrolled</th>
+                            </tr>
+                        { CurrentClasses.map((Class) => (
+                            <tr>
+                                <td> { Class.name } </td>
+                                <td> { Class.time } </td>
+                                <td> { Class.location } </td>
+                                <td> { Class.date } </td>
+                                <td> {Class.Enrolled } </td>
+                            </tr>
+                        ))}
+                        </table>
+                </div>
+                <div label= "Academics" onClick = {getRoster}>   
+                <label for="options">Choose an option:</label>
                         <select >
                             <option value="" selected="selected"></option>
                             <option value="record">Record</option>
@@ -43,7 +83,15 @@ export default function studentView() {
                             <option value="grades">Grades</option>
                             <option value="complain">Complain</option>
                             <option value="rate">Rate</option>
-                        </select>
+                        </select>                 
+                    {/* <button onClick = {getRoster}>Roster</button> */}
+                </div>
+                <div label = "Warnings" onClick = {getWarnings}>
+                    {/* <button onClick = {getGrades}>Grades</button> */}
+                </div>                
+            </Tabs>  
+              {/* <form classname="dd" id="dd1"> */}
+
                         {/* <input type="submit" value="Submit"/> */}
             {/* </form>    */}
         </div>
