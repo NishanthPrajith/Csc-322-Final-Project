@@ -1,0 +1,27 @@
+.sCourses {
+    float: left;
+    width: 90%;
+    margin: 2% 5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .sCourses tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .sCourses th {
+    background-color: #7d5cc6;
+    color: rgb(22, 10, 10);
+    padding: 1% 0%;
+    width: 14.29%;
+  }
+  
+  .sCourses td {
+    padding: 2% 0%;
+  }
+  
+  /* .applicationHeading h1, .applicationHeading p {
+    padding-left: 5%;
+  } */

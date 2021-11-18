@@ -16,6 +16,7 @@ import Registrarscomplain from './registrars/registrarscomplain.js';
 import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
 import InstructorAboutMe from './instructorView/Instructoraboutme.js'
+import StudentRegister from './studentView/studentregister.js'
 import {
   Route,
   Switch,
@@ -81,6 +82,11 @@ function App() {
           {(userData.getRole() === 0) &&
             <Route exact path="/Studentaboutme">
               <StudentAboutMe />
+            </Route>
+          }
+           {(userData.getRole() === 0) &&
+            <Route exact path="/StudentRegister">
+              <StudentRegister />
             </Route>
           }
           {(userData.getRole() === 1) &&
