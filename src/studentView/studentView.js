@@ -48,7 +48,7 @@ export default function StudentView() {
     }
         // <select defaultValue={this.state.selectValue} 
  // onChange={this.handleChange} 
- 
+
     return (
         <div>
         <h1 class= "noselect">Welcome!</h1>
@@ -67,7 +67,7 @@ export default function StudentView() {
                     {/* <button onClick = {getRoster}>Roster</button> */}
             </div>
 
-            <div label="Schedule" onClick = {getCourses}>
+            {/*<div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
                             <tr>
                                 <th>Class</th>
@@ -86,7 +86,7 @@ export default function StudentView() {
                             </tr>
                         ))}
                         </table>
-            </div>
+                        </div>*/}
           
               {/* <form classname="dd" id="dd1"> */}
 
