@@ -51,9 +51,23 @@ export default function StudentView() {
  
     return (
         <div>
-        <h1>Welcome!</h1>
-        <Tabs>
-                <div label="Schedule" onClick = {getCourses}>
+        <h1 class= "noselect">Welcome!</h1>
+            <div>   
+                <label for="options">Choose an option:</label>
+                        <select >
+                            <option value="" selected="selected"></option>
+                            <option value ="schedule">Schedule</option>
+                            <option value="record">Record</option>
+                            <option value="drop" >Drop</option>
+                            <option value="enroll">Enroll</option>
+                            <option value="grades">Grades</option>
+                            <option value="complain">Complain</option>
+                            <option value="rate">Rate</option>
+                        </select>                 
+                    {/* <button onClick = {getRoster}>Roster</button> */}
+            </div>
+
+            <div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
                             <tr>
                                 <th>Class</th>
@@ -72,24 +86,8 @@ export default function StudentView() {
                             </tr>
                         ))}
                         </table>
-                </div>
-                <div label= "Academics" onClick = {getRoster}>   
-                <label for="options">Choose an option:</label>
-                        <select >
-                            <option value="" selected="selected"></option>
-                            <option value="record">Record</option>
-                            <option value="drop" >Drop</option>
-                            <option value="enroll">Enroll</option>
-                            <option value="grades">Grades</option>
-                            <option value="complain">Complain</option>
-                            <option value="rate">Rate</option>
-                        </select>                 
-                    {/* <button onClick = {getRoster}>Roster</button> */}
-                </div>
-                <div label = "Warnings" onClick = {getWarnings}>
-                    {/* <button onClick = {getGrades}>Grades</button> */}
-                </div>                
-            </Tabs>  
+            </div>
+          
               {/* <form classname="dd" id="dd1"> */}
 
                         {/* <input type="submit" value="Submit"/> */}
