@@ -1,6 +1,7 @@
 import './studentView.css'
 import { userData } from '../contexts/userProfile';
 import { useState } from 'react';
+import React from 'react'
 import Tabs from '../components/Tabs';
 import { getDoc } from '@firebase/firestore';
 import Studentaboutme from '../studentView/Studentaboutme';
@@ -85,16 +86,28 @@ export default function StudentView() {
             </Container>  
         </div>
 
-        <div>
-            <Container className = "MyInfo" maxWidth = "sm">
-                <Typography component="div" style={{ backgroundColor: 'Green'}}>
-                    <div>
-                        <div>Student Information</div>       
-                        { Studentaboutme() }
+        <Container className = "MyInfo" maxWidth = "sm">
+            <Typography component="div" style={{ backgroundColor: 'Green'}}>
+                <div>
+                    <div className='Card'>
+                        <div className='upper-container'>
+                            <div className='image-container'>
+                                <img scr= "" alt='' height="100px" width="100px"/>
+                            </div>
+                        </div>
+                        <div className="lower-container">
+                            <h3>Student Information</h3>
+                            <p>First Name: {userData.getFirstname()}</p>
+                            <p>Last Name: {userData.getLastname()}</p>
+                            <p>Date of Birth: {userData.getDob()}</p>
+                            <p>GPA: {userData.getGPA()}</p>
+                            <p>EMPL: {userData.getEmpl()}</p>
+                            <p>Email: {userData.getEmail()}</p>
+                        </div>
                     </div>
-                </Typography>
-            </Container>  
-        </div>
+                </div>
+            </Typography>
+        </Container>
         
             {/*<div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
@@ -126,3 +139,12 @@ export default function StudentView() {
     
     );
 }
+
+/* <Container className = "MyInfo" maxWidth = "sm">
+                <Typography component="div" style={{ backgroundColor: 'Green'}}>
+                    <div>
+                        <div>Student Information</div>       
+                        { Studentaboutme() }
+                    </div>
+                </Typography>
+            </Container>  */
