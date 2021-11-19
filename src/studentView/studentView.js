@@ -63,6 +63,7 @@ export default function StudentView() {
                             <option value="grades">Grades</option>
                             <option value="complain">Complain</option>
                             <option value="rate">Rate</option>
+                            <option value="warning"></option>
                         </select>                 
                     {/* <button onClick = {getRoster}>Roster</button> */}
             </div>
