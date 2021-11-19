@@ -57,22 +57,29 @@ export default function StudentView() {
         <div>
         <h1 class= "noselect">Welcome!</h1>
         <Container className = "Dropdown" maxWidth = "xs">
-            <Typography component="div" style={{ backgroundColor: "Purple", height: '30vh' }}>
-                <div>   
-                    <label for="options">Choose an option:</label>
-                            <select >
+            <Typography component="div" style={{ backgroundColor: "white" }}>
+                <div> 
+                    <div className='Card'>
+                        <div className = "upper-container">      
+                            <h2>Selection Menu</h2>
+
+                        </div>
+                        <div className="lower-container2">
+                        <label for="options">Choose an option:</label>
+                            <select>
                                 <option value="" selected="selected"></option>
                                 <option value ="schedule">Schedule</option>
                                 <option value="record">Record</option>
                                 <option value="drop" >Drop</option>
                                 <option value="enroll">Enroll</option>
                                 <option value="grades">Grades</option>
-                                <option value="complain">Complain</option>
+                                <option value="complaints">Complaints</option>
                                 <option value="rate">Rate</option>
                                 <option value="warning">Warning</option>
-                            </select>                 
-                        {/* <button onClick = {getRoster}>Roster</button> */}
-                </div>
+                            </select>                         
+                        </div>
+                    </div>
+                </div>    
             </Typography>
         </Container>    
 
@@ -92,7 +99,7 @@ export default function StudentView() {
                     <div className='Card'>
                         <div className='upper-container'>
                             <div className='image-container'>
-                                <img scr= "" alt='' height="100px" width="100px"/>
+                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
                             </div>
                         </div>
                         <div className="lower-container">

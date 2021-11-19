@@ -123,6 +123,14 @@ img{
   font-size: 0.9rem;
   text-align: justify;
 }
+
+.lower-container2{
+  margin-top: 20px;
+  height: 300px;
+  background: white;
+  text-align: center;
+  font-family: 'Titillium Web', sans-serif;
+}
   /* .dd{
 
  } */
