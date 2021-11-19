@@ -49,6 +49,20 @@
     text-align: center;
   }
 
+  .Dropdown {
+    float: left;
+    padding: 2%;
+  }
+
+  .Display {
+    float: right;
+    right: 300px;
+  }
+
+  .MyInfo {
+    float: left;
+    bottom: 100px;
+  }
   /* .dd{
 
  } */

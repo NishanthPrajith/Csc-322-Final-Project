@@ -3,6 +3,9 @@ import { userData } from '../contexts/userProfile';
 import { useState } from 'react';
 import Tabs from '../components/Tabs';
 import { getDoc } from '@firebase/firestore';
+import Studentaboutme from '../studentView/Studentaboutme';
+import Container from '@material-ui/core/Container';
+import Typography from '@material-ui/core/Typography';
 export default function StudentView() {
 
    const [Student, setStudent] = useState('');
@@ -52,22 +55,47 @@ export default function StudentView() {
     return (
         <div>
         <h1 class= "noselect">Welcome!</h1>
-            <div>   
-                <label for="options">Choose an option:</label>
-                        <select >
-                            <option value="" selected="selected"></option>
-                            <option value ="schedule">Schedule</option>
-                            <option value="record">Record</option>
-                            <option value="drop" >Drop</option>
-                            <option value="enroll">Enroll</option>
-                            <option value="grades">Grades</option>
-                            <option value="complain">Complain</option>
-                            <option value="rate">Rate</option>
-                            <option value="warning">Warning</option>
-                        </select>                 
-                    {/* <button onClick = {getRoster}>Roster</button> */}
-            </div>
+        <Container className = "Dropdown" maxWidth = "xs">
+            <Typography component="div" style={{ backgroundColor: "Purple", height: '30vh' }}>
+                <div>   
+                    <label for="options">Choose an option:</label>
+                            <select >
+                                <option value="" selected="selected"></option>
+                                <option value ="schedule">Schedule</option>
+                                <option value="record">Record</option>
+                                <option value="drop" >Drop</option>
+                                <option value="enroll">Enroll</option>
+                                <option value="grades">Grades</option>
+                                <option value="complain">Complain</option>
+                                <option value="rate">Rate</option>
+                                <option value="warning">Warning</option>
+                            </select>                 
+                        {/* <button onClick = {getRoster}>Roster</button> */}
+                </div>
+            </Typography>
+        </Container>    
 
+        <div>
+            <Container className = "Display" maxWidth = "lg">
+                <Typography component="div" style={{ backgroundColor: 'blue', height: '90vh' }}>
+                    <div>   
+               
+                    </div>
+                </Typography>
+            </Container>  
+        </div>
+
+        <div>
+            <Container className = "MyInfo" maxWidth = "sm">
+                <Typography component="div" style={{ backgroundColor: 'Green'}}>
+                    <div>
+                        <div>Student Information</div>       
+                        { Studentaboutme() }
+                    </div>
+                </Typography>
+            </Container>  
+        </div>
+        
             {/*<div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
                             <tr>
