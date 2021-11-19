@@ -87,7 +87,7 @@ export default function StudentView() {
         </div>
 
         <Container className = "MyInfo" maxWidth = "sm">
-            <Typography component="div" style={{ backgroundColor: 'Green'}}>
+            <Typography component="div" style={{ backgroundColor: 'White'}}>
                 <div>
                     <div className='Card'>
                         <div className='upper-container'>
