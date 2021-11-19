@@ -24,7 +24,6 @@ export default function AboutUs() {
       })
       setStudents(student.slice(0,5));
     });
-
     setLoading(false);
   }
   async function getTclasses(db) {
@@ -40,7 +39,6 @@ export default function AboutUs() {
       })
       setTclasses(topratingclass.slice(0,5));
     });
-
     setLoading(false);
   }
   async function getLclasses(db) {
@@ -56,7 +54,6 @@ export default function AboutUs() {
       })
       setLclasses(lowratingclass.slice(0,5));
     });
-
     setLoading(false);
   }
 

@@ -7,6 +7,9 @@ import emailjs from 'emailjs-com';
 import CourseAssignPopup from './courseAssignPopup';
 
 var ud;
+var firtname;
+var lastname;
+var classes;
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
@@ -72,6 +75,8 @@ export default function RegistrarsApplications() {
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid}
              // first make the alert dialog/popup appear
              const userid = useruiid;
+             firtname = a;
+             lastname = b;
             //  console.log(useruiid);     
             togglecourseAssignPopup(useruiid);
             // then we want to display the classes -- done
@@ -88,15 +93,25 @@ export default function RegistrarsApplications() {
     async function Assign(a,b,c,d,f){
         // in this function we will assign the accepted instructor the classes
         // got the information, now to push this data to the instructor
+        classes=a;
         try{
         await setDoc(doc(db, "Instructor", ud, "Courses", a), {
             DayTime: b,
             Room: c,
             Secion: d,
             Size: f,
-            Instructor: ud
+            Instructor: firtname + " " + lastname
           });
-          await deleteDoc(doc(db, "classes", a));
+          await setDoc(doc(db, "AssignedClasses", a), {
+            Class: classes,
+            DayTime: b,
+            Room: c,
+            Secion: d,
+            Size: f,
+            Instructor: firtname + " " + lastname,
+            Instructoruiid: ud
+          });
+        //   await deleteDoc(doc(db, "classes", a));
         }catch{
             alert("Error");
         }
