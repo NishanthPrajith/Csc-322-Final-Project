@@ -84,9 +84,26 @@ export default function StudentView() {
 
         <div>
             <Container className = "Display" maxWidth = "lg">
-                <Typography component="div" style={{ backgroundColor: 'blue', height: '90vh' }}>
-                    <div>   
-               
+                <Typography component="div" style={{ backgroundColor: "black", height: '90vh' }}>
+                    <div>
+                        <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Location</th>
+                                    <th>Meeting Times</th>
+                                    <th> Enrolled</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.name } </td>
+                                    <td> { Class.time } </td>
+                                    <td> { Class.location } </td>
+                                    <td> { Class.date } </td>
+                                    <td> {Class.Enrolled } </td>
+                                </tr>
+                            ))}
+                        </table>               
                     </div>
                 </Typography>
             </Container>  

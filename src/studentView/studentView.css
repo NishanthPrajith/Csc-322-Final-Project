@@ -38,8 +38,8 @@
   
   .CourseStyler {
     float: left;
-    width: 90%;
-    margin: 1.5% 2.5%;
+    width: 99%;
+    margin: 1.0% 0.5%;
     border: none;
     border-collapse: collapse;
   }
@@ -131,6 +131,7 @@ img{
   text-align: center;
   font-family: 'Titillium Web', sans-serif;
 }
+
   /* .dd{
 
  } */
