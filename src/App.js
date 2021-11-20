@@ -9,13 +9,11 @@ import Error from './error/error.js'
 import AboutUs from './aboutus/AboutUs.js'
 import ReSubmitPass from './reSubmitpass/ReSubmitpass'
 import StudentView from './studentView/studentView.js'
-import StudentAboutMe from './studentView/Studentaboutme.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
 import Regclasssetup from './registrars/Regclasssetup.js';
 import Registrarscomplain from './registrars/registrarscomplain.js';
 import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
-import InstructorAboutMe from './instructorView/Instructoraboutme.js'
 import StudentRegister from './studentView/studentregister.js'
 import {
   Route,
@@ -79,11 +77,6 @@ function App() {
               <StudentView />
             </Route>
           }
-          {(userData.getRole() === 0) &&
-            <Route exact path="/Studentaboutme">
-              <StudentAboutMe />
-            </Route>
-          }
            {(userData.getRole() === 0) &&
             <Route exact path="/StudentRegister">
               <StudentRegister />
@@ -92,11 +85,6 @@ function App() {
           {(userData.getRole() === 1) &&
             <Route exact path="/Instructorview">
               <InstructorView />
-            </Route>
-          }
-          {(userData.getRole() === 1) &&
-            <Route exact path="/Instructoraboutme">
-              <InstructorAboutMe />
             </Route>
           }
           <Route>

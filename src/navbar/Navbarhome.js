@@ -28,16 +28,8 @@ export default function NavBar() {
                 <p className="links">Instructor Center</p>
               </Link>
             }
-            {(userData.getRole() === 1) &&
-              <Link to='/Instructoraboutme' onClick={closeNavLink}>
-                <p className="links">My Information</p>
-              </Link>
-            }
             {
               userData.getStatus() && <p className="username"> {userData.getName()} </p>
-            }
-            {
-              (userData.getRole() === 0) && <p className="empl"> {userData.getEmpl()} </p>
             }
              {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
@@ -45,11 +37,6 @@ export default function NavBar() {
             {(userData.getRole() === 0) &&
               <Link to='/Studentview' onClick={closeNavLink}>
                 <p className="links">Student Center</p>
-              </Link>
-            }
-            {(userData.getRole() === 0) &&
-              <Link to='/Studentaboutme' onClick={closeNavLink}>
-                <p className="links">My Information</p>
               </Link>
             }
              {(userData.getRole() === 0) &&

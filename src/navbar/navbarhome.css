@@ -35,14 +35,10 @@ nav a {
 }
 .username {
   position: absolute;
-  right: 200px;
+  right: 150px;
 }
 
 .signout {
   position: absolute;
   right: 50px;
-}
-.empl {
-  position: absolute;
-  right: 125px;
 }

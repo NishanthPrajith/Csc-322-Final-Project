@@ -4,7 +4,6 @@ import { useState } from 'react';
 import React from 'react'
 import Tabs from '../components/Tabs';
 import { getDoc } from '@firebase/firestore';
-import Studentaboutme from '../studentView/Studentaboutme';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 export default function StudentView() {
