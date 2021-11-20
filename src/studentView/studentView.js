@@ -58,16 +58,19 @@ export default function StudentView() {
         <Container className = "Dropdown" maxWidth = "xs">
             <Typography component="div" style={{ backgroundColor: "white" }}>
                 <div> 
-                    <div className='Card'>
-                        <div className = "upper-container">      
-                            <h2>Selection Menu</h2>
+                    <div className='Card2'>
+                        <div className = "upper-container2">  
+                            <div className='image-container'>
+                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
+                            </div>    
+                            
 
                         </div>
                         <div className="lower-container2">
+                            <h2>Selection Menu</h2>
                         <label for="options">Choose an option:</label>
                             <select>
-                                <option value="" selected="selected"></option>
-                                <option value ="schedule">Schedule</option>
+                                <option value ="schedule" selected ="schedule">Schedule</option>
                                 <option value="record">Record</option>
                                 <option value="drop" >Drop</option>
                                 <option value="enroll">Enroll</option>
