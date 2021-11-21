@@ -1,6 +1,6 @@
 import './studentView.css'
 import { userData } from '../contexts/userProfile';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
 import Tabs from '../components/Tabs';
@@ -15,10 +15,12 @@ export default function StudentView() {
    const [Loading, setLoading] = useState('false');
    const [InputValue, setInputValue] = useState('');
    const [OptionSelected, setOptionSelected] = useState("schedule");
-   console.log(OptionSelected);
-   const options = [{label: "schedule", value: 0}, {label:"record", value: 1}, {label: "drop", value: 2} , 
-                    {label: "enroll", value: 3}, {label:"grades", value: 4}, {label: "complaints", value: 5}, 
-                    {label: "rate", value: 6}, {label: "warning", value: 7}];
+   const instructorRef = useRef();
+   const courseRef = useRef();
+//    console.log(OptionSelected);
+   const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
+                    {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
+                    {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
   // const [ScheduleSelected, setScheduleSelected] = useState('false');
 
   const handleInputChange = value => {
@@ -108,7 +110,7 @@ export default function StudentView() {
 
         <Container className= "Display" maxWidth = "false" >
                 <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
-                        {OptionSelected.value == "0" && <table className = "CourseStyler">
+                {OptionSelected.value === "schedule" && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -128,7 +130,7 @@ export default function StudentView() {
                         </table>    
                         }  
                      
-                        {(OptionSelected.value == "1") && <table className = "CourseStyler">
+                        {(OptionSelected.value === "record") && <table className>
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -143,8 +145,40 @@ export default function StudentView() {
                             ))}
                         </table>    
                         }   
+                        
+                        {(OptionSelected.value === "drop") && <table className>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }
+                        
+                        {(OptionSelected.value === "enroll") && <table className>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }
 
-                        {(OptionSelected.value == "2") && <table className = "CourseStyler">
+                        {(OptionSelected.value === "grades") && <table className>
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -158,9 +192,9 @@ export default function StudentView() {
                                 </tr>
                             ))}
                         </table>    
-                        }  
+                        }
 
-                        {(OptionSelected.value == "3") && <table className = "CourseStyler">
+                        {(OptionSelected.value === "complaints") && <table className>
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -174,9 +208,33 @@ export default function StudentView() {
                                 </tr>
                             ))}
                         </table>    
-                        }  
+                        }
 
-                        {(OptionSelected.value == "4") && <table className = "CourseStyler">
+                        {(OptionSelected.value === "rate") && <div>
+
+                                <div>
+                                    <h2 className= "RateLabel">Course: </h2>
+                                    <form className="login-form" id="frm6">
+                                        <input type="text" ref={courseRef} className="five" autoComplete="off" required />
+                                    </form>
+                                </div>
+
+                                <div>
+                                    <h2 className= "RateLabel">Instructor: </h2>
+                                    <form className="login-form" id="frm7">
+                                        <input type="text" ref={instructorRef} className="five" autoComplete="off" required />
+                                    </form>
+                                </div>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </div>    
+                        }
+                        {(OptionSelected.value === "warning") && <table className>
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -190,52 +248,8 @@ export default function StudentView() {
                                 </tr>
                             ))}
                         </table>    
-                        }      
-                        {(OptionSelected.value == "5") && <table className = "CourseStyler">
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }       
-                        {(OptionSelected.value == "6") && <table className = "CourseStyler">
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }   
-                        {(OptionSelected.value == "7") && <table className = "CourseStyler">
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }     
+                        }    
+     
                 </div>
             </Container>  
 
