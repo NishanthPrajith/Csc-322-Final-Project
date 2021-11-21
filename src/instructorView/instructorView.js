@@ -17,16 +17,16 @@ export default function InstructorView() {
     console.log(userData.getUd()); 
 
     // get the instructors courses
-    async function getStudentCourses(db) {
+    async function getInstructorCourses(db) {
         const coursesCol = collection(db, 'Instructor', userData.getUd(),"Courses");
         setLoading(true);
        onSnapshot(coursesCol, (querySnapshot) => {
-          const student = [];
+          const instructor = [];
           querySnapshot.forEach((doc) => {
-              student.push(doc.data());
+              instructor.push(doc.data());
           });
-          console.log(student);
-          setCurrentClasses(student);
+          console.log(instructor);
+          setCurrentClasses(instructor);
         });
         setLoading(false);
       }
@@ -100,7 +100,7 @@ export default function InstructorView() {
 
     useEffect(() => {
         setLoading(true);
-        getStudentCourses(db);
+        getInstructorCourses(db);
         // getStudents(db);
         // getTclasses(db);
         // getLclasses(db);
