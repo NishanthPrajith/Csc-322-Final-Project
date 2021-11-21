@@ -7,14 +7,27 @@ import Tabs from '../components/Tabs';
 import { getDoc,collection,onSnapshot } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
+import Select from 'react-select';
 export default function StudentView() {
 
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [Loading, setLoading] = useState('false');
-   const [SelectedOption, setSelectedOption] = useState('false');
-   const [ScheduleSelected, setScheduleSelected] = useState('false');
+   const [InputValue, setInputValue] = useState('');
+   const [OptionSelected, setOptionSelected] = useState("schedule");
+   console.log(OptionSelected);
+   const options = [{label: "schedule", value: 0}, {label:"record", value: 1}, {label: "drop", value: 2} , 
+                    {label: "enroll", value: 3}, {label:"grades", value: 4}, {label: "complaints", value: 5}, 
+                    {label: "rate", value: 6}, {label: "warning", value: 7}];
+  // const [ScheduleSelected, setScheduleSelected] = useState('false');
 
+  const handleInputChange = value => {
+      setInputValue(value);
+  }
+
+  const handleChange = value => {
+    setOptionSelected(value);
+  }
 
     async function getStudentCourses(db) {
         const coursesCol = collection(db, 'Students', userData.getUd(),"Courses");
@@ -34,7 +47,7 @@ export default function StudentView() {
         // var e = document.getElementById("dd1");
         // var strUser = e;
         // console.log(strUser); // en
-    
+        
         function la(src){
         console.log(src); 
         }
@@ -58,6 +71,11 @@ export default function StudentView() {
     }
         // <select defaultValue={this.state.selectValue} 
  // onChange={this.handleChange} 
+    //  async function handleChange(event) {
+    //      console.log(event);
+    //     //this.setState({value: event.target.value});
+    //     // setOptionSelected(this.state.value);
+    // }
 
  useEffect(() => {
     setLoading(true);
@@ -77,17 +95,12 @@ export default function StudentView() {
                         </div>
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
-                            <label for="options">Choose an option: </label>
-                            <select>
-                                <option value ="schedule" selected ="schedule">Schedule</option>
-                                <option value="record">Record</option>
-                                <option value="drop" >Drop</option>
-                                <option value="enroll">Enroll</option>
-                                <option value="grades">Grades</option>
-                                <option value="complaints">Complaints</option>
-                                <option value="rate">Rate</option>
-                                <option value="warning">Warning</option>
-                            </select>                         
+                            <label for="options">Choose an option:  </label>
+                            <Select className ="Selection" options = { options } value ={OptionSelected} onInputChange = {handleInputChange} onChange = {handleChange}>
+                            {/* {options.map((option) => (
+                            <option value={option.value}>{option.label}</option>
+                            ))}  */}
+                            </Select>
                         </div>
                     </div>
                 </div>    
@@ -95,7 +108,7 @@ export default function StudentView() {
 
         <Container className= "Display" maxWidth = "false" >
                 <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
-                        {ScheduleSelected && <table className = "CourseStyler">
+                        {OptionSelected.value == "0" && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -108,12 +121,28 @@ export default function StudentView() {
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
-                                    <td> { Class.Secion } </td>
+                                    <td> { Class.Section } </td>
                                     <td> {Class.Instructor } </td>
                                 </tr>
                             ))}
                         </table>    
-                        }                  
+                        }  
+                     
+                        {(OptionSelected.value == "1") && <table className>
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }                
                 </div>
             </Container>  
 
