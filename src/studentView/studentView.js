@@ -95,7 +95,7 @@ export default function StudentView() {
         </Container>    
 
         <Container className= "Display" maxWidth = "false" >
-                <div className= "Display" style={{ backgroundColor: "black", height: '80vh' , width: '150vh'}}>
+                <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
                         {ScheduleSelected && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>

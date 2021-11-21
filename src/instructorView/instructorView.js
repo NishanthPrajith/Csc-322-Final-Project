@@ -1,6 +1,7 @@
 import './instructorView.css'
 import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
+import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
 import { collection, doc, query, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import Tabs from '../components/Tabs';
@@ -123,7 +124,7 @@ export default function InstructorView() {
 
         <div>
             <Container className = "Display" maxWidth = "lg">
-                <Typography component="div" style={{ backgroundColor: "black", height: '90vh' }}>
+                <Typography component="div" style={{ backgroundColor: "white", height: '90vh' }}>
                     <div>
                         <table className = "CourseStyler">
                                 <tr>
