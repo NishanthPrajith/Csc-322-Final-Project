@@ -13,6 +13,7 @@ export default function InstructorView() {
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [CurrentRoster, setCurrentRoster] = useState([]);
     const [Loading, setLoading] = useState('false');
+    const [ScheduleSelected, setScheduleSelected] = useState('false');    
 
     //setInstructor(userData.getName());
 
@@ -90,8 +91,8 @@ export default function InstructorView() {
       }, []);
 
       return (
-        <div>
-        <h1 class= "noselect">Welcome!</h1>
+        <div className = "InstructorPage">
+        {/* <h1 class= "noselect">Welcome!</h1>
         <Container className = "Dropdown" maxWidth = "xs">
             <Typography component="div" style={{ backgroundColor: "white" }}>
                 <div> 
@@ -168,8 +169,79 @@ export default function InstructorView() {
                     </div>
                 </div>
             </Typography>
-        </Container>
-        
+        </Container> */}
+
+<h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
+        <Container className = "Dropdown" maxWidth = "false">
+                <div> 
+                    <div className='Card2'>
+                        <div className = "upper-container2">  
+                            <div className='image-container'>
+                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
+                            </div>    
+                        </div>
+                        <div className="lower-container2">
+                            <h2>Selection Menu</h2>
+                            <label for="options">Choose an option:</label>
+                            <select>
+                                <option value ="schedule" selected ="schedule" >Schedule</option>
+                                <option value="record">Record</option>
+                                <option value="drop" >Drop</option>
+                                <option value="enroll">Enroll</option>
+                                <option value="grades">Grades</option>
+                                <option value="complaints">Complaints</option>
+                                <option value="rate">Rate</option>
+                                <option value="warning">Warning</option>
+                            </select>                         
+                        </div>
+                    </div>
+                </div>    
+        </Container>    
+
+        <Container className= "Display" maxWidth = "false" >
+                <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
+                        {ScheduleSelected && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                    <th> Instructor</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }                  
+                </div>
+            </Container>  
+
+        <Container className = "MyInfo" maxWidth = "false">
+            <div className ="MyInfo">
+                    <div className='Card'>
+                    <div className='upper-container'>
+                            <div className='image-container'>
+                                <img src= "https://i.pravatar.cc/150?img=17" alt='' height="100px" width="100px"/>
+                            </div>
+                    </div>
+                    <div className="lower-container">
+                            <h3>Student Information</h3>
+                            <p>First Name: {userData.getFirstname()}</p>
+                            <p>Last Name: {userData.getLastname()}</p>
+                            <p>Date of Birth: {userData.getDob()}</p>
+                            <p>GPA: {userData.getGPA()}</p>
+                            <p>EMPL: {userData.getEmpl()}</p>
+                            <p>Email: {userData.getEmail()}</p>
+                    </div>
+                </div>
+            </div> 
+        </Container>         
             {/*<div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
                             <tr>

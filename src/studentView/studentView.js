@@ -11,10 +11,9 @@ export default function StudentView() {
 
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
-   const [CurrentRoster, setCurrentRoster] = useState([]);
    const [Loading, setLoading] = useState('false');
-   const [ScheduleSelected, setScheduleSelected] = useState('true');
-   const [RecordSelected, setRecordSelected] = useState('false');
+   const [SelectedOption, setSelectedOption] = useState('false');
+   const [ScheduleSelected, setScheduleSelected] = useState('false');
 
 
     async function getStudentCourses(db) {
@@ -80,7 +79,7 @@ export default function StudentView() {
                             <h2>Selection Menu</h2>
                             <label for="options">Choose an option:</label>
                             <select>
-                                <option value ="schedule" selected ="schedule" onClick = {()=> {setScheduleSelected("true")}}>Schedule</option>
+                                <option value ="schedule" selected ="schedule" >Schedule</option>
                                 <option value="record">Record</option>
                                 <option value="drop" >Drop</option>
                                 <option value="enroll">Enroll</option>
