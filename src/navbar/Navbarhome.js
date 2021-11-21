@@ -52,8 +52,13 @@ export default function NavBar(){
               </Link>
             }
             {(userData.getRole() === 2) &&
-              <Link to='/Registrarscomplains' onClick={closeNavLink}>
+              <Link to='/RegistrarsComplains' onClick={closeNavLink}>
                 <p className="nav-links">Review Complains</p>
+              </Link>
+            }
+            {(userData.getRole() === 2) &&
+              <Link to='/GradMembers' onClick={closeNavLink}>
+                <p className="nav-links">Grad Members</p>
               </Link>
             }
             {((userData.getRole() === 2) && (userData.getPeriod() === 0)) &&

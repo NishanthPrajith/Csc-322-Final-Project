@@ -3,8 +3,9 @@ import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'fireba
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
+import { registerVersion } from '@firebase/app';
 
-export default function RegistrarsComplain(){
+export default function GradMembers(){
 const [students, setStudents] = useState([]);
   const [Instructor, setTclasses] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,38 +45,54 @@ const [students, setStudents] = useState([]);
 
 
   // IMPLEMENT LATER
-  async function ComplaintPopup(){
+  async function StudentWarn(){
   
   }
 
+  // IMPLEMENT LATER
   async function InstructorWarn(a,b){
     
   }
 
+  // IMPLEMENT LATER
+  async function De_Register(){
+
+  }
+
+  // IMPLEMENT LATER
+  async function Suspend(){
+
+  }
+
     return (
         <div className= "studentsRegView">
-        <h2>Incoming Complaints</h2>
         <table className = "xStu">
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Type</th>
-              <th>Complain</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Empl</th>
+                <th></th>
             </tr>
             { students.map((student) => (
             <tr>
               <td> { student.firstname } </td>
               <td> { student.lastname } </td>
-              <td> { student.lastname } </td>
-              <td> <button onClick={() => ComplaintPopup()}>Complaint</button></td>
+              <td> { student.empl } </td>
+              <td><button onClick={() => StudentWarn(student.firstname,
+                                                     student.lastname
+                                                     )}>Warn</button>
+                    <button onClick={() => De_Register(student.firstname,
+                                                     student.lastname
+                                                     )}>de-register</button></td>
+                                                     
             </tr>
           ))}
         </table>
         <table className = "xFac">
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Complain</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th></th>
             </tr>
           { Instructor.map((tclass) => (
             <tr>
@@ -85,6 +102,9 @@ const [students, setStudents] = useState([]);
                 <button onClick={() => InstructorWarn(tclass.firstname,
                                                       tclass.lastname
                                                       )}>Warn</button>
+                <button onClick={() => Suspend(tclass.firstname,
+                                                     tclass.lastname
+                                                     )}>Suspend</button>
               </td>
             </tr>
           ))}

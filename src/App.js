@@ -12,6 +12,7 @@ import StudentView from './studentView/studentView.js'
 import RegistrarsApplications from './registrars/registrarsApplications.js'
 import Regclasssetup from './registrars/Regclasssetup.js';
 import Registrarscomplain from './registrars/registrarscomplain.js';
+import GradMembers from './registrars/gradMembers.js';
 import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
 import StudentRegister from './studentView/studentregister.js'
@@ -68,7 +69,12 @@ function App() {
             </Route>
           }
           {(userData.getRole() === 2) &&
-            <Route exact path="/Registrarscomplains">
+            <Route exact path="/GradMembers">
+              <GradMembers/>
+            </Route>
+          }
+          {(userData.getRole() === 2) &&
+            <Route exact path="/RegistrarsComplains">
               <Registrarscomplain/>
             </Route>
           }
