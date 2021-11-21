@@ -95,7 +95,7 @@ export default function StudentView() {
                         </div>
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
-                            <label for="options">Choose an option:  </label>
+                            {/*<label for="options">Choose an option:  </label>*/}
                             <Select className ="Selection" options = { options } value ={OptionSelected} onInputChange = {handleInputChange} onChange = {handleChange}>
                             {/* {options.map((option) => (
                             <option value={option.value}>{option.label}</option>
@@ -128,7 +128,7 @@ export default function StudentView() {
                         </table>    
                         }  
                      
-                        {(OptionSelected.value == "1") && <table className>
+                        {(OptionSelected.value == "1") && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -142,7 +142,100 @@ export default function StudentView() {
                                 </tr>
                             ))}
                         </table>    
-                        }                
+                        }   
+
+                        {(OptionSelected.value == "2") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }  
+
+                        {(OptionSelected.value == "3") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }  
+
+                        {(OptionSelected.value == "4") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }      
+                        {(OptionSelected.value == "5") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }       
+                        {(OptionSelected.value == "6") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }   
+                        {(OptionSelected.value == "7") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }     
                 </div>
             </Container>  
 
