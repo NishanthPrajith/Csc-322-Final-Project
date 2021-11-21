@@ -13,6 +13,7 @@ export default function InstructorView() {
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [CurrentRoster, setCurrentRoster] = useState([]);
     const [Loading, setLoading] = useState('false');
+    const [ScheduleSelected, setScheduleSelected] = useState('false');
     console.log(userData.getUd()); 
 
     // get the instructors courses
