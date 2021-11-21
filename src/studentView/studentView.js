@@ -12,6 +12,8 @@ export default function StudentView() {
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [CurrentRoster, setCurrentRoster] = useState([]);
    const [Loading, setLoading] = useState('false');
+   const [ScheduleSelected, setScheduleSelected] = useState('true');
+   const [RecordSelected, setRecordSelected] = useState('false');
 
 
     //  async function getCourses(db) {
@@ -53,24 +55,21 @@ export default function StudentView() {
  // onChange={this.handleChange} 
 
     return (
-        <div>
-        <h1 class= "noselect">Welcome!</h1>
-        <Container className = "Dropdown" maxWidth = "xs">
-            <Typography component="div" style={{ backgroundColor: "white" }}>
+        <div className ='studentPage'>
+        <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
+        <Container className = "Dropdown" maxWidth = "false">
                 <div> 
                     <div className='Card2'>
                         <div className = "upper-container2">  
                             <div className='image-container'>
                                 <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
                             </div>    
-                            
-
                         </div>
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
-                        <label for="options">Choose an option:</label>
+                            <label for="options">Choose an option:</label>
                             <select>
-                                <option value ="schedule" selected ="schedule">Schedule</option>
+                                <option value ="schedule" selected ="schedule" onClick = {()=> {setScheduleSelected("true")}}>Schedule</option>
                                 <option value="record">Record</option>
                                 <option value="drop" >Drop</option>
                                 <option value="enroll">Enroll</option>
@@ -82,14 +81,11 @@ export default function StudentView() {
                         </div>
                     </div>
                 </div>    
-            </Typography>
         </Container>    
 
-        <div>
-            <Container className = "Display" maxWidth = "lg">
-                <Typography component="div" style={{ backgroundColor: "black", height: '90vh' }}>
-                    <div>
-                        <table className = "CourseStyler">
+        <Container className= "Display" maxWidth = "false" >
+                <div className= "Display" style={{ backgroundColor: "black", height: '80vh' , width: '150vh'}}>
+                        {ScheduleSelected && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -106,22 +102,20 @@ export default function StudentView() {
                                     <td> {Class.Enrolled } </td>
                                 </tr>
                             ))}
-                        </table>               
-                    </div>
-                </Typography>
+                        </table>    
+                        }                  
+                </div>
             </Container>  
-        </div>
 
-        <Container className = "MyInfo" maxWidth = "sm">
-            <Typography component="div" style={{ backgroundColor: 'White'}}>
-                <div>
+        <Container className = "MyInfo" maxWidth = "false">
+            <div className ="MyInfo">
                     <div className='Card'>
-                        <div className='upper-container'>
+                    <div className='upper-container'>
                             <div className='image-container'>
                                 <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
                             </div>
-                        </div>
-                        <div className="lower-container">
+                    </div>
+                    <div className="lower-container">
                             <h3>Student Information</h3>
                             <p>First Name: {userData.getFirstname()}</p>
                             <p>Last Name: {userData.getLastname()}</p>
@@ -129,11 +123,10 @@ export default function StudentView() {
                             <p>GPA: {userData.getGPA()}</p>
                             <p>EMPL: {userData.getEmpl()}</p>
                             <p>Email: {userData.getEmail()}</p>
-                        </div>
                     </div>
                 </div>
-            </Typography>
-        </Container>
+            </div> 
+        </Container>                    
         
             {/*<div label="Schedule" onClick = {getCourses}>
                         <table className = "CourseStyler">
@@ -159,7 +152,7 @@ export default function StudentView() {
               {/* <form classname="dd" id="dd1"> */}
 
                         {/* <input type="submit" value="Submit"/> */}
-            {/* </form>    */}
+            {/* /</div>/</form>    */}
         </div>
 
     
