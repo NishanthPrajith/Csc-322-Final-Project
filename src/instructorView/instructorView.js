@@ -13,77 +13,93 @@ export default function InstructorView() {
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [CurrentRoster, setCurrentRoster] = useState([]);
     const [Loading, setLoading] = useState('false');
+    console.log(userData.getUd()); 
 
-    //setInstructor(userData.getName());
+    // get the instructors courses
+    async function getStudentCourses(db) {
+        const coursesCol = collection(db, 'Instructor', userData.getUd(),"Courses");
+        setLoading(true);
+       onSnapshot(coursesCol, (querySnapshot) => {
+          const student = [];
+          querySnapshot.forEach((doc) => {
+              student.push(doc.data());
+          });
+          console.log(student);
+          setCurrentClasses(student);
+        });
+        setLoading(false);
+      }
 
-    // async function GetInfo(db){
-    //     const { login, currentUser } = useAuth();
-    //     const {emailRef, passwordRef} = useRef();
-    //     try{
-    //         const useruiid = await login(emailRef.current.value, passwordRef.current.value);
-    //         const docRef = doc(db, "Instructor", useruiid);
-    //         const docSnap = await getDoc(docRef);
-    //         if(docSnap.exists())
-    //             setInstructor(docSnap.data().firstname + ' ' + docSnap.data().lastname);  
-    //     }
-    //     catch (error) {
-    //         document.getElementById('error').style.display = "block";
-    //     }        
-    // }
+    // //setInstructor(userData.getName());
 
-     async function getCourses(db) {
-    //     const docRef = doc(db, "Instructor", "{Instructor.name}", "Courses", "CurrentCourses")
-    //     const docSnap = await getDoc(docRef);
+    // // async function GetInfo(db){
+    // //     const { login, currentUser } = useAuth();
+    // //     const {emailRef, passwordRef} = useRef();
+    // //     try{
+    // //         const useruiid = await login(emailRef.current.value, passwordRef.current.value);
+    // //         const docRef = doc(db, "Instructor", useruiid);
+    // //         const docSnap = await getDoc(docRef);
+    // //         if(docSnap.exists())
+    // //             setInstructor(docSnap.data().firstname + ' ' + docSnap.data().lastname);  
+    // //     }
+    // //     catch (error) {
+    // //         document.getElementById('error').style.display = "block";
+    // //     }        
+    // // }
 
-    //     if(docSnap.exists()){
-    //         console.log("Document data:", docSnap.data());
-    //     }
-    //     else {
-    //         console.log("No such document!");
-    //         return -1;
-    //     }
+    //  async function getCourses(db) {
+    // //     const docRef = doc(db, "Instructor", "{Instructor.name}", "Courses", "CurrentCourses")
+    // //     const docSnap = await getDoc(docRef);
 
-    //     //const instructor = [];
-    //     const currentCourses = [];
-    //     //const instructorsCol = collection(db, 'Instructor');
-    //     //setLoading(true);
+    // //     if(docSnap.exists()){
+    // //         console.log("Document data:", docSnap.data());
+    // //     }
+    // //     else {
+    // //         console.log("No such document!");
+    // //         return -1;
+    // //     }
 
-    //     const getDataCourses = onSnapshot(docSnap, (querySnapshot) => {
-    //       docSnap.forEach((doc) => {
-    //           currentCourses.push(doc.data());
-    //       });
-    //       setCurrentClasses(currentCourses);
-    //       return currentCourses;
-    //     }); 
+    // //     //const instructor = [];
+    // //     const currentCourses = [];
+    // //     //const instructorsCol = collection(db, 'Instructor');
+    // //     //setLoading(true);
+
+    // //     const getDataCourses = onSnapshot(docSnap, (querySnapshot) => {
+    // //       docSnap.forEach((doc) => {
+    // //           currentCourses.push(doc.data());
+    // //       });
+    // //       setCurrentClasses(currentCourses);
+    // //       return currentCourses;
+    // //     }); 
         
-     }
-    // function closeNavLink() {
-    //     window.scroll(0,0);
-    // }
-    // function Schedule (db){
+    //  }
+    // // function closeNavLink() {
+    // //     window.scroll(0,0);
+    // // }
+    // // function Schedule (db){
+
+    // // }
+
+    // // function Roster(event) {
+
+    // // }
+
+    // // function Grades () {
+
+    // // }
+
+    // async function getRoster (db) {
 
     // }
 
-    // function Roster(event) {
+    // async function getGrades(db) {
+
 
     // }
-
-    // function Grades () {
-
-    // }
-
-    async function getRoster (db) {
-
-    }
-
-    async function getGrades(db) {
-
-
-    }
 
     useEffect(() => {
         setLoading(true);
-        // GetInfo(db)
+        getStudentCourses(db);
         // getStudents(db);
         // getTclasses(db);
         // getLclasses(db);
@@ -131,16 +147,16 @@ export default function InstructorView() {
                                     <th>Class</th>
                                     <th>Time</th>
                                     <th>Location</th>
-                                    <th>Meeting Times</th>
-                                    <th> Enrolled</th>
+                                    <th>Section</th>
+                                    <th>Size</th>
                                 </tr>
                             { CurrentClasses.map((Class) => (
                                 <tr>
-                                    <td> { Class.name } </td>
-                                    <td> { Class.time } </td>
-                                    <td> { Class.location } </td>
-                                    <td> { Class.date } </td>
-                                    <td> {Class.Enrolled } </td>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Size } </td>
                                 </tr>
                             ))}
                         </table>               
