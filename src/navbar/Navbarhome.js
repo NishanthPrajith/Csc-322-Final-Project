@@ -2,8 +2,10 @@ import './navbarhome.css';
 import { Link } from "react-router-dom";
 import { userData } from '../contexts/userProfile';
 import { useAuth } from "../contexts/Authcontext";
+import React from 'react';
 
-export default function NavBar() {
+
+export default function NavBar(){
   const { logout } = useAuth();
 
   function closeNavLink() {
@@ -12,20 +14,20 @@ export default function NavBar() {
 
   return (
     <div>
-      <nav>
+      <nav className = "Navbar">
         <div className="firstNav">
           { !userData.getStatus() &&
           <Link to='/' onClick={closeNavLink}>
-            <p className="logo">CCNYZero</p>
+            <h1 className="navbar-logo">CCNYZero<i className="fab fa-react"></i><Link to ='/'></Link></h1>
           </Link>
           }
-          <div>
+          <div className="nav-menu">
             <Link to='/AboutUs' onClick={closeNavLink}>
-              <p className="links">About Us</p>
+              <p className="nav-links">About Us</p>
             </Link>
             {(userData.getRole() === 1) &&
               <Link to='/instructorView' onClick={closeNavLink}>
-                <p className="links">Instructor Center</p>
+                <p className="nav-links">Instructor Center</p>
               </Link>
             }
             {
@@ -36,27 +38,27 @@ export default function NavBar() {
             }
             {(userData.getRole() === 0) &&
               <Link to='/Studentview' onClick={closeNavLink}>
-                <p className="links">Student Center</p>
+                <p className="nav-links">Student Center</p>
               </Link>
             }
              {(userData.getRole() === 0) &&
               <Link to='/StudentRegister' onClick={closeNavLink}>
-                <p className="links">Enroll Page</p>
+                <p className="nav-links">Enroll Page</p>
               </Link>
             }
             {(userData.getRole() === 2) &&
               <Link to='/RegistrarsApplication' onClick={closeNavLink}>
-                <p className="links">Review Applications</p>
+                <p className="nav-links">Review Applications</p>
               </Link>
             }
             {(userData.getRole() === 2) &&
               <Link to='/Registrarscomplains' onClick={closeNavLink}>
-                <p className="links">Review Complains</p>
+                <p className="nav-links">Review Complains</p>
               </Link>
             }
             {((userData.getRole() === 2) && (userData.getPeriod() === 0)) &&
               <Link to='/Regclasssetup' onClick={closeNavLink}>
-                <p className="links">Class set-up period</p>
+                <p className="nav-links">Class set-up period</p>
               </Link>
             }
           </div>

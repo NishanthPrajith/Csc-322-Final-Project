@@ -42,3 +42,78 @@ nav a {
   position: absolute;
   right: 50px;
 }
+
+.Navbar {
+  background: linear-gradient(90deg, rgb(151, 28, 233) 0%, rgb(131, 9, 231) 100%);
+  height: 80px;
+  justify-content: left;
+  align-items: center;
+  font-size: 1.2rem;
+}
+
+.navbar-logo {
+  color: white;
+  justify-self: start;
+  margin-left: 20px;
+  cursor: pointer;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.fa-react{
+  margin-left: 0.5rem;
+  font-size: 1.6rem;
+}
+
+.nav-menu {
+  display:grid;
+  grid-template-columns: repeat(5, auto);
+  grid-gap: 10px;
+  list-style: none;
+  text-align: left;
+  width: 70vw;
+  margin-right: 2rem;
+}
+
+.nav-links{
+  color: white;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+}
+
+.nav-links:hover {
+  background: rgb(255, 255, 255);
+  color: rgb(184, 42, 240);
+  border-radius: 3px;
+  transition: all 0.2 ease-out;
+}
+
+.fa-bars {
+  color: white;
+}
+
+.firstNav button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.firstNav button:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.signout{
+  font-family: sans-serif;
+}
+
+.username{
+  font-family: sans-serif;
+  color: white;
+}

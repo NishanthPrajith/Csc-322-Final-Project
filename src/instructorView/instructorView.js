@@ -198,7 +198,7 @@ export default function InstructorView() {
                         </div>
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
-                            <label for="options">Choose an option:</label>
+                            <label for="options">Choose an option: </label>
                             <select>
                                 <option value ="schedule" selected ="schedule" >Schedule</option>
                                 <option value="record">Record</option>
