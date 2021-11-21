@@ -49,21 +49,6 @@
     text-align: center;
   }
 
-  .Dropdown {
-    float: left;
-    padding: 2%;
-  }
-
-  .Display {
-    float: right;
-    right: 300px;
-  }
-
-  .MyInfo {
-    float: left;
-    bottom: 100px;
-  }
-
 .Card {
   width: 300px;
   height: 480px;
@@ -81,7 +66,7 @@
 
 .upper-container{
   height: 100px;
-  background: linear-gradient(to left, rgb(26, 242, 250), rgb(28, 17, 177));
+  background: linear-gradient(to left, rgb(4, 219, 226), rgb(82, 0, 102));
 }
 
 .image-container img{
@@ -141,7 +126,7 @@ img{
 
 .upper-container2{
   height: 100px;
-  background: linear-gradient(to left, rgb(26, 242, 250), rgb(28, 17, 177));
+  background: linear-gradient(to left, rgb(26, 242, 250), rgb(82, 0, 102));
 }
 
 .lower-container2{
@@ -162,10 +147,32 @@ img{
   font-size: 1.5rem;
 }
 
+.studentPage{
+  height: 90vh;
+  background-image: url("http://www.nycbw.com/files/The-City-College-of-New-York.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: 100%;
+  background-blend-mode: screen;
+}
 
 
+.Dropdown {
+  float: left;
+  padding: 1.25%;
+}
 
+.Display {
+  position: absolute;
+  float: right;
+  top: 55px;
+  right: 50px;
+}
 
+.MyInfo {
+  float: left;
+
+}
   /* .dd{
 
  } */
