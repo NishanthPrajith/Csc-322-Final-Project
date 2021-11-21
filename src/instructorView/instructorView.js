@@ -154,7 +154,7 @@ export default function InstructorView() {
                     <div className='Card'>
                         <div className='upper-container'>
                             <div className='image-container'>
-                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
+                                <img src= "https://i.pravatar.cc/150?img=17" alt='' height="100px" width="100px"/>
                             </div>
                         </div>
                         <div className="lower-container">

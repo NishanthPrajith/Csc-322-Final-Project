@@ -1,9 +1,10 @@
 import './studentView.css'
 import { userData } from '../contexts/userProfile';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react'
+import { db } from "../firebase.js";
 import Tabs from '../components/Tabs';
-import { getDoc } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 export default function StudentView() {
@@ -14,14 +15,19 @@ export default function StudentView() {
    const [Loading, setLoading] = useState('false');
 
 
-    //  async function getCourses(db) {
-    // //     var myUserId = firebase.auth().currentUser.uid;
-    //  }
-
-    // async function getEnroll(db) {
-
-    // }
-
+    async function getStudentCourses(db) {
+        const coursesCol = collection(db, 'Students', userData.getUd(),"Courses");
+        setLoading(true);
+       onSnapshot(coursesCol, (querySnapshot) => {
+          const student = [];
+          querySnapshot.forEach((doc) => {
+              student.push(doc.data());
+          });
+          console.log(student);
+          setCurrentClasses(student);
+        });
+        setLoading(false);
+      }
      async function getWarnings(db){
 
         // var e = document.getElementById("dd1");
@@ -51,6 +57,11 @@ export default function StudentView() {
     }
         // <select defaultValue={this.state.selectValue} 
  // onChange={this.handleChange} 
+
+ useEffect(() => {
+    setLoading(true);
+    getStudentCourses(db);
+  }, []);
 
     return (
         <div>
@@ -93,17 +104,17 @@ export default function StudentView() {
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
-                                    <th>Location</th>
-                                    <th>Meeting Times</th>
-                                    <th> Enrolled</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                    <th> Instructor</th>
                                 </tr>
                             { CurrentClasses.map((Class) => (
                                 <tr>
-                                    <td> { Class.name } </td>
-                                    <td> { Class.time } </td>
-                                    <td> { Class.location } </td>
-                                    <td> { Class.date } </td>
-                                    <td> {Class.Enrolled } </td>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
                                 </tr>
                             ))}
                         </table>               
@@ -118,7 +129,7 @@ export default function StudentView() {
                     <div className='Card'>
                         <div className='upper-container'>
                             <div className='image-container'>
-                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
+                                <img src= "https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px"/>
                             </div>
                         </div>
                         <div className="lower-container">
