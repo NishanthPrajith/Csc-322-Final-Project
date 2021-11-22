@@ -3,8 +3,9 @@ import { userData } from '../contexts/userProfile';
 import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
+import { useHistory } from 'react-router-dom';
 import Tabs from '../components/Tabs';
-import { getDoc,collection,onSnapshot, addDoc } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot, setDoc,doc,addDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
@@ -12,7 +13,10 @@ import { FaStar } from "react-icons/fa";
 
 
 export default function StudentView() {
-
+    const history = useHistory();
+   const instname = useRef();
+   const classname = useRef(); 
+   const experience = useRef();  
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [Loading, setLoading] = useState('false');
@@ -83,10 +87,13 @@ export default function StudentView() {
     async function submitreview(){
         await addDoc(collection(db, "Reviews"), {
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            Course: "Course",
+            Course: document.getElementById("input-class").value,
+            InstructorName: document.getElementById("input-name").value,
             Rating: currentValue,
-            Review: "Review"    
+            Review: document.getElementById("input-details").value 
           });
+          alert("Review submitted, Thank you for your Feedback!");
+          await history.push('Studentview');  
     }
 
  useEffect(() => {
@@ -114,11 +121,8 @@ export default function StudentView() {
 
   const colors = {
     violet: "#c722e0",
-    grey: "#a9a9a9",
-    
-
-    
-};
+    grey: "#a9a9a9",  
+    };
 
     return (
         <div className ='studentPage'>
@@ -249,8 +253,8 @@ export default function StudentView() {
                         {(OptionSelected.value === "rate") && <div className="rating"style={styles.container}>
                             <h2> Ratings </h2>
                             
-                            <textarea className="input-name"placeholder="What's the instructor's name?" style={styles.textarea2} />
-                            <textarea className="input-class"placeholder="What's the class?" style={styles.textarea2} />
+                            <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the instructor's name?" style={styles.textarea2} />
+                            <textarea className="input-class" id = "input-class" ref={classname} placeholder="What's the class?" style={styles.textarea2} />
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
                                 return (
@@ -269,9 +273,9 @@ export default function StudentView() {
                                 )
                              })}
                             </div>
-                                <textarea className="input-details"placeholder="What's your experience?" style={styles.textarea} />
+                                <textarea className="input-details" id="input-details"ref={experience} placeholder="What's your experience?" style={styles.textarea} />
 
-                            <button className="button"> Submit </button>
+                            <button onClick = {submitreview}className="button"> Submit </button>
       
                      </div>  
                         }   
