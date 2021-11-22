@@ -40,10 +40,8 @@ const [complains, setStudents] = useState([]);
     getInstructor(db);
   }, []);
 
-
   // IMPLEMENT LATER
-  async function ComplaintPopup(){
-  
+  async function HandleComplaint(){
   }
 
   async function InstructorWarn(a,b){
@@ -65,9 +63,11 @@ const [complains, setStudents] = useState([]);
               <td> { complain.SentBy } </td>
               <td> { complain.IssuedName } </td>
               <td> { complain.Complaint } </td>
-              <td> <button onClick={() => ComplaintPopup()}>Complaint</button></td>
+              <td> <button onClick={() => HandleComplaint()}>Handle</button></td>
             </tr>
+            
           ))}
+          
         </table>
         <table className = "xFac">
             <h2>Reviews</h2>

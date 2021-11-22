@@ -216,7 +216,7 @@ export default function RegistrarsApplications() {
             </table>
             </>}
             handleClose={togglecourseAssignclosePopup}
-            />}
+             />}
         </div>
     );
 }
