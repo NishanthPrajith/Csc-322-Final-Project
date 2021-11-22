@@ -83,7 +83,7 @@ const [students, setStudents] = useState([]);
                                                      )}>Warn</button>
                     <button onClick={() => De_Register(student.firstname,
                                                      student.lastname
-                                                     )}>de-register</button></td>
+                                                     )}>De-register</button></td>
                                                      
             </tr>
           ))}
