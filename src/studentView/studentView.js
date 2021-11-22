@@ -13,20 +13,18 @@ import { FaStar } from "react-icons/fa";
 
 export default function StudentView() {
 
-   const [Student, setStudent] = useState('');
-   const [CurrentClasses, setCurrentClasses] = useState([]);
-   const [Loading, setLoading] = useState('false');
-   const [InputValue, setInputValue] = useState('');
-   const [OptionSelected, setOptionSelected] = useState("schedule");
-   const instructorRef = useRef();
-   const courseRef = useRef();
-//    console.log(OptionSelected);
-   const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
+    const [Student, setStudent] = useState('');
+    const [CurrentClasses, setCurrentClasses] = useState([]);
+    const [Loading, setLoading] = useState('false');
+    const [InputValue, setInputValue] = useState('');
+    const [OptionSelected, setOptionSelected] = useState("schedule");
+    const instructorRef = useRef();
+    const courseRef = useRef();
+    const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
                     {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
                     {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
-  // const [ScheduleSelected, setScheduleSelected] = useState('false');
 
-  const handleInputChange = value => {
+    const handleInputChange = value => {
       setInputValue(value);
   }
 
@@ -47,7 +45,8 @@ export default function StudentView() {
         });
         setLoading(false);
       }
-     async function getWarnings(db){
+    
+    async function getWarnings(db){
 
         // var e = document.getElementById("dd1");
         // var strUser = e;
@@ -57,6 +56,7 @@ export default function StudentView() {
         console.log(src); 
         }
      }
+    
     async function getCourses(db){
             
         
@@ -64,6 +64,7 @@ export default function StudentView() {
             console.log(src); 
             }
         }
+
     async function getRoster(db){
 
         // var e = document.getElementById("dd1");
@@ -223,21 +224,15 @@ export default function StudentView() {
                         </table>    
                         }
 
-                        {(OptionSelected.value === "complaints") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
+                        {(OptionSelected.value === "complaints") && <div className="complaint"style={styles.container}>
+                        <h2> Complaint </h2>
+                            
+                            <textarea className="input-name" placeholder="What's the name?" style={styles.textarea2} />
+                            
+                            <textarea className="input-details"placeholder="Describe your issue." style={styles.textarea} />
 
+                            <button className="button"> Submit </button>  
+                        </div>
                         }       
                         {(OptionSelected.value === "rate") && <div className="rating"style={styles.container}>
                             <h2> Ratings </h2>
