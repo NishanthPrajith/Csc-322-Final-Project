@@ -234,7 +234,7 @@ export default function StudentView() {
                         </table>    
 
                         }       
-                        {(OptionSelected.value == "6") && <div style={styles.container}>
+                        {(OptionSelected.value == "rate") && <div style={styles.container}>
                             <h2> Ratings </h2>
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
