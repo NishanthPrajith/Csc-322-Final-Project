@@ -69,6 +69,9 @@ const [students, setStudents] = useState([]);
         <h2>See all Graduate Students and Instructors</h2>
         <div className= "studentsLabel">
         <h1>Student List</h1></div>
+        <div className= "teacherLabel">
+          <h1>Instructor List</h1>
+        </div>
         <table className = "xStu">
             <tr>
                 <th>First Name</th>

@@ -56,6 +56,12 @@
   height: calc(100% - 60px);
 }
 
+.teacherLabel {
+  position: absolute;
+  top: 250px;
+  right: 300px;
+}
+
 .studentsLabel {
   position: relative;
   left: -550px;
