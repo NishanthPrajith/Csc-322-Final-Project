@@ -4,23 +4,22 @@ import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
 import Tabs from '../components/Tabs';
-import { getDoc,collection,onSnapshot } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot, addDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
 import { FaStar } from "react-icons/fa";
 
-
 export default function StudentView() {
 
-    const [Student, setStudent] = useState('');
-    const [CurrentClasses, setCurrentClasses] = useState([]);
-    const [Loading, setLoading] = useState('false');
-    const [InputValue, setInputValue] = useState('');
-    const [OptionSelected, setOptionSelected] = useState("schedule");
-    const instructorRef = useRef();
-    const courseRef = useRef();
-    const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
+   const [Student, setStudent] = useState('');
+   const [CurrentClasses, setCurrentClasses] = useState([]);
+   const [Loading, setLoading] = useState('false');
+   const [InputValue, setInputValue] = useState('');
+   const [OptionSelected, setOptionSelected] = useState("schedule");
+   const instructorRef = useRef();
+   const courseRef = useRef();
+   const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
                     {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
                     {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
 
@@ -82,6 +81,14 @@ export default function StudentView() {
     //     //this.setState({value: event.target.value});
     //     // setOptionSelected(this.state.value);
     // }
+    async function submitreview(){
+        await addDoc(collection(db, "Reviews"), {
+            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
+            Course: "Course",
+            Rating: currentValue,
+            Review: "Review"    
+          });
+    }
 
  useEffect(() => {
     setLoading(true);
@@ -127,11 +134,8 @@ export default function StudentView() {
                         </div>
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
-                            {/*<label for="options">Choose an option:  </label>*/}
+            
                             <Select className ="Selection" options = { options } value ={OptionSelected} onInputChange = {handleInputChange} onChange = {handleChange}>
-                            {/* {options.map((option) => (
-                            <option value={option.value}>{option.label}</option>
-                            ))}  */}
                             </Select>
                         </div>
                     </div>
