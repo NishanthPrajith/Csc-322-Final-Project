@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
 import { FaStar } from "react-icons/fa";
 
+
 export default function StudentView() {
 
    const [Student, setStudent] = useState('');
@@ -92,11 +93,14 @@ export default function StudentView() {
     setLoading(true);
     getStudentCourses(db);
   }, []);
+
+
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0)
 
   const handleClick = value => {
+    console.log(value)
     setCurrentValue(value)
   }
 
@@ -109,9 +113,12 @@ export default function StudentView() {
   }
 
   const colors = {
-    orange: "#FFBA5A",
-    grey: "#a9a9a9"
-    };
+    violet: "#c722e0",
+    grey: "#a9a9a9",
+    
+
+    
+};
 
     return (
         <div className ='studentPage'>
@@ -239,9 +246,11 @@ export default function StudentView() {
                         </table>    
 
                         }       
-                        {(OptionSelected.value == "rate") && <div style={styles.container}>
+                        {(OptionSelected.value === "rate") && <div className="rating"style={styles.container}>
                             <h2> Ratings </h2>
-                            <textarea placeholder="What's your experience?" style={styles.textarea} />
+                            
+                            <textarea className="input-name"placeholder="What's the instructor's name?" style={styles.textarea2} />
+                            <textarea className="input-class"placeholder="What's the class?" style={styles.textarea2} />
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
                                 return (
@@ -251,7 +260,7 @@ export default function StudentView() {
                                     onClick={() => handleClick(index + 1)}
                                     onMouseOver={() => handleMouseOver(index + 1)}
                                     onMouseLeave={handleMouseLeave}
-                                    color={(hoverValue || currentValue) > index ? colors.orange : colors.grey}
+                                    color={(hoverValue || currentValue) > index ? colors.violet : colors.grey}
                                     style={{
                                         marginRight: 10,
                                         cursor: "pointer"
@@ -260,9 +269,9 @@ export default function StudentView() {
                                 )
                              })}
                             </div>
-                                <textarea placeholder="What's your experience?" style={styles.textarea} />
+                                <textarea className="input-details"placeholder="What's your experience?" style={styles.textarea} />
 
-                            <button onClick = {submitreview}style={styles.button}> Submit </button>
+                            <button className="button"> Submit </button>
       
                      </div>  
                         }   
@@ -308,31 +317,7 @@ export default function StudentView() {
             </div> 
         </Container>                    
         
-            {/*<div label="Schedule" onClick = {getCourses}>
-                        <table className = "CourseStyler">
-                            <tr>
-                                <th>Class</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Meeting Times</th>
-                                <th> Enrolled</th>
-                            </tr>
-                        { CurrentClasses.map((Class) => (
-                            <tr>
-                                <td> { Class.name } </td>
-                                <td> { Class.time } </td>
-                                <td> { Class.location } </td>
-                                <td> { Class.date } </td>
-                                <td> {Class.Enrolled } </td>
-                            </tr>
-                        ))}
-                        </table>
-                        </div>*/}
-          
-              {/* <form classname="dd" id="dd1"> */}
-
-                        {/* <input type="submit" value="Submit"/> */}
-            {/* /</div>/</form>    */}
+            
         </div>
 
     
@@ -357,20 +342,15 @@ const styles = {
       minHeight: 100,
       width: 300
     },
-    button: {
-      border: "1px solid #a9a9a9",
-      borderRadius: 5,
-      width: 300,
-      padding: 10,
-    }
+    textarea2: {
+        border: "1px solid #a9a9a9",
+        borderRadius: 5,
+        padding: 10,
+        margin: "10px 0",
+        minHeight: 40,
+        width: 100
+    },
   
   };
 
-/* <Container className = "MyInfo" maxWidth = "sm">
-                <Typography component="div" style={{ backgroundColor: 'Green'}}>
-                    <div>
-                        <div>Student Information</div>       
-                        { Studentaboutme() }
-                    </div>
-                </Typography>
-            </Container>  */
+
