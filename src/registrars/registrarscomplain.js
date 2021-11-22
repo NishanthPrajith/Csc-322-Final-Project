@@ -1,4 +1,5 @@
 import './gradMembers.css';
+import './registrarscomplain.css';
 import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';

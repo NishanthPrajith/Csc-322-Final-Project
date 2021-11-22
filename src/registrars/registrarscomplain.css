@@ -1,0 +1,38 @@
+.xStu button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    color: purple;
+  }
+  
+  .xStu button:hover{
+    padding: 8px 20px;
+    transition: all 0.3s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
+  }
+
+  .xFac button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    color: purple;
+  }
+  
+  .xFac button:hover{
+    padding: 8px 20px;
+    transition: all 0.3s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
+  }
+
+  .studentsRegView h2{
+      color:black;
+  }
+

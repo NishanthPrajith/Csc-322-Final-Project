@@ -13,7 +13,7 @@
   
   .xApplication th {
     background-color: #7d5cc6;
-    color: rgb(22, 10, 10);
+    color: white;
     padding: 1% 0%;
     width: 14.29%;
   }
@@ -24,4 +24,21 @@
   
   .applicationHeading h1, .applicationHeading p {
     padding-left: 5%;
+  }
+
+  .xApplication button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor:pointer;
+    color: purple;
+  }
+  
+  .xApplication button:hover{
+    padding: 8px 20px;
+    transition: all 0.3s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
   }
