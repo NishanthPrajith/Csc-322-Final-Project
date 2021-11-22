@@ -46,13 +46,14 @@
 }
 
 .studentsRegView {
-  text-align: center;
+  color: #7d5cc6;
   margin-left: 25%;
   margin-bottom: 10%;
   height: 50vh;
   margin: 3%;
   float: left;
   width: 94%;
+  height: calc(100% - 60px);
 }
 
 .studentsRegView h2 {

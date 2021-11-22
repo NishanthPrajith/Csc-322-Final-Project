@@ -31,8 +31,10 @@ export default function Regclasssetup(){
 
     return(
         <div>
-            <p>REG CLASS SET UP </p>
-            <p>During the class set up period the registrars set up classes, class time, course instructors and class size.</p>
+            <h2>REG CLASS SET UP </h2>
+            <h>During the class set up period the registrars set up classes, class time, course instructors and class size.</h>
+            <br></br>
+            <br></br>
             <div className="form">
             <p className="title"> Create Class </p>
             <form className="login-form" id="cc1">

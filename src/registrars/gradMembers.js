@@ -66,6 +66,7 @@ const [students, setStudents] = useState([]);
 
     return (
         <div className= "studentsRegView">
+        <h2>See all Graduate Students and Instructors</h2>
         <table className = "xStu">
             <tr>
                 <th>First Name</th>
