@@ -309,31 +309,7 @@ export default function StudentView() {
             </div> 
         </Container>                    
         
-            {/*<div label="Schedule" onClick = {getCourses}>
-                        <table className = "CourseStyler">
-                            <tr>
-                                <th>Class</th>
-                                <th>Time</th>
-                                <th>Location</th>
-                                <th>Meeting Times</th>
-                                <th> Enrolled</th>
-                            </tr>
-                        { CurrentClasses.map((Class) => (
-                            <tr>
-                                <td> { Class.name } </td>
-                                <td> { Class.time } </td>
-                                <td> { Class.location } </td>
-                                <td> { Class.date } </td>
-                                <td> {Class.Enrolled } </td>
-                            </tr>
-                        ))}
-                        </table>
-                        </div>*/}
-          
-              {/* <form classname="dd" id="dd1"> */}
-
-                        {/* <input type="submit" value="Submit"/> */}
-            {/* /</div>/</form>    */}
+            
         </div>
 
     
@@ -375,11 +351,4 @@ const styles = {
   
   };
 
-/* <Container className = "MyInfo" maxWidth = "sm">
-                <Typography component="div" style={{ backgroundColor: 'Green'}}>
-                    <div>
-                        <div>Student Information</div>       
-                        { Studentaboutme() }
-                    </div>
-                </Typography>
-            </Container>  */
+
