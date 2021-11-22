@@ -175,14 +175,15 @@ p {
 .rating h2{
   margin: 50px;
   padding: 0;
-  color: black;
+  color: purple;
   font-weight: 600;
   font-size: 1.5rem;
   font-family: "Titillium Web", sans-serif;
   margin-top: 60px;
+  text-align: "center";
 }
 
-.firstNav button {
+.button {
   padding: 8px 20px;
   border-radius: 4px;
   outline: none;
@@ -191,7 +192,7 @@ p {
   color: purple;
 }
 
-.firstNav button:hover{
+.button:hover{
   padding: 8px 20px;
   transition: all 0.3s ease-out;
   background: rgb(184, 42, 240);
