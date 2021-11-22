@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
 import Tabs from '../components/Tabs';
-import { getDoc,collection,onSnapshot } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot, addDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
@@ -19,7 +19,6 @@ export default function StudentView() {
    const [OptionSelected, setOptionSelected] = useState("schedule");
    const instructorRef = useRef();
    const courseRef = useRef();
-//    console.log(OptionSelected);
    const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
                     {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
                     {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
@@ -80,12 +79,19 @@ export default function StudentView() {
     //     //this.setState({value: event.target.value});
     //     // setOptionSelected(this.state.value);
     // }
+    async function submitreview(){
+        await addDoc(collection(db, "Reviews"), {
+            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
+            Course: "Course",
+            Rating: currentValue,
+            Review: "Review"    
+          });
+    }
 
  useEffect(() => {
     setLoading(true);
     getStudentCourses(db);
   }, []);
-
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0)
@@ -105,8 +111,7 @@ export default function StudentView() {
   const colors = {
     orange: "#FFBA5A",
     grey: "#a9a9a9"
-    
-};
+    };
 
     return (
         <div className ='studentPage'>
@@ -236,6 +241,7 @@ export default function StudentView() {
                         }       
                         {(OptionSelected.value == "rate") && <div style={styles.container}>
                             <h2> Ratings </h2>
+                            <textarea placeholder="What's your experience?" style={styles.textarea} />
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
                                 return (
@@ -256,7 +262,7 @@ export default function StudentView() {
                             </div>
                                 <textarea placeholder="What's your experience?" style={styles.textarea} />
 
-                            <button style={styles.button}> Submit </button>
+                            <button onClick = {submitreview}style={styles.button}> Submit </button>
       
                      </div>  
                         }   
