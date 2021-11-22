@@ -56,6 +56,12 @@
   height: calc(100% - 60px);
 }
 
+.studentsLabel {
+  position: relative;
+  left: -550px;
+  color: #7d5cc6;
+}
+
 .studentsRegView h2 {
   font-size: 2rem;
   padding-bottom: 2%;
