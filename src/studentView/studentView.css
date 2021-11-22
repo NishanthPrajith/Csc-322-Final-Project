@@ -158,6 +158,7 @@ p {
 .Dropdown {
   float: left;
   padding: 1.25%;
+  
 }
 
 .Display {
@@ -169,6 +170,37 @@ p {
 
 .MyInfo {
   float: left;
+}
+
+.rating h2{
+  margin: 50px;
+  padding: 0;
+  color: black;
+  font-weight: 600;
+  font-size: 1.5rem;
+  font-family: "Titillium Web", sans-serif;
+  margin-top: 60px;
+}
+
+.firstNav button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.firstNav button:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.signout{
+  font-family: sans-serif;
 }
 /* .dd{
 

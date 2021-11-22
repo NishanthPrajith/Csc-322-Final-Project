@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
 import { FaStar } from "react-icons/fa";
 
+
 export default function StudentView() {
 
    const [Student, setStudent] = useState('');
@@ -86,11 +87,13 @@ export default function StudentView() {
     getStudentCourses(db);
   }, []);
 
+
   const [currentValue, setCurrentValue] = useState(0);
   const [hoverValue, setHoverValue] = useState(undefined);
   const stars = Array(5).fill(0)
 
   const handleClick = value => {
+    console.log(value)
     setCurrentValue(value)
   }
 
@@ -105,6 +108,7 @@ export default function StudentView() {
   const colors = {
     orange: "#FFBA5A",
     grey: "#a9a9a9"
+
     
 };
 
@@ -234,8 +238,11 @@ export default function StudentView() {
                         </table>    
 
                         }       
-                        {(OptionSelected.value == "rate") && <div style={styles.container}>
+                        {(OptionSelected.value == "rate") && <div className="rating"style={styles.container}>
                             <h2> Ratings </h2>
+                            
+                            <textarea className="input-name"placeholder="What's their name?" style={styles.textarea2} />
+                            <textarea className="input-class"placeholder="What's the class?" style={styles.textarea2} />
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
                                 return (
@@ -254,7 +261,7 @@ export default function StudentView() {
                                 )
                              })}
                             </div>
-                                <textarea placeholder="What's your experience?" style={styles.textarea} />
+                                <textarea className="input-details"placeholder="What's your experience?" style={styles.textarea} />
 
                             <button style={styles.button}> Submit </button>
       
@@ -350,6 +357,14 @@ const styles = {
       margin: "20px 0",
       minHeight: 100,
       width: 300
+    },
+    textarea2: {
+        border: "1px solid #a9a9a9",
+        borderRadius: 5,
+        padding: 10,
+        margin: "10px 0",
+        minHeight: 5,
+        width: 100
     },
     button: {
       border: "1px solid #a9a9a9",
