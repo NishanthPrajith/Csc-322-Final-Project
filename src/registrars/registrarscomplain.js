@@ -5,32 +5,31 @@ import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 
 export default function RegistrarsComplain(){
-const [students, setStudents] = useState([]);
-  const [Instructor, setTclasses] = useState([]);
+const [complains, setStudents] = useState([]);
+  const [Reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getStudents(db) {
-    const studentsCol = collection(db, 'Students');
+    const complainsCol = collection(db, 'Complaints');
     setLoading(true);
-   onSnapshot(studentsCol, (querySnapshot) => {
-      const student = [];
+   onSnapshot(complainsCol, (querySnapshot) => {
+      const complain = [];
       querySnapshot.forEach((doc) => {
-          student.push(doc.data());
+          complain.push(doc.data());
       });
-      setStudents(student);
+      setStudents(complain);
     });
     setLoading(false);
   }
   async function getInstructor(db) {
-    const schoolsCol = collection(db, 'Instructor');
+    const reviewsCol = collection(db, 'Reviews');
     setLoading(true);
-    onSnapshot(schoolsCol, (querySnapshot) => {
-      const topratingclass = [];
+    onSnapshot(reviewsCol, (querySnapshot) => {
+      const review = [];
       querySnapshot.forEach((doc) => {
-          topratingclass.push(doc.data());
+          review.push(doc.data());
       });
-      console.log(topratingclass)
-      setTclasses(topratingclass.slice(0,5));
+      setReviews(review);
     });
     setLoading(false);
   }
@@ -39,7 +38,6 @@ const [students, setStudents] = useState([]);
     setLoading(true);
     getStudents(db);
     getInstructor(db);
-
   }, []);
 
 
@@ -58,16 +56,15 @@ const [students, setStudents] = useState([]);
         <table className = "xStu">
           <h2>Complaints</h2>
             <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Type</th>
-              <th>Complain</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Complaint</th>
             </tr>
-            { students.map((student) => (
+            { complains.map((complain) => (
             <tr>
-              <td> { student.firstname } </td>
-              <td> { student.lastname } </td>
-              <td> { student.lastname } </td>
+              <td> { complain.SentBy } </td>
+              <td> { complain.IssuedName } </td>
+              <td> { complain.Complaint } </td>
               <td> <button onClick={() => ComplaintPopup()}>Complaint</button></td>
             </tr>
           ))}
@@ -75,17 +72,22 @@ const [students, setStudents] = useState([]);
         <table className = "xFac">
             <h2>Reviews</h2>
             <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Complain</th>
+                <th>Name</th>
+                <th>Course</th>
+                <th>Instructor</th>
+                <th>Rating</th>
+                <th>Review</th>
             </tr>
-          { Instructor.map((tclass) => (
+          { Reviews.map((review) => (
             <tr>
-              <td> { tclass.firstname} </td>
-              <td> { tclass.lastname} </td>
+              <td> { review.SentBy} </td>
+              <td> { review.Course} </td>
+              <td> { review.InstructorName} </td>
+              <td> { review.Rating} </td>
+              <td> { review.Review} </td>
               <td>
-                <button onClick={() => InstructorWarn(tclass.firstname,
-                                                      tclass.lastname
+                <button onClick={() => InstructorWarn(review.firstname,
+                                                      review.lastname
                                                       )}>Warn</button>
               </td>
             </tr>
