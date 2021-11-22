@@ -32,7 +32,74 @@
     transition: 250ms;
   }
 
-  .studentsRegView h2{
+  .xStu h2{
       color:black;
+  }
+
+  .xFac h2{
+    color:black;
+  }
+
+  .xStu th {
+    background-color: #7d5cc6;
+    color: white;
+    padding: 2% 0%;
+    width: 33%;
+  }
+  
+  .xStu td {
+    padding: 2% 0%;
+  }
+  
+  .xStu {
+    float: left;
+    width: 30%;
+    margin: 0% 5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xStu tr {
+    width: 100%;
+    text-align: center;
+  }
+  .xFac th {
+    background-color: #7d5cc6;
+    color: white;
+    padding: 2% 0%;
+    width: 33%;
+  }
+  
+  .xFac td {
+    padding: 2% 0%;
+  }
+  
+  .xFac {
+    float: right;
+    width: 30%;
+    margin: 0% 5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xFac tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .studentsRegView {
+    text-align: center;
+    margin-left: 25%;
+    margin-bottom: 10%;
+    height: 50vh;
+    margin: 3%;
+    float: left;
+    width: 94%;
+  }
+  
+  .studentsRegView h2 {
+    font-size: 2rem;
+    padding-bottom: 2%;
+    color: #7d5cc6;
   }
 

@@ -1,4 +1,3 @@
-import './gradMembers.css';
 import './registrarscomplain.css';
 import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
@@ -55,8 +54,9 @@ const [students, setStudents] = useState([]);
 
     return (
         <div className= "studentsRegView">
-        <h2>Incoming Complaints</h2>
+        
         <table className = "xStu">
+          <h2>Complaints</h2>
             <tr>
               <th>First Name</th>
               <th>Last Name</th>
@@ -73,6 +73,7 @@ const [students, setStudents] = useState([]);
           ))}
         </table>
         <table className = "xFac">
+            <h2>Reviews</h2>
             <tr>
                 <th>First Name</th>
                 <th>Last Name</th>
