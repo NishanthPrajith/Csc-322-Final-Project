@@ -16,6 +16,7 @@ export default function StudentView() {
    const instname = useRef();
    const classname = useRef(); 
    const experience = useRef();  
+   const complaint = useRef();
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [Loading, setLoading] = useState('false');
@@ -94,6 +95,16 @@ export default function StudentView() {
             Review: document.getElementById("input-details").value 
           });
           alert("Review submitted, Thank you for your Feedback!");
+          await history.push('Studentview');  
+    }
+
+    async function submitComplaint(){
+        await addDoc(collection(db, "Complaints"), {
+            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
+            IssuedName: document.getElementById("input-name").value,
+            Complaint: document.getElementById("input-details").value 
+          });
+          alert("Complaint submitted, Thank you for your Feedback!");
           await history.push('Studentview');  
     }
 
@@ -235,11 +246,11 @@ export default function StudentView() {
                         {(OptionSelected.value === "complaints") && <div className="complaint"style={styles.container}>
                         <h2> Complaint </h2>
                             
-                            <textarea className="input-name" placeholder="What's the name?" style={styles.textarea2} />
+                            <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the name?" style={styles.textarea2} />
                             
-                            <textarea className="input-details"placeholder="Describe your issue." style={styles.textarea} />
+                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
 
-                            <button className="button"> Submit </button>  
+                            <button onClick ={submitComplaint} className="button"> Submit </button>  
                         </div>
                         }       
                         {(OptionSelected.value === "rate") && <div className="rating"style={styles.container}>
