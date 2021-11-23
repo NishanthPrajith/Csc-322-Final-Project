@@ -52,16 +52,19 @@
 }
 
 .xStu {
-  margin-right: 10px;
-  width: 30%;
-  margin: 0% 5%;
-  border: none;
-  border-collapse: collapse;
+  table-layout: initial;
+  width: 40px;
 }
 
 .xStu tr {
   width: 100%;
   text-align: center;
+}
+
+.xStu .Compla {
+  width: 100px; /* adjust the value to fit your needs */
+  word-wrap: break-word;
+  display: inline-block;
 }
 .xFac th {
   background-color: #7d5cc6;
@@ -75,9 +78,9 @@
 }
 
 .xFac {
-  float: right;
-  width: 30%;
-  margin: 0% 5%;
+  table-layout: auto;
+  margin-left: right;
+  width: 50%;
   border: none;
   border-collapse: collapse;
 }
@@ -85,6 +88,11 @@
 .xFac tr {
   width: 100%;
   text-align: center;
+}
+.xFac .Review {
+  width: 100px; /* adjust the value to fit your needs */
+  word-wrap: break-word;
+  display: inline-block;
 }
 
 .studentsRegView {

@@ -108,7 +108,7 @@ const [complains, setStudents] = useState([]);
             <tr>
               <td> { complain.SentBy } </td>
               <td> { complain.IssuedName } </td>
-              <td> { complain.Complaint } </td>
+              <td className="Compla"> { complain.Complaint } </td>
               <td> <button onClick={() => HandleComplaint()}>Handle</button></td>
             </tr>
             
@@ -130,7 +130,7 @@ const [complains, setStudents] = useState([]);
               <td> { review.Course} </td>
               <td> { review.InstructorName} </td>
               <td> { review.Rating} </td>
-              <td> { review.Review} </td>
+              <td className="Review"> { review.Review} </td>
               <td>
                 <button onClick={() => InstructorWarn(review.Review,
                                                       )}>Warn</button>
