@@ -1,20 +1,21 @@
-.title {
-    width: 100%;
+
+  
+  .createclass-form {
     text-align: left;
-    font-size: 1.8rem;
-    font-weight: 600;
   }
-  
-  .form {
-    text-align: center;
+
+  .create-class .createclass-form{
+    padding-left: 4%;
   }
+
+
   
-  .form input {
+  .createclass-form input {
     outline: 0;
     border-radius: 15px;
     border: 1px #d2d2d7 solid;
-    width: 100%;
-    margin: 0 0 15px;
+    width: 45%;
+    margin: 10px 10px;
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
@@ -27,12 +28,12 @@
     color: red;
   }
   
-  .form button {
+  .create-page .class-button {
     text-transform: uppercase;
     outline: 0;
     border-radius: 15px;
-    background: #0071e3;
-    width: 100%;
+    background: rgb(149, 9, 214);
+    width: 30%;
     border: 0;
     padding: 15px;
     color: #0f0101;
@@ -40,16 +41,34 @@
     -webkit-transition: all 0.3 ease;
     transition: all 0.3 ease;
     cursor: pointer;
+    transform: translateX(112%);
   }
-  .form .message {
+
+  .class-button:hover{
+    padding: 15px;
+    transition: all 0.5s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
+  }
+  .createclass-form  .message {
     margin: 15px 0 0;
     color: #b3b3b3;
     font-size: 12px;
   }
-  .form .message a {
+  .createclass-form  .message a {
     color: #0071e3;
     text-decoration: none;
   }
-  .form .register-form {
+  .createclass-form  .register-form {
     display: none;
   }
+
+  .create-page h1{
+    padding-left: 5%;
+  }
+
+  .create-page p{
+    padding-left: 5%;
+  }
+
