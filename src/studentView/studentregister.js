@@ -63,7 +63,8 @@ async function getCourses(db) {
             DayTime: daytime,
             Room: room,
             Secion: section,
-            Instructor: instructor
+            Instructor: instructor,
+            Instructoruiid: instructoruiid
           });
           alert("Class is filled up, you have been placed on the wait list");
         }
@@ -79,7 +80,8 @@ async function getCourses(db) {
           DayTime: daytime,
           Room: room,
           Secion: section,
-          Instructor: instructor
+          Instructor: instructor,
+          Instructoruiid: instructoruiid
         });
           // constant used to updat the class size
         let updateclasssize = parseInt(size);

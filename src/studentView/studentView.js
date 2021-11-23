@@ -10,15 +10,25 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
 import { FaStar } from "react-icons/fa";
+import ComplainPopup from './studentcomplainPopup';
+import ComplaintPopup from './complainPopup';
+import RatePopup from './ratePopus';
+
+var instUid;
+var course;
 
 export default function StudentView() {
-    const history = useHistory();
+   const history = useHistory();
    const instname = useRef();
    const classname = useRef(); 
    const experience = useRef();  
    const complaint = useRef();
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
+   const [complainpopup, setIsOpen] = useState(false);
+   const [complainpopup1, setIsOpen1] = useState(false);
+   const [ratepopus, setrateIsOpen] = useState(false);
+   const [Warnings, setWarnings] = useState([]);
    const [Loading, setLoading] = useState('false');
    const [InputValue, setInputValue] = useState('');
    const [OptionSelected, setOptionSelected] = useState("schedule");
@@ -35,6 +45,32 @@ export default function StudentView() {
   const handleChange = value => {
     setOptionSelected(value);
   }
+  // complainpopup
+  const complainPopUp = () => {
+    setIsOpen(!complainpopup);
+    }
+  async function complainclosePopUp () {
+    setIsOpen(!complainpopup);
+    }
+
+    // complainpopup1
+  const complainPopUp1 = () => {
+    setIsOpen1(!complainpopup1);
+    }
+  async function complainclosePopUp1 () {
+    setIsOpen1(!complainpopup1);
+    }
+
+    // ratepopup
+  const ratePopup = (a,b) => {
+    course = a;
+    instUid = b; 
+    setrateIsOpen(!ratepopus);
+    }
+
+  async function closeratePopup () {
+    setrateIsOpen(!ratepopus);
+    }
 
     async function getStudentCourses(db) {
         const coursesCol = collection(db, 'Students', userData.getUd(),"Courses");
@@ -51,14 +87,17 @@ export default function StudentView() {
       }
     
     async function getWarnings(db){
-
-        // var e = document.getElementById("dd1");
-        // var strUser = e;
-        // console.log(strUser); // en
-        
-        function la(src){
-        console.log(src); 
-        }
+        const warnCol = collection(db, 'Students', userData.getUd(),"Warnings");
+        setLoading(true);
+       onSnapshot(warnCol, (querySnapshot) => {
+          const warning = [];
+          querySnapshot.forEach((doc) => {
+              warning.push(doc.data());
+          });
+          console.log(warning);
+          setWarnings(warning);
+        });
+        setLoading(false);
      }
     
     async function getCourses(db){
@@ -79,23 +118,26 @@ export default function StudentView() {
         console.log(src); 
         }                    
     }
-        // <select defaultValue={this.state.selectValue} 
- // onChange={this.handleChange} 
-    //  async function handleChange(event) {
-    //      console.log(event);
-    //     //this.setState({value: event.target.value});
-    //     // setOptionSelected(this.state.value);
-    // }
+    async function Complain(){
+        complainPopUp();
+    }
+    async function Complain1(){
+        complainPopUp1();
+    }
+    async function Rate(a,b){
+        ratePopup(a,b);
+    }
     async function submitreview(){
         await addDoc(collection(db, "Reviews"), {
+            SentByUIID: userData.getUd(),
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            Course: document.getElementById("input-class").value,
-            InstructorName: document.getElementById("input-name").value,
+            Course: course,
+            InstructorName: instUid,
             Rating: currentValue,
             Review: document.getElementById("input-details").value 
           });
           alert("Review submitted, Thank you for your Feedback!");
-          await history.push('Studentview');  
+          closeratePopup();
     }
 
     async function submitComplaint(){
@@ -111,6 +153,7 @@ export default function StudentView() {
  useEffect(() => {
     setLoading(true);
     getStudentCourses(db);
+    getWarnings(db);
   }, []);
 
 
@@ -139,6 +182,26 @@ export default function StudentView() {
     return (
         <div className ='studentPage'>
         <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
+        <Container className = "MyInfo" maxWidth = "false">
+            <div className ="MyInfo">
+                    <div className='Card'>
+                    <div className='upper-container'>
+                            <div className='image-container'>
+                                <img src= "https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px"/>
+                            </div>
+                    </div>
+                    <div className="lower-container">
+                            <h3>Student Information</h3>
+                            <p>First Name: {userData.getFirstname()}</p>
+                            <p>Last Name: {userData.getLastname()}</p>
+                            <p>Date of Birth: {userData.getDob()}</p>
+                            <p>GPA: {userData.getGPA()}</p>
+                            <p>EMPL: {userData.getEmpl()}</p>
+                            <p>Email: {userData.getEmail()}</p>
+                    </div>
+                </div>
+            </div> 
+        </Container> 
         <Container className = "Dropdown" maxWidth = "false">
                 <div> 
                     <div className='Card2'>
@@ -172,7 +235,7 @@ export default function StudentView() {
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
-                                    <td> { Class.Section } </td>
+                                    <td> { Class.Secion } </td>
                                     <td> {Class.Instructor } </td>
                                 </tr>
                             ))}
@@ -243,21 +306,104 @@ export default function StudentView() {
                         </table>    
                         }
 
-                        {(OptionSelected.value === "complaints") && <div className="complaint"style={styles.container}>
-                        <h2> Complaint </h2>
-                            
-                            <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the name?" style={styles.textarea2} />
-                            
-                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
+                        {(OptionSelected.value === "complaints") && <table className className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                    <th>Instructor</th>
+                                </tr>
+                            {CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
+                                    <td><button onClick={Complain}className="button">Complain</button></td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }       
+                        {(OptionSelected.value === "rate") && <table className = "CourseStyler">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                    <th> Instructor</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
+                                    <td><button onClick = {() => Rate(Class.Class, 
+                                                                      Class.Instructoruiid                                  
+                                                                     )}>Rate</button></td>
+                                </tr>
+                            ))}
+                        </table>     
+                        }   
+                
+                        {(OptionSelected.value === "warning") && <table className>
+                                <tr>
+                                    <th>Class</th>
+                                </tr>
+                            { Warnings.map((warn) => (
+                                <tr>
+                                    <td> { warn.warn } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }    
+                </div>
+            </Container>  
 
+      
+        {complainpopup && <ComplainPopup
+            content={<>
+                <table className="xCourses">
+                <tr>
+                    <th>Class</th>
+                    <th>Day/Time</th>
+                    <th>Room</th>
+                    <th>Section</th>
+                    <th>Size</th>
+                    <th></th>
+                </tr>
+                {CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
+                                    <td><button onClick = {Complain1}className="button">Complain</button></td>
+                                </tr>
+                            ))}
+                </table>
+            </>}
+            handleClose={complainclosePopUp}
+            />}
+        
+        {complainpopup1 && <ComplaintPopup
+            content={<>
+                <div className="complaint"style={styles.container}>
+                        <h2> Complaint </h2>
+                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
                             <button onClick ={submitComplaint} className="button"> Submit </button>  
                         </div>
-                        }       
-                        {(OptionSelected.value === "rate") && <div className="rating"style={styles.container}>
+            </>}
+            handleClose={complainclosePopUp1}
+            />} 
+        {ratepopus && <RatePopup
+            content={<>
+                <div className="rating"style={styles.container}>
                             <h2> Ratings </h2>
-                            
-                            <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the instructor's name?" style={styles.textarea2} />
-                            <textarea className="input-class" id = "input-class" ref={classname} placeholder="What's the class?" style={styles.textarea2} />
                             <div style={styles.stars}>
                             {stars.map((_, index) => {
                                 return (
@@ -277,57 +423,12 @@ export default function StudentView() {
                              })}
                             </div>
                                 <textarea className="input-details" id="input-details"ref={experience} placeholder="What's your experience?" style={styles.textarea} />
-
                             <button onClick = {submitreview}className="button"> Submit </button>
-      
-                     </div>  
-                        }   
-                        
-                        
-                        {(OptionSelected.value === "warning") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }    
-     
-                </div>
-            </Container>  
-
-        <Container className = "MyInfo" maxWidth = "false">
-            <div className ="MyInfo">
-                    <div className='Card'>
-                    <div className='upper-container'>
-                            <div className='image-container'>
-                                <img src= "https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px"/>
-                            </div>
-                    </div>
-                    <div className="lower-container">
-                            <h3>Student Information</h3>
-                            <p>First Name: {userData.getFirstname()}</p>
-                            <p>Last Name: {userData.getLastname()}</p>
-                            <p>Date of Birth: {userData.getDob()}</p>
-                            <p>GPA: {userData.getGPA()}</p>
-                            <p>EMPL: {userData.getEmpl()}</p>
-                            <p>Email: {userData.getEmail()}</p>
-                    </div>
-                </div>
-            </div> 
-        </Container>                    
-        
-            
-        </div>
-
-    
+                     </div> 
+            </>}
+            handleClose={closeratePopup}
+            />}                    
+    </div>
     );
 }
 
@@ -357,7 +458,6 @@ const styles = {
         minHeight: 40,
         width: 100
     },
-  
   };
 
 
