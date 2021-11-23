@@ -187,7 +187,8 @@ export default function StudentView() {
             }
             // add the doc to the warnings
             await addDoc(collection(db, "Students",userData.getUd(),"Warnings"), {
-                Warn: "You have been given a warnings for taboo words"
+                Warn: "You have been given one warnings for taboo words",
+                numofWarn: 1
               });              
             await addDoc(collection(db, "Reviews"), {
                 SentByUIID: userData.getUd(),
@@ -217,7 +218,8 @@ export default function StudentView() {
           }
           // add the doc to the warnings
           await addDoc(collection(db, "Students",userData.getUd(),"Warnings"), {
-            Warn: "You have been given two warnings for taboo words"
+            Warn: "You have been given two warnings for taboo words",
+            numofWarn: 2
           });
           alert("You have too many taboo words, review failed to submit unsuccessfully");
           await history.push('Studentview');
@@ -407,7 +409,9 @@ export default function StudentView() {
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
                                     <td> {Class.Instructor } </td>
-                                    <td><button onClick={Complain}className="button">Complain</button></td>
+                                    <td><button onClick={() => Complain(Class.Class,
+                                                                        Class.Instructoruiid 
+                                    )}className="button">Complain</button></td>
                                 </tr>
                             ))}
                         </table>    

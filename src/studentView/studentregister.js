@@ -1,6 +1,6 @@
 import './studentregister.css'
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
@@ -44,7 +44,7 @@ async function getCourses(db) {
             querySnapshot.forEach((doc) => {
                 course.push(doc.data());
             });
-            console.log("line 47 "+ course[0].Student);
+            // console.log("line 47 "+ course[0].Student);
             setStudent(course);
             });
         // now we need to perfrom a query to see if the student is in the course
@@ -71,9 +71,12 @@ async function getCourses(db) {
         // if the class is not filled then...
        else {
         // put the student in the instrcutors roster
-        await setDoc(doc(db, "Instructor", instructoruiid,"Courses", classs, "Roster",classs), {
-            Student: userData.getUd()
-          });
+        await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+          Student: userData.getUd()
+        });        
+        // await addDoc(doc(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+        //     Student: userData.getUd()
+        //   });
           // put the course in student database
         await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
           Class: classs,

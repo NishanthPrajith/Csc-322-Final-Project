@@ -36,7 +36,6 @@ const [complains, setStudents] = useState([]);
           complain.push(doc.data());
       });
       setInstructor(complain);
-      changeUI()
     });
     setLoading(false);
     // changeUI();
@@ -55,34 +54,34 @@ const [complains, setStudents] = useState([]);
     setLoading(false);
   }
   // change UI
-  function changeUI(){
-    console.log(Reviews.length);
-    console.log(Instructor.length);
-    for(let i = 0; i<Instructor.length; i++){
-      for(let j= 0; j<Reviews.length; j++){
-        console.log("hi");
-        if(Instructor[i].useruiid === Reviews[j].InstructorName){
-          instuid = Instructor[i].useruiid;
-          instName = Instructor[i].firstname + " " + Instructor[i].lastname;
-          console.log(instName);
-          Reviews[j].InstructorName = Instructor[i].firstname + " " + Instructor[i].lastname;
-          console.log(Reviews);
-          // // average formula
-          // let t_total = (Instructor[i].Reviews) * (Instructor[i].numReviews);
-          // let new_total = (t_total) + (Reviews[j].Rating);
-          // let new_updated_total = (new_total)/((Instructor[i].numReviews) + 1);
-          // console.log(new_updated_total);
-          // let newReviews = (Instructor[i].numReviews) + 1;
-          // const instRef = doc(db, "Instructor", Instructor[i].useruiid);
-          // updateDoc(instRef, {
-          //   Reviews: new_updated_total,
-          //   numReviews:newReviews
-          // });
-          Reviews[j].Rating = Instructor[i].Review;
-        }
-      }
-    }
-  }
+  // function changeUI(){
+  //   console.log(Reviews.length);
+  //   console.log(Instructor.length);
+  //   for(let i = 0; i<Instructor.length; i++){
+  //     for(let j= 0; j<Reviews.length; j++){
+  //       console.log("hi");
+  //       if(Instructor[i].useruiid === Reviews[j].InstructorName){
+  //         instuid = Instructor[i].useruiid;
+  //         instName = Instructor[i].firstname + " " + Instructor[i].lastname;
+  //         console.log(instName);
+  //         Reviews[j].InstructorName = Instructor[i].firstname + " " + Instructor[i].lastname;
+  //         console.log(Reviews);
+  //         // // average formula
+  //         // let t_total = (Instructor[i].Reviews) * (Instructor[i].numReviews);
+  //         // let new_total = (t_total) + (Reviews[j].Rating);
+  //         // let new_updated_total = (new_total)/((Instructor[i].numReviews) + 1);
+  //         // console.log(new_updated_total);
+  //         // let newReviews = (Instructor[i].numReviews) + 1;
+  //         // const instRef = doc(db, "Instructor", Instructor[i].useruiid);
+  //         // updateDoc(instRef, {
+  //         //   Reviews: new_updated_total,
+  //         //   numReviews:newReviews
+  //         // });
+  //         Reviews[j].Rating = Instructor[i].Review;
+  //       }
+  //     }
+  //   }
+  // }
 
   useEffect(() => {
     setLoading(true);
