@@ -58,11 +58,11 @@
 
 .teacherLabel {
   position: absolute;
-  top: 250px;
-  right: 300px;
+  top: 110px;
+  right: 275px;
 }
 
-.studentsLabel {
+.studentsRegView .studentsLabel {
   position: relative;
   left: -550px;
   color: #7d5cc6;
