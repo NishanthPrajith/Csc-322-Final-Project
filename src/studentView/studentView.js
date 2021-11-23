@@ -5,7 +5,7 @@ import React from 'react'
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
 import Tabs from '../components/Tabs';
-import { getDoc,collection,onSnapshot, setDoc,doc,addDoc } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
@@ -18,6 +18,7 @@ var instUid;
 var course;
 
 export default function StudentView() {
+    const taboowords = ["shit","dang","damn"];
    const history = useHistory();
    const instname = useRef();
    const classname = useRef(); 
@@ -25,6 +26,7 @@ export default function StudentView() {
    const complaint = useRef();
    const [Student, setStudent] = useState('');
    const [CurrentClasses, setCurrentClasses] = useState([]);
+   const [Instructor, setInstructor] = useState([]);
    const [complainpopup, setIsOpen] = useState(false);
    const [complainpopup1, setIsOpen1] = useState(false);
    const [ratepopus, setrateIsOpen] = useState(false);
@@ -87,7 +89,7 @@ export default function StudentView() {
       }
     
     async function getWarnings(db){
-        const warnCol = collection(db, 'Students', userData.getUd(),"Warnings");
+        const warnCol = collection(db, 'Students');
         setLoading(true);
        onSnapshot(warnCol, (querySnapshot) => {
           const warning = [];
@@ -99,6 +101,20 @@ export default function StudentView() {
         });
         setLoading(false);
      }
+
+     async function getInstructor1(db) {
+        const complainsCol = collection(db, 'Instructor');
+        setLoading(true);
+       onSnapshot(complainsCol, (querySnapshot) => {
+          const complain = [];
+          querySnapshot.forEach((doc) => {
+              complain.push(doc.data());
+          });
+          console.log(complain);
+          setInstructor(complain);
+        });
+        setLoading(false);
+      }
     
     async function getCourses(db){
             
@@ -128,16 +144,84 @@ export default function StudentView() {
         ratePopup(a,b);
     }
     async function submitreview(){
-        await addDoc(collection(db, "Reviews"), {
-            SentByUIID: userData.getUd(),
-            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            Course: course,
-            InstructorName: instUid,
-            Rating: currentValue,
-            Review: document.getElementById("input-details").value 
+        // average formula 
+        for(let i = 0; i<Instructor.length; i++){
+            if(Instructor[i].useruiid === instUid){
+                var fullname = Instructor[i].firstname + " " + Instructor[i].lastname;
+                  let t_total = (Instructor[i].Review) * (Instructor[i].numReview);
+                  let new_total = (t_total) + (currentValue);
+                  var new_updated_total = (new_total)/((Instructor[i].numReview) + 1);
+                  const updated_num_review = ((Instructor[i].numReview) + 1);
+                  const washingtonRef = doc(db, "Instructor", Instructor[i].useruiid);
+                  // Set the "capital" field of the city 'DC'
+                  await updateDoc(washingtonRef, {
+                  Review: new_updated_total,
+                  numReview: updated_num_review
+                  });
+            }
+        }
+        // check for taboo words and give them a warning 
+        let check = document.getElementById("input-details").value
+        check = check.split(' ');
+        let count = 0;
+        console.log(check);
+        for(let i = 0; i<check.length; i++){
+            if(taboowords.includes(check[i])){
+                check[i] = "*";
+                ++count;
+            }
+        }
+        check = check.join(" ");
+        if(count<3){
+            // author recieves one warning 
+            for(let i = 0; i<Warnings.length; i++){
+                if(Warnings[i].useruiid === userData.getUd()){
+                    var warncount = Warnings[i].numWarn;
+                    warncount += 1;
+                    const washingtonRef = doc(db, "Students",userData.getUd());
+                // Set the "capital" field of the city 'DC'
+                await updateDoc(washingtonRef, {
+                    numWarn: warncount
+                });
+              }
+            }
+            // add the doc to the warnings
+            await addDoc(collection(db, "Students",userData.getUd(),"Warnings"), {
+                Warn: "You have been given a warnings for taboo words"
+              });              
+            await addDoc(collection(db, "Reviews"), {
+                SentByUIID: userData.getUd(),
+                SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
+                Course: course,
+                InstructorName: fullname,
+                InstructorUiid: instUid,
+                InstructoravgReview: (new_updated_total).toFixed(2),
+                Rating: currentValue,
+                Review: check 
+              });
+              alert("Review submitted, Thank you for your Feedback!");
+              closeratePopup();
+        }
+        if (count>=3){
+           // author recieves two warning 
+           for(let i = 0; i<Warnings.length; i++){
+            if(Warnings[i].useruiid === userData.getUd()){
+                var warncount = Warnings[i].numWarn;
+                warncount += 2;
+                const washingtonRef = doc(db, "Students",userData.getUd());
+                // Set the "capital" field of the city 'DC'
+                await updateDoc(washingtonRef, {
+                    numWarn: warncount
+                });
+            }
+          }
+          // add the doc to the warnings
+          await addDoc(collection(db, "Students",userData.getUd(),"Warnings"), {
+            Warn: "You have been given two warnings for taboo words"
           });
-          alert("Review submitted, Thank you for your Feedback!");
-          closeratePopup();
+          alert("You have too many taboo words, review failed to submit unsuccessfully");
+          await history.push('Studentview');
+        }
     }
 
     async function submitComplaint(){
@@ -154,6 +238,7 @@ export default function StudentView() {
     setLoading(true);
     getStudentCourses(db);
     getWarnings(db);
+    getInstructor1(db);
   }, []);
 
 

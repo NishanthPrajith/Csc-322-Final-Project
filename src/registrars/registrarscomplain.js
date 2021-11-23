@@ -1,5 +1,5 @@
 import './registrarscomplain.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
@@ -12,10 +12,9 @@ const [complains, setStudents] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
   const [loading, setLoading] = useState(false);
-  const taboowords = []
+  const taboowords = ["shit","dang","damn"];
 
   async function getStudents(db) {
-    console.log("hi");
     const complainsCol = collection(db, 'Complaints');
     setLoading(true);
    onSnapshot(complainsCol, (querySnapshot) => {
@@ -36,10 +35,11 @@ const [complains, setStudents] = useState([]);
       querySnapshot.forEach((doc) => {
           complain.push(doc.data());
       });
-      console.log(complain);
       setInstructor(complain);
+      changeUI()
     });
     setLoading(false);
+    // changeUI();
   }
 
   async function getInstructor(db) {
@@ -47,34 +47,41 @@ const [complains, setStudents] = useState([]);
     setLoading(true);
     onSnapshot(reviewsCol, (querySnapshot) => {
       const review = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach((doc) => { 
           review.push(doc.data());
       });
-      console.log(review);
-      for(let i = 0; i<Instructor.length; i++){
-        for(let j= 0; j<review.length; j++){
-          if(Instructor[i].useruiid === review[j].InstructorName){
-            instuid = Instructor[i].useruiid;
-            instName = Instructor[i].firstname + " " + Instructor[i].lastname;
-            review[j].InstructorName = instName;
-            // average formula
-            let t_total = (Instructor[i].Review) * (Instructor[i].numReview);
-            let new_total = (t_total) + (review[j].Rating);
-            let new_updated_total = (new_total)/((Instructor[i].numReview) + 1);
-            let newreview = (Instructor[i].numReview) + 1;
-            const instRef = doc(db, "Instructor", Instructor[i].useruiid);
-            // await updateDoc(instRef, {
-            //   Review: new_updated_total,
-            //   numReview:newreview
-            // });
-            review[j].Rating = new_updated_total;
-          }
-        }
-      }
-      console.log(review);
       setReviews(review);
     });
     setLoading(false);
+  }
+  // change UI
+  function changeUI(){
+    console.log(Reviews.length);
+    console.log(Instructor.length);
+    for(let i = 0; i<Instructor.length; i++){
+      for(let j= 0; j<Reviews.length; j++){
+        console.log("hi");
+        if(Instructor[i].useruiid === Reviews[j].InstructorName){
+          instuid = Instructor[i].useruiid;
+          instName = Instructor[i].firstname + " " + Instructor[i].lastname;
+          console.log(instName);
+          Reviews[j].InstructorName = Instructor[i].firstname + " " + Instructor[i].lastname;
+          console.log(Reviews);
+          // // average formula
+          // let t_total = (Instructor[i].Reviews) * (Instructor[i].numReviews);
+          // let new_total = (t_total) + (Reviews[j].Rating);
+          // let new_updated_total = (new_total)/((Instructor[i].numReviews) + 1);
+          // console.log(new_updated_total);
+          // let newReviews = (Instructor[i].numReviews) + 1;
+          // const instRef = doc(db, "Instructor", Instructor[i].useruiid);
+          // updateDoc(instRef, {
+          //   Reviews: new_updated_total,
+          //   numReviews:newReviews
+          // });
+          Reviews[j].Rating = Instructor[i].Review;
+        }
+      }
+    }
   }
 
   useEffect(() => {
@@ -88,11 +95,29 @@ const [complains, setStudents] = useState([]);
   async function HandleComplaint(){
   }
 
-  async function InstructorWarn(a){
-    var avgReview;
-    // for()
-
+  async function InstructorWarn(a,b){
+  // Add a new document in collection "cities"
+  // const random  = Math.floor(Math.random() * 100)
+  if(b<3){
+    for(let i = 0; i<Instructor.length; i++){
+      if(Instructor[i].useruiid === a){
+        var count = Instructor[i].numWarn;
+        count  = ++count;
+        const washingtonRef = doc(db, "Instructor",a);
+      // Set the "capital" field of the city 'DC'
+      await updateDoc(washingtonRef, {
+        numWarn: count
+      });
+    }
+    await addDoc(collection(db, "Instructor",a,"Warnings"), {
+      Warn: "You have been Reviewed with a low rating. Please imporve your effort in teaching.",
+    });
   }
+  if(count===3){
+    alert("Instrcutor has been suspended");
+    }
+  }
+}
 
     return (
         <div className= "studentsRegView">
@@ -129,10 +154,11 @@ const [complains, setStudents] = useState([]);
               <td> { review.SentBy} </td>
               <td> { review.Course} </td>
               <td> { review.InstructorName} </td>
-              <td> { review.Rating} </td>
+              <td> { review.InstructoravgReview} </td>
               <td className="Review"> { review.Review} </td>
               <td>
-                <button onClick={() => InstructorWarn(review.Review,
+                <button onClick={() => InstructorWarn(review.InstructorUiid,
+                                                      review.InstructoravgReview
                                                       )}>Warn</button>
               </td>
             </tr>
