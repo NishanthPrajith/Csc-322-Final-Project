@@ -30,22 +30,22 @@ export default function Regclasssetup(){
     }
 
     return(
-        <div>
-            <h2>REG CLASS SET UP </h2>
-            <h>During the class set up period the registrars set up classes, class time, course instructors and class size.</h>
+        <div className="create-page">
+            <h1>Create A Class</h1>
+            <p>During the class set up period the registrars set up classes, class time, course instructors and class size.</p>
             <br></br>
             <br></br>
-            <div className="form">
-            <p className="title"> Create Class </p>
-            <form className="login-form" id="cc1">
+            <div className="create-class">
+            <form className="createclass-form" id="cc1">
               <input type="number" ref={classRef} className="five" placeholder="Class" autoComplete="off" required />
               <input type="text" ref={secRef} placeholder="Section" autoComplete="off" required />
               <input type="text" ref={dayRef} className="five" placeholder="Days & Time" autoComplete="off" required />
               <input type="number" ref={roomRef} className="five" placeholder="Room" autoComplete="off" required />
               <input type="number" ref={sizeRef} className="five" placeholder="Class Size" autoComplete="off" required />
               <p id="error" className="error">Failed to add class, try again</p>
-              <button  onClick={createClass}>Create</button>
+             
             </form>
+            <button className="class-button" onClick={createClass}>Create</button>
           </div>
         </div>
     );
