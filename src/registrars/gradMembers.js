@@ -77,6 +77,7 @@ const [students, setStudents] = useState([]);
                 <th>First Name</th>
                 <th>Last Name</th>
                 <th>Empl</th>
+                <th>UIID</th>
                 <th></th>
             </tr>
             { students.map((student) => (
@@ -84,6 +85,7 @@ const [students, setStudents] = useState([]);
               <td> { student.firstname } </td>
               <td> { student.lastname } </td>
               <td> { student.empl } </td>
+              <td> { student.useruiid } </td>
               <td><button onClick={() => StudentWarn(student.firstname,
                                                      student.lastname
                                                      )}>Warn</button>
@@ -98,12 +100,14 @@ const [students, setStudents] = useState([]);
             <tr>
               <th>First Name</th>
               <th>Last Name</th>
+              <th>UIID</th>
               <th></th>
             </tr>
           { Instructor.map((tclass) => (
             <tr>
               <td> { tclass.firstname} </td>
               <td> { tclass.lastname} </td>
+              <td> { tclass.useruiid} </td>
               <td>
                 <button onClick={() => InstructorWarn(tclass.firstname,
                                                       tclass.lastname

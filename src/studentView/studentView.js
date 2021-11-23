@@ -16,7 +16,8 @@ import RatePopup from './ratePopus';
 
 var instUid;
 var course;
-
+var InstructorTable;
+var complainUiid;
 export default function StudentView() {
     const taboowords = ["shit","dang","damn"];
    const history = useHistory();
@@ -31,6 +32,7 @@ export default function StudentView() {
    const [complainpopup1, setIsOpen1] = useState(false);
    const [ratepopus, setrateIsOpen] = useState(false);
    const [Warnings, setWarnings] = useState([]);
+   const [ClassStudents, setClassStudents] = useState([]);
    const [Loading, setLoading] = useState('false');
    const [InputValue, setInputValue] = useState('');
    const [OptionSelected, setOptionSelected] = useState("schedule");
@@ -134,10 +136,53 @@ export default function StudentView() {
         console.log(src); 
         }                    
     }
-    async function Complain(){
-        complainPopUp();
-    }
-    async function Complain1(){
+    async function Complain(a,b){
+        // Get the Instructor
+        const docRef = doc(db, "Instructor", b);
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+        InstructorTable = docSnap
+        console.log("Document data:", docSnap.data());
+        } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+        }
+        // Get the students in the class
+        const stuCol = collection(db, 'Instructor',b,"Courses",a,"Roster");
+        setLoading(true);
+        onSnapshot(stuCol, (querySnapshot) => {
+        const complain = [];
+        querySnapshot.forEach((doc) => {
+            complain.push(doc.data());
+        });
+        console.log(complain);
+        for(let i = 0; i<complain.length; i++){
+            for(let j = 0; j<Warnings.length; j++){
+                if(complain[i].Student===Warnings[j].useruiid){
+                    complain[i].StudentName = Warnings[j].firstname + " " + Warnings[j].lastname
+                }
+                if(complain[i].Student=== userData.getUd()){
+                    continue
+                }
+            }
+        }
+        setClassStudents(complain);
+        });
+        setLoading(false);
+    complainPopUp();
+}
+    async function Complain1(a){
+        complainUiid = a;
+        for(let i = 0; i<Instructor.length; i++){
+            if(Instructor[i].useruiid===a){
+                complainUiid = Instructor[i].firstname + " " + Instructor[i].lastname;
+            }
+        }
+        for(let i = 0; i<Warnings.length; i++){
+            if(Warnings[i].useruiid===a){
+                complainUiid = Warnings[i].firstname + " " + Warnings[i].lastname;
+            }
+        }
         complainPopUp1();
     }
     async function Rate(a,b){
@@ -229,7 +274,7 @@ export default function StudentView() {
     async function submitComplaint(){
         await addDoc(collection(db, "Complaints"), {
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            IssuedName: document.getElementById("input-name").value,
+            IssuedName: complainUiid,
             Complaint: document.getElementById("input-details").value 
           });
           alert("Complaint submitted, Thank you for your Feedback!");
@@ -396,7 +441,7 @@ export default function StudentView() {
 
                         {(OptionSelected.value === "complaints") && <table className className = "CourseStyler">
                                 <tr>
-                                    <th>Class</th>
+                                    <th>Name</th>
                                     <th>Time</th>
                                     <th>Room</th>
                                     <th>Section</th>
@@ -457,22 +502,28 @@ export default function StudentView() {
         {complainpopup && <ComplainPopup
             content={<>
                 <table className="xCourses">
+                    <h1>Instructor</h1>
                 <tr>
-                    <th>Class</th>
-                    <th>Day/Time</th>
-                    <th>Room</th>
-                    <th>Section</th>
-                    <th>Size</th>
+                    <th>Name</th>
                     <th></th>
                 </tr>
-                {CurrentClasses.map((Class) => (
                                 <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                    <td> { Class.Secion } </td>
-                                    <td> {Class.Instructor } </td>
-                                    <td><button onClick = {Complain1}className="button">Complain</button></td>
+                                    <td> { InstructorTable.data().firstname+ " " + InstructorTable.data().lastname } </td>
+                                    <td><button onClick = {() => Complain1(InstructorTable.data().useruiid                              
+                                                                     )}className="button">Complain</button></td>
+                                </tr>
+                </table>
+                <table className="xCourses">
+                    <h1>Students</h1>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+                { ClassStudents.map((Class) => (
+                                <tr>
+                                    <td> { Class.StudentName } </td>
+                                    <td><button onClick = {() => Complain1(Class.Student                                
+                                                                     )}className="button">Complain</button></td>
                                 </tr>
                             ))}
                 </table>
