@@ -247,7 +247,7 @@ export default function InstructorView() {
                             </div>
                     </div>
                     <div className="lower-container">
-                            <h3>Student Information</h3>
+                            <h3>Instructor Information</h3>
                             <p>First Name: {userData.getFirstname()}</p>
                             <p>Last Name: {userData.getLastname()}</p>
                             <p>Date of Birth: {userData.getDob()}</p>
