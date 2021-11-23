@@ -182,26 +182,7 @@ export default function StudentView() {
     return (
         <div className ='studentPage'>
         <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
-        <Container className = "MyInfo" maxWidth = "false">
-            <div className ="MyInfo">
-                    <div className='Card'>
-                    <div className='upper-container'>
-                            <div className='image-container'>
-                                <img src= "https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px"/>
-                            </div>
-                    </div>
-                    <div className="lower-container">
-                            <h3>Student Information</h3>
-                            <p>First Name: {userData.getFirstname()}</p>
-                            <p>Last Name: {userData.getLastname()}</p>
-                            <p>Date of Birth: {userData.getDob()}</p>
-                            <p>GPA: {userData.getGPA()}</p>
-                            <p>EMPL: {userData.getEmpl()}</p>
-                            <p>Email: {userData.getEmail()}</p>
-                    </div>
-                </div>
-            </div> 
-        </Container> 
+         
         <Container className = "Dropdown" maxWidth = "false">
                 <div> 
                     <div className='Card2'>
@@ -220,6 +201,26 @@ export default function StudentView() {
                 </div>    
         </Container>    
 
+        <Container className = "MyInfo" maxWidth = "false">
+            <div className ="MyInfo">
+                    <div className='Card'>
+                    <div className='upper-container'>
+                            <div className='image-container2'>
+                                <img src= "https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px"/>
+                            </div>
+                    </div>
+                    <div className="lower-container">
+                            <h3>Student Information</h3>
+                            <p>First Name: {userData.getFirstname()}</p>
+                            <p>Last Name: {userData.getLastname()}</p>
+                            <p>Date of Birth: {userData.getDob()}</p>
+                            <p>GPA: {userData.getGPA()}</p>
+                            <p>EMPL: {userData.getEmpl()}</p>
+                            <p>Email: {userData.getEmail()}</p>
+                    </div>
+                </div>
+            </div> 
+        </Container>
         <Container className= "Display" maxWidth = "false" >
                 <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
                 {OptionSelected.value === "schedule" && <table className = "CourseStyler">
