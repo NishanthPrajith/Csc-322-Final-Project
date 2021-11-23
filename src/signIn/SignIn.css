@@ -36,11 +36,11 @@
   color: red;
 }
 
-.form button {
+.form .lol {
   text-transform: uppercase;
   outline: 0;
   border-radius: 15px;
-  background: rgb(4, 219, 226);
+  background: rgb(216, 216, 216);
   width: 100%;
   border: 0;
   padding: 15px;

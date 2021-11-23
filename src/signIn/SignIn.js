@@ -93,7 +93,7 @@ export default function SignIn() {
                 <p>Show password</p>
               </div>
               <p id="error" className="error">Account information was entered incorrectly or account does not exist.</p>
-              <button onClick={signIn}>login</button>
+              <button className="lol" onClick={signIn}>login</button>
               <p className="message">Not registered? <Link to="/SignUp">Create an account</Link></p><br></br>
               <p className="message">Forgot Password? <Link to="/ForgotPassword">Reset Password</Link></p><br></br>
             </form>
