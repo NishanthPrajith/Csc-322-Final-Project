@@ -1,5 +1,5 @@
 import './registrarscomplain.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, getDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
@@ -8,7 +8,7 @@ import emailjs from 'emailjs-com';
 var instName;
 var instuid;
 export default function RegistrarsComplain(){
-const [complains, setStudents] = useState([]);
+  const [complains, setStudents] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -92,32 +92,49 @@ const [complains, setStudents] = useState([]);
 
   // IMPLEMENT LATER
   async function HandleComplaint(){
+
   }
 
   async function InstructorWarn(a,b){
-  // Add a new document in collection "cities"
-  // const random  = Math.floor(Math.random() * 100)
-  if(b<3){
-    for(let i = 0; i<Instructor.length; i++){
-      if(Instructor[i].useruiid === a){
-        var count = Instructor[i].numWarn;
-        count  = ++count;
-        const washingtonRef = doc(db, "Instructor",a);
-      // Set the "capital" field of the city 'DC'
-      await updateDoc(washingtonRef, {
-        numWarn: count
+    if(b<3){
+      for(let i = 0; i<Instructor.length; i++){
+        if(Instructor[i].useruiid === a){
+          var count = Instructor[i].numWarn;
+          count  = ++count;
+          const washingtonRef = doc(db, "Instructor",a);
+        await updateDoc(washingtonRef, {
+          numWarn: count
+        });
+      }
+      await addDoc(collection(db, "Instructor",a,"Warnings"), {
+        Warn: "You have been Reviewed with a low rating. Please imporve your effort in teaching.",
       });
     }
-    await addDoc(collection(db, "Instructor",a,"Warnings"), {
-      Warn: "You have been Reviewed with a low rating. Please imporve your effort in teaching.",
-    });
   }
-  if(count===3){
-    alert("Instrcutor has been suspended");
-    }
+    // Will suspend the instructor by deleting doc and pushing to "suspended" collection
+    if(count===3){
+      // To copy a collections contents to another collection we do this:
+      const instRef = collection(db, 'Instructor');
+      setLoading(true);
+     onSnapshot(instRef, (querySnapshot) => {
+        const inst = [];
+        querySnapshot.forEach((doc) => {
+            inst.push(doc.data());
+        });
+        for(let i = 0; i<inst.length; i++){
+            if(inst[i].useruiid === a){
+                var varpush = inst[i];
+                console.log(varpush)
+                setDoc(doc(db, "Suspended", a), varpush);
+                deleteDoc(doc(db, "Instructor", a));
+                break;
+            }
+        }
+        console.log(inst);
+      });
+    alert("Instructor has been suspended");
   }
 }
-
     return (
         <div className= "studentsRegView">
         
@@ -165,4 +182,5 @@ const [complains, setStudents] = useState([]);
         </table>
       </div>
     )
+  
 }
