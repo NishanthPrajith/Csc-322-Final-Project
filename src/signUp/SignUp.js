@@ -139,7 +139,7 @@ export default function SignUp() {
                 <p>Instructor</p>
               </div>
               <p id="error" className="error">Account creation failed. Check if exists.</p>
-              <Link to="/ReSubmitpass"><button onClick={register}>Register</button></Link>
+              <Link to="/ReSubmitpass"><button className="register-button" onClick={register}>Register</button></Link>
               <p className="message" > Already registered? <Link to="/">Sign In</Link></p>
             </form>
           </div>

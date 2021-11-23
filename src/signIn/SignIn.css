@@ -40,15 +40,23 @@
   text-transform: uppercase;
   outline: 0;
   border-radius: 15px;
-  background: rgb(216, 216, 216);
+  background: rgb(149, 9, 214);
   width: 100%;
   border: 0;
   padding: 15px;
-  color: white;
+  color: black;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
   cursor: pointer;
+}
+
+.form .lol:hover{
+  padding: 15px;
+  transition: all 0.5s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
 }
 .form .message {
   margin: 15px 0 0;

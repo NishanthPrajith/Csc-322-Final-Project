@@ -36,7 +36,7 @@ export default function ForgotPassword() {
               <input type="text" ref={emailRef} className = "five" placeholder="Email" autoComplete = "off" required/>
               
               <p id = "error" className = "error">Email was entered incorrectly or does not exist.</p>
-              <button onClick = {forgotPassword}>Reset Password</button>
+              <button className="forgot-button" onClick = {forgotPassword}>Reset Password</button>
         
               <p className ="message">Go back?<Link to="/SignIn">Sign In</Link></p>
             </form>
