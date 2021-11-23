@@ -22,12 +22,20 @@ export default function SignIn() {
       const docRef1 = doc(db, "Students", useruiid); //student
       const docRef2 = doc(db, "Instructor", useruiid); // Instructor
       const docRef3 = doc(db, "Users", useruiid); // Users
+      const docRef5 = doc(db, "Suspended", useruiid); // Suspended students and instructors
       var docRef4 = doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4" ); // grading period
       const docSnap = await getDoc(docRef); // admin
       const docSnap1 = await getDoc(docRef1); //student
       const docSnap2 = await getDoc(docRef2); // Instructor
       const docSnap3 = await getDoc(docRef3); // Users
+      const docSnap5 = await getDoc(docRef5); // Users
       var docSnap4 = await getDoc(docRef4); // grading period
+      if(docSnap5.exists()){
+        alert("Error: Account suspended by the Registrars!");
+        history.push({
+          pathname: '/SignIn'
+        });
+      }
       if(docSnap3.exists()){
         alert("Error: Account does not exist OR account still pending approval by Registrars");
         history.push({

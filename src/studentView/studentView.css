@@ -217,6 +217,55 @@ p {
   margin-top: 60px;
   text-align: "center";
 }
+
+.CourseStyler-warning th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.warning-page h1{
+  padding-left: 5%;
+}
+
+.warning-page p{
+  padding-left: 5%;
+}
+
+.CourseStyler-warning td {
+  padding: 2% 0%;
+}
+
+.CourseStyler-warning {
+  float: left;
+  width: 99%;
+  margin: 2% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.CourseStyler-warning tr {
+  width: 100%;
+  text-align: center;
+}
+
+.rate-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.rate-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
 /* .dd{
 
  } */

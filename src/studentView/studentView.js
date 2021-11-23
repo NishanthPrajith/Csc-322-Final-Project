@@ -354,7 +354,7 @@ export default function StudentView() {
             </div> 
         </Container>
         <Container className= "Display" maxWidth = "false" >
-                <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
+            <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
                 {OptionSelected.value === "schedule" && <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
@@ -439,7 +439,7 @@ export default function StudentView() {
                         </table>    
                         }
 
-                        {(OptionSelected.value === "complaints") && <table className className = "CourseStyler">
+                        {(OptionSelected.value === "complaints") && <table className = "CourseStyler">
                                 <tr>
                                     <th>Name</th>
                                     <th>Time</th>
@@ -476,7 +476,7 @@ export default function StudentView() {
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
                                     <td> {Class.Instructor } </td>
-                                    <td><button onClick = {() => Rate(Class.Class, 
+                                    <td><button className="rate-button"onClick = {() => Rate(Class.Class, 
                                                                       Class.Instructoruiid                                  
                                                                      )}>Rate</button></td>
                                 </tr>
@@ -484,16 +484,21 @@ export default function StudentView() {
                         </table>     
                         }   
                 
-                        {(OptionSelected.value === "warning") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                </tr>
-                            { Warnings.map((warn) => (
-                                <tr>
-                                    <td> { warn.warn } </td>
-                                </tr>
-                            ))}
-                        </table>    
+                        {(OptionSelected.value === "warning") && <div className="warning-page">
+                            <h1>Total Warnings:</h1>
+                            <p>Reminder: Getting 3 warnings will result in a suspension!</p>
+                                <table className ="CourseStyler-warning">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                    { Warnings.map((warn) => (
+                                        <tr>
+                                            <td> { warn.warn } </td>
+                                        </tr>
+                                    ))}
+                                </table>   
+                        </div> 
                         }    
                 </div>
             </Container>  
