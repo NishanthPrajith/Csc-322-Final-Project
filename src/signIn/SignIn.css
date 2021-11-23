@@ -40,11 +40,11 @@
   text-transform: uppercase;
   outline: 0;
   border-radius: 15px;
-  background: #0071e3;
+  background: rgb(4, 219, 226);
   width: 100%;
   border: 0;
   padding: 15px;
-  color: #0f0101;
+  color: white;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
