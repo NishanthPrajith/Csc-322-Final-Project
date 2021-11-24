@@ -1,50 +1,125 @@
-.xStu th {
-  background-color: #7d5cc6;
-  color: white;
-  padding: 2% 0%;
-  width: 33%;
-}
+/* STUDENT SECTION */
 
-.xStu td {
-  padding: 2% 0%;
-}
-
-.xStu {
+.student-grad-table {
   float: left;
-  width: 30%;
-  margin: 0% 5%;
+  width: 47%;
+  margin: 3% 2%;
   border: none;
   border-collapse: collapse;
 }
 
-.xStu tr {
+.student-grad-table tr {
   width: 100%;
   text-align: center;
 }
-.xFac th {
+
+.student-grad-table th {
   background-color: #7d5cc6;
   color: white;
-  padding: 2% 0%;
-  width: 33%;
+  padding: 1% 0%;
+  width: 14.29%;
 }
 
-.xFac td {
+.student-grad-table td {
   padding: 2% 0%;
 }
 
-.xFac {
-  float: right;
-  width: 30%;
-  margin: 0% 5%;
+.student-grad-table .warn-button-grad{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.student-grad-table .warn-button-grad:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.student-grad-table .de-register-button{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.student-grad-table .de-register-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/* INSTRUCTOR SECTION */
+
+.instructor-grad {
+  float: left;
+  width: 48%;
+  margin: 3% 0.5%;
   border: none;
   border-collapse: collapse;
 }
 
-.xFac tr {
+.instructor-grad tr {
   width: 100%;
   text-align: center;
 }
 
+.instructor-grad th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 1% 0%;
+  width: 14.29%;
+}
+
+.instructor-grad td {
+  padding: 2% 0%;
+}
+
+.instructor-grad .warn-button-grad2{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.instructor-grad .warn-button-grad2:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.instructor-grad .suspend-button-grad{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.instructor-grad .suspend-button-grad:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/* MIGHT DELETE LATER */
+/*
 .studentsRegView {
   color: #7d5cc6;
   margin-left: 25%;
@@ -73,3 +148,4 @@
   padding-bottom: 2%;
   color: #7d5cc6;
 }
+*/

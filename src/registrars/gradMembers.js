@@ -64,61 +64,79 @@ const [students, setStudents] = useState([]);
 
   }
 
-    return (
-        <div className= "studentsRegView">
-        <h2>See all Graduate Students and Instructors</h2>
-        <div className= "studentsLabel">
-        <h1>Student List</h1></div>
-        <div className= "teacherLabel">
-          <h1>Instructor List</h1>
-        </div>
-        <table className = "xStu">
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Empl</th>
-                <th>UIID</th>
-                <th></th>
-            </tr>
-            { students.map((student) => (
-            <tr>
-              <td> { student.firstname } </td>
-              <td> { student.lastname } </td>
-              <td> { student.empl } </td>
-              <td> { student.useruiid } </td>
-              <td><button onClick={() => StudentWarn(student.firstname,
+  return (
+    <div className="grad-members">
+
+      <table className = "student-grad-table">
+      <h2>Student</h2>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Empl</th>
+          <th>UIID</th>
+        </tr>
+        { students.map((student) => (
+        <tr>
+          <td> { student.firstname } </td>
+          <td> { student.lastname } </td>
+          <td> { student.empl } </td>
+          <td> { student.useruiid } </td>
+          <td><button className="warn-button-grad"onClick={() => StudentWarn(student.firstname,
                                                      student.lastname
                                                      )}>Warn</button>
-                    <button onClick={() => De_Register(student.firstname,
+              <button className="de-register-button"onClick={() => De_Register(student.firstname,
                                                      student.lastname
-                                                     )}>De-register</button></td>
-                                                     
-            </tr>
-          ))}
-        </table>
-        <table className = "xFac">
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>UIID</th>
-              <th></th>
-            </tr>
-          { Instructor.map((tclass) => (
-            <tr>
-              <td> { tclass.firstname} </td>
-              <td> { tclass.lastname} </td>
-              <td> { tclass.useruiid} </td>
-              <td>
-                <button onClick={() => InstructorWarn(tclass.firstname,
+                                                     )}>De-register</button></td>                                   
+        </tr>
+        ))}
+      </table>
+
+      <table className = "instructor-grad">
+      <h2>Instructor</h2>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>UIID</th>
+        </tr>
+        { Instructor.map((tclass) => (
+        <tr>
+          <td> { tclass.firstname} </td>
+          <td> { tclass.lastname} </td>
+          <td> { tclass.useruiid} </td>
+          <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.firstname,
                                                       tclass.lastname
                                                       )}>Warn</button>
-                <button onClick={() => Suspend(tclass.firstname,
+                <button className="suspend-button-grad"onClick={() => Suspend(tclass.firstname,
                                                      tclass.lastname
                                                      )}>Suspend</button>
-              </td>
-            </tr>
-          ))}
-        </table>
-      </div>
-    )
+          </td>
+        </tr>
+        ))}
+      </table>
+      
+    </div>
+  )
 }
+
+/*<table className = "instructor-grad">
+      <h2>Instructor List</h2>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>UIID</th>
+        </tr>
+        { Instructor.map((tclass) => (
+        <tr>
+          <td> { tclass.firstname} </td>
+          <td> { tclass.lastname} </td>
+          <td> { tclass.useruiid} </td>
+          <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.firstname,
+                                                      tclass.lastname
+                                                      )}>Warn</button>
+                <button className="suspend-button-grad"onClick={() => Suspend(tclass.firstname,
+                                                     tclass.lastname
+                                                     )}>Suspend</button>
+          </td>
+        </tr>
+        ))}
+      </table> */
