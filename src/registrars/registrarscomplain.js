@@ -17,10 +17,10 @@ export default function RegistrarsComplain(){
   async function getStudents(db) {
     const complainsCol = collection(db, 'Complaints');
     setLoading(true);
-   onSnapshot(complainsCol, (querySnapshot) => {
+    onSnapshot(complainsCol, (querySnapshot) => {
       const complain = [];
       querySnapshot.forEach((doc) => {
-          complain.push(doc.data());
+        complain.push(doc.data());
       });
       setStudents(complain);
     });
@@ -30,10 +30,10 @@ export default function RegistrarsComplain(){
   async function getInstructor1(db) {
     const complainsCol = collection(db, 'Instructor');
     setLoading(true);
-   onSnapshot(complainsCol, (querySnapshot) => {
+    onSnapshot(complainsCol, (querySnapshot) => {
       const complain = [];
       querySnapshot.forEach((doc) => {
-          complain.push(doc.data());
+        complain.push(doc.data());
       });
       setInstructor(complain);
     });
@@ -47,7 +47,7 @@ export default function RegistrarsComplain(){
     onSnapshot(reviewsCol, (querySnapshot) => {
       const review = [];
       querySnapshot.forEach((doc) => { 
-          review.push(doc.data());
+        review.push(doc.data());
       });
       setReviews(review);
     });
@@ -102,105 +102,104 @@ export default function RegistrarsComplain(){
           var count = Instructor[i].numWarn;
           count  = ++count;
           const washingtonRef = doc(db, "Instructor",a);
-        await updateDoc(washingtonRef, {
-          numWarn: count
+          await updateDoc(washingtonRef, {
+            numWarn: count
+          });
+        }
+        await addDoc(collection(db, "Instructor",a,"Warnings"), {
+          Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
         });
       }
-      await addDoc(collection(db, "Instructor",a,"Warnings"), {
-        Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
-      });
     }
-  }
     // Will suspend the instructor by deleting doc and pushing to "suspended" collection
     if(count===3){
       // To copy a collections contents to another collection we do this:
       
       const instRef = collection(db, 'Instructor');
       setLoading(true);
-     onSnapshot(instRef, (querySnapshot) => {
+      onSnapshot(instRef, (querySnapshot) => {
         const inst = [];
         querySnapshot.forEach((doc) => {
-            inst.push(doc.data());
-        });
+          inst.push(doc.data());
+      });
         
         
       const instRef2 = collection(db, 'AssignedClasses');
       setLoading(true);
-     onSnapshot(instRef2, (querySnapshot) => {
+      onSnapshot(instRef2, (querySnapshot) => {
         const inst2 = [];
         querySnapshot.forEach((doc) => {
-            inst2.push(doc.data());
+          inst2.push(doc.data());
         });
 
-        for(let j = 0; j<inst2.length; j++){
-          if(inst2[j].Instructoruiid === a){
-            deleteDoc(doc(db, "AssignedClasses", inst2[j].Class));
-          } 
-        }
+      for(let j = 0; j<inst2.length; j++){
+        if(inst2[j].Instructoruiid === a){
+          deleteDoc(doc(db, "AssignedClasses", inst2[j].Class));
+        } 
+      }
 
-        for(let i = 0; i<inst.length; i++){
-            if(inst[i].useruiid === a){
-                var varpush = inst[i];
-                console.log(varpush)
-                setDoc(doc(db, "Suspended", a), varpush);
-                deleteDoc(doc(db, "Instructor", a));
-               // deleteDoc(doc(db, "Students", a, "Courses", instRef.))
-                break;
-            }
+      for(let i = 0; i<inst.length; i++){
+        if(inst[i].useruiid === a){
+          var varpush = inst[i];
+          console.log(varpush)
+          setDoc(doc(db, "Suspended", a), varpush);
+          deleteDoc(doc(db, "Instructor", a));
+          // deleteDoc(doc(db, "Students", a, "Courses", instRef.))
+          break;
         }
-        console.log(inst);
+      }
+      console.log(inst);
       });
     });
      
     alert("Instructor has been suspended");
+    }
   }
-}
-    return (
-        <div className= "studentsRegView">
+    
+  return (
+    <div className= "review-complains">
+      <table className = "complain-table">
+        <h2>Complaints</h2>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Complaint</th>
+          </tr>
+          { complains.map((complain) => (
+          <tr>
+            <td> { complain.SentBy } </td>
+            <td> { complain.IssuedName } </td>
+            <td className="Complain-column"> { complain.Complaint } </td>
+            <td> <button className="handle-button"onClick={() => HandleComplaint()}>Handle</button></td>
+          </tr>
+        ))}
+      </table>
         
-        <table className = "xStu">
-          <h2>Complaints</h2>
-            <tr>
-              <th>From</th>
-              <th>To</th>
-              <th>Complaint</th>
-            </tr>
-            { complains.map((complain) => (
-            <tr>
-              <td> { complain.SentBy } </td>
-              <td> { complain.IssuedName } </td>
-              <td className="Compla"> { complain.Complaint } </td>
-              <td> <button onClick={() => HandleComplaint()}>Handle</button></td>
-            </tr>
-            
-          ))}
-          
-        </table>
-        <table className = "xFac">
-            <h2>Reviews</h2>
-            <tr>
-                <th>Name</th>
-                <th>Course</th>
-                <th>Instructor</th>
-                <th>Rating</th>
-                <th>Review</th>
-            </tr>
+      <table className = "review-table">
+        <h2>Reviews</h2>
+          <tr>
+            <th>Name</th>
+            <th>Course</th>
+            <th>Instructor</th>
+            <th>Rating</th>
+            <th>Review</th>
+          </tr>
           { Reviews.map((review) => (
-            <tr>
-              <td> { review.SentBy} </td>
-              <td> { review.Course} </td>
-              <td> { review.InstructorName} </td>
-              <td> { review.InstructoravgReview} </td>
-              <td className="Review"> { review.Review} </td>
-              <td>
-                <button onClick={() => InstructorWarn(review.InstructorUiid,
+          <tr>
+            <td> { review.SentBy} </td>
+            <td> { review.Course} </td>
+            <td className="Instructor-column"> { review.InstructorName} </td>
+            <td> { review.InstructoravgReview} </td>
+            <td className="Review-column"> { review.Review} </td>
+            <td>
+            <button className="warn-button"onClick={() => InstructorWarn(review.InstructorUiid,
                                                       review.InstructoravgReview
                                                       )}>Warn</button>
-              </td>
-            </tr>
-          ))}
-        </table>
-      </div>
-    )
+            </td>
+          </tr>
+        ))}
+      </table>
+    </div>
+  )
   
 }

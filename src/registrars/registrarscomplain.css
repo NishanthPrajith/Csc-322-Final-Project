@@ -1,71 +1,123 @@
-.xStu button {
-  padding: 8px 20px;
-  border-radius: 4px;
-  outline: none;
+/* COMPLAIN SECTION */
+
+.complain-table{
+  float: left;
+  width: 90%;
+  margin: 2% 5%;
   border: none;
-  cursor: pointer;
-  color: purple;
+  border-collapse: collapse;
 }
 
-.xStu button:hover {
-  padding: 8px 20px;
-  transition: all 0.3s ease-out;
-  background: rgb(184, 42, 240);
-  color: rgb(255, 255, 255);
-  transition: 250ms;
-}
-
-.xFac button {
-  padding: 8px 20px;
-  border-radius: 4px;
-  outline: none;
-  border: none;
-  cursor: pointer;
-  color: purple;
-}
-
-.xFac button:hover {
-  padding: 8px 20px;
-  transition: all 0.3s ease-out;
-  background: rgb(184, 42, 240);
-  color: rgb(255, 255, 255);
-  transition: 250ms;
-}
-
-.xStu h2 {
-  color: black;
-}
-
-.xFac h2 {
-  color: black;
-}
-
-.xStu th {
+.complain-table th {
   background-color: #7d5cc6;
   color: white;
   padding: 2% 0%;
   width: 33%;
 }
 
-.xStu td {
+.complain-table td {
   padding: 2% 0%;
 }
 
-.xStu {
+.complain-table {
   table-layout: initial;
-  width: 40px;
+  width: 10px;
 }
 
-.xStu tr {
+.complain-table tr {
   width: 100%;
   text-align: center;
 }
 
-.xStu .Compla {
-  width: 100px; /* adjust the value to fit your needs */
+.complain-table .Complain-column {
+  width: 470px; 
   word-wrap: break-word;
   display: inline-block;
+  text-align: left;
+  margin-left: 30px;
 }
+
+.handle-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.handle-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/* REVIEW SECTION */
+
+.review-table{
+  float: left;
+  width: 100%;
+  margin: 2%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.review-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 33%;
+}
+
+.review-table td {
+  padding: 2% 0%;
+}
+
+.review-table {
+  table-layout: initial;
+  width: 10px;
+}
+
+.review-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.review-table .Review-column {
+  width: 360px; 
+  word-wrap: break-word;
+  display: inline-block;
+  text-align: left;
+  margin-left: 20px;
+}
+
+.warn-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.warn-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.review-table .Instructor-column{
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+/* MIGHT DELETE THIS SHIT LATER */
+
+/*
 .xFac th {
   background-color: #7d5cc6;
   color: white;
@@ -90,7 +142,7 @@
   text-align: center;
 }
 .xFac .Review {
-  width: 100px; /* adjust the value to fit your needs */
+  width: 100px; 
   word-wrap: break-word;
   display: inline-block;
 }
@@ -112,3 +164,8 @@
   padding-bottom: 2%;
   color: #7d5cc6;
 }
+
+.xFac h2 {
+  color: black;
+}
+*/
