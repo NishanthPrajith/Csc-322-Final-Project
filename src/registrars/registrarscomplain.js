@@ -107,13 +107,14 @@ export default function RegistrarsComplain(){
         });
       }
       await addDoc(collection(db, "Instructor",a,"Warnings"), {
-        Warn: "You have been Reviewed with a low rating. Please imporve your effort in teaching.",
+        Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
       });
     }
   }
     // Will suspend the instructor by deleting doc and pushing to "suspended" collection
     if(count===3){
       // To copy a collections contents to another collection we do this:
+      
       const instRef = collection(db, 'Instructor');
       setLoading(true);
      onSnapshot(instRef, (querySnapshot) => {
@@ -121,17 +122,36 @@ export default function RegistrarsComplain(){
         querySnapshot.forEach((doc) => {
             inst.push(doc.data());
         });
+        
+        
+      const instRef2 = collection(db, 'AssignedClasses');
+      setLoading(true);
+     onSnapshot(instRef2, (querySnapshot) => {
+        const inst2 = [];
+        querySnapshot.forEach((doc) => {
+            inst2.push(doc.data());
+        });
+
+        for(let j = 0; j<inst2.length; j++){
+          if(inst2[j].Instructoruiid === a){
+            deleteDoc(doc(db, "AssignedClasses", inst2[j].Class));
+          } 
+        }
+
         for(let i = 0; i<inst.length; i++){
             if(inst[i].useruiid === a){
                 var varpush = inst[i];
                 console.log(varpush)
                 setDoc(doc(db, "Suspended", a), varpush);
                 deleteDoc(doc(db, "Instructor", a));
+               // deleteDoc(doc(db, "Students", a, "Courses", instRef.))
                 break;
             }
         }
         console.log(inst);
       });
+    });
+     
     alert("Instructor has been suspended");
   }
 }

@@ -72,7 +72,7 @@ export default function RegistrarsApplications() {
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
-            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1}
+            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0}
              // first make the alert dialog/popup appear
              const userid = useruiid;
              firtname = a;
