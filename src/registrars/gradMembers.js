@@ -9,6 +9,7 @@ export default function GradMembers(){
 const [students, setStudents] = useState([]);
   const [Instructor, setTclasses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [CanceledCourses, setCanceledCourses] = useState([]);
 
   async function getStudents(db) {
     const studentsCol = collection(db, 'Students');
@@ -43,6 +44,69 @@ const [students, setStudents] = useState([]);
 
   }, []);
 
+  async function  CancelCourses() {
+    // const coursesCol = collection(db, 'AssignedCourses');
+     const canceledStudents = []
+     const courses = [];
+     const instructors = [];
+     
+     // StudentCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
+     //   CoursesEnrolled.numChildren();
+     // });
+     const studentCol = query(collection(db, "Students"), where("EnoughCourses", "==", false ));
+     onSnapshot(studentCol,(querySnapshot) => {
+       querySnapshot.forEach((doc) => {
+         StudentWarn(doc.get('useruiid'))
+      });
+    });
+ 
+    const coursesCol = query(collection(db,'AssignedCourses'), where("Size" , "<", 5));
+    const courseSnapshot = await getDocs(coursesCol);
+    courseSnapshot.forEach((doc)=> {
+      let instructorUiid = doc.data().get("Instructoruiid");  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
+      let courseName = doc.data().get("Class");
+
+      courses.push(courseName);           //Data pushed into respective course and instructors array.
+      instructors.push(instructorUiid);
+
+      await updateDoc(doc(db,"Instructor", instructorUiid), {CanceledCourses: true});     //Instructors of these courses are given a CanceledCourse: true
+      await deleteDoc(doc(db,"Instructor",instructorUiid,"Courses", courseName));     //Class is deleted from their list of courses.
+      InstructorWarn(instructorUidd);                                                     // They Receive a warning.
+    });
+
+    coursesSnapshot.forEach((course) => {         //Updates canceledCourses to true for affected students;
+      // let CanceledStudents = query(collection(db,"Students"), where("Courses" in [co)) 
+      // 
+        const allStudents = await getDocs(collection(db,"Students"));
+        allStudents.forEach((student) =>{
+          let Classes = await getDocs(student.collection("Courses"));
+          Classes.forEach((doc) => {
+            if(doc.data().get("Class") != course.data().get("Class"))
+              break;
+            else
+              await updateDoc(student, { CanceledCourses: true }); //Or setDoc with ,{merge: true}
+              await deleteDoc(student, "Courses", doc);
+          });
+
+        // instructors.forEach((instructor) => {
+        //   let canceledInstructor = query(collection(db,"Instructors"), where(doc.id, "==", instructor));
+
+        });
+
+      await deleteDoc(doc(db,"AssignedCourses", course)); //Delete the Assigned Course overall.
+    });
+
+  }
+
+  async function SuspensionCourseRunning(){
+    let instructorList = await getDocs(collection(db, "Instructors"));
+    instructorList.forEach((instructor) => {
+      let numberOfCourses = await getDocs(instructor.collection("Courses"));
+      numberOfCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
+        CoursesEnrolled.numChildren();
+      });
+    });
+  }
 
   // IMPLEMENT LATER
   async function StudentWarn(){
@@ -116,7 +180,7 @@ const [students, setStudents] = useState([]);
       
     </div>
   )
-}
+};
 
 /*<table className = "instructor-grad">
       <h2>Instructor List</h2>

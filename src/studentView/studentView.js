@@ -36,6 +36,7 @@ export default function StudentView() {
    const [Loading, setLoading] = useState('false');
    const [InputValue, setInputValue] = useState('');
    const [OptionSelected, setOptionSelected] = useState("schedule");
+   const [CanceledCourses, setCanceledCourses] = useState(false);
    const instructorRef = useRef();
    const courseRef = useRef();
    const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
