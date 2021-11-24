@@ -155,14 +155,15 @@ export default function StudentView() {
         querySnapshot.forEach((doc) => {
             complain.push(doc.data());
         });
+        
         console.log(complain);
         for(let i = 0; i<complain.length; i++){
             for(let j = 0; j<Warnings.length; j++){
                 if(complain[i].Student===Warnings[j].useruiid){
                     complain[i].StudentName = Warnings[j].firstname + " " + Warnings[j].lastname
                 }
-                if(complain[i].Student=== userData.getUd()){
-                    continue
+                else if(complain[i].Student=== userData.getUd()){
+                    continue;
                 }
             }
         }
@@ -172,6 +173,12 @@ export default function StudentView() {
     complainPopUp();
 }
     async function Complain1(a){
+        // check
+        if(a === userData.getUd()){
+            alert("You cannot complain on yourself!")
+            await history.push('StudentView')
+        }
+        else{
         complainUiid = a;
         for(let i = 0; i<Instructor.length; i++){
             if(Instructor[i].useruiid===a){
@@ -185,6 +192,7 @@ export default function StudentView() {
         }
         complainPopUp1();
     }
+}
     async function Rate(a,b){
         ratePopup(a,b);
     }
