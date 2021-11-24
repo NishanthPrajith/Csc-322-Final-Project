@@ -1,0 +1,5 @@
+ <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the name?" style={styles.textarea2} />
+                            
+                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
+
+                            <button onClick ={submitComplaint} className="button"> Submit </button>  

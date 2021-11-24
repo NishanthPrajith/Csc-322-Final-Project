@@ -224,3 +224,75 @@ img{
   margin-top: 60px;
   text-align: "center";
 }
+
+.CourseStyler2 th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.CourseStyler2 td {
+  padding: 2% 0%;
+}
+
+.CourseStyler2 {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.CourseStyler2 tr {
+  width: 100%;
+  text-align: center;
+}
+
+.xInstView th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 33%;
+}
+
+.xInstView td {
+  padding: 2% 0%;
+}
+
+.xInstView {
+  float: left;
+  width: 30%;
+  margin: 0% 1.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.xInstView tr {
+  width: 100%;
+  text-align: center;
+}
+
+.xInstView2 th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 33%;
+}
+
+.xInstView2 td {
+  padding: 2% 0%;
+}
+
+.xInstView2 {
+  float: left;
+  width: 30%;
+  margin: 0% 1.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.xInstView2 tr {
+  width: 100%;
+  text-align: center;
+}

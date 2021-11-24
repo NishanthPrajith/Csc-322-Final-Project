@@ -106,10 +106,11 @@ export default function RegistrarsComplain(){
             numWarn: count
           });
         }
-        await addDoc(collection(db, "Instructor",a,"Warnings"), {
-          Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
-        });
       }
+      await addDoc(collection(db, "Instructor",a,"Warnings"), {
+        Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
+        Warnnum: count
+      });
     }
     // Will suspend the instructor by deleting doc and pushing to "suspended" collection
     if(count===3){

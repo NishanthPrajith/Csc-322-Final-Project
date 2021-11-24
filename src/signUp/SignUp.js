@@ -101,8 +101,8 @@ export default function SignUp() {
 
   return (
     <div>
-      <h1>The City College of New York </h1>
       <div className="signUpFirstHeader">
+      <h1>The City College of New York </h1>
         <div className="login-page">
           <center><h1>Sign Up </h1></center>
           <div className="form">

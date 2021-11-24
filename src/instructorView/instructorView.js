@@ -10,12 +10,20 @@ import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
+import InstructorComplainPopup from './InstructorComplainPopup';
+import InstructorComplainPopup1 from './InstructorComplainPopup1';
 
 
 export default function InstructorView() {
     const [Instructor, setInstructor] = useState('');
     const [CurrentClasses, setCurrentClasses] = useState([]);
+    const [Warnings, setWarnings] = useState([]);
+    const [InstructorCourses, setInstructorCourses] = useState([]);
+    const [InstructorRoster, setInstructorRoster] = useState([]);
+    const [Students, setStudents] = useState([]);
     const [CurrentRoster, setCurrentRoster] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen1, setIsOpen1] = useState(false);
     const [Loading, setLoading] = useState('false');
     const [ScheduleSelected, setScheduleSelected] = useState('false');
     console.log(userData.getUd()); 
@@ -40,21 +48,22 @@ export default function InstructorView() {
     const handleChange = value => {
         setOptionSelected(value);
     }
-    // get the instructors courses
-    /*async function getInstructorCourses(db) {
-        const coursesCol = collection(db, 'Instructor', userData.getUd(),"Courses");
-        setLoading(true);
-       onSnapshot(coursesCol, (querySnapshot) => {
-          const instructor = [];
-          querySnapshot.forEach((doc) => {
-              instructor.push(doc.data());
-          });
-          console.log(instructor);
-          setCurrentClasses(instructor);
-        });
-        setLoading(false);
-    }*/
+    
+    const toggleComplainPopup = (a) => {
+        setIsOpen(!isOpen);
+    }
+    async function toggleComplainclosePopup () {
+        setIsOpen(!isOpen);
+    }
 
+    const toggleComplainPopup1 = (a) => {
+        setIsOpen1(!isOpen1);
+    }
+    async function toggleComplainclosePopup1 () {
+        setIsOpen1(!isOpen1);
+    }
+ 
+ 
     async function submitComplaint(){
         await addDoc(collection(db, "Complaints"), {
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
@@ -65,80 +74,84 @@ export default function InstructorView() {
           await history.push('Instructorview');  
     }
 
-    // //setInstructor(userData.getName());
+    async function getWarnings(db){
+        const instWarnings = collection(db, 'Instructor', userData.getUd(),"Warnings");
+        setLoading(true);
+       onSnapshot(instWarnings, (querySnapshot) => {
+          const warn = [];
+          querySnapshot.forEach((doc) => {
+              warn.push(doc.data());
+          });
+          console.log(warn);
+          setWarnings(warn);
+        });
+        setLoading(false);
+    }
 
-    // // async function GetInfo(db){
-    // //     const { login, currentUser } = useAuth();
-    // //     const {emailRef, passwordRef} = useRef();
-    // //     try{
-    // //         const useruiid = await login(emailRef.current.value, passwordRef.current.value);
-    // //         const docRef = doc(db, "Instructor", useruiid);
-    // //         const docSnap = await getDoc(docRef);
-    // //         if(docSnap.exists())
-    // //             setInstructor(docSnap.data().firstname + ' ' + docSnap.data().lastname);  
-    // //     }
-    // //     catch (error) {
-    // //         document.getElementById('error').style.display = "block";
-    // //     }        
-    // // }
-
-    //  async function getCourses(db) {
-    // //     const docRef = doc(db, "Instructor", "{Instructor.name}", "Courses", "CurrentCourses")
-    // //     const docSnap = await getDoc(docRef);
-
-    // //     if(docSnap.exists()){
-    // //         console.log("Document data:", docSnap.data());
-    // //     }
-    // //     else {
-    // //         console.log("No such document!");
-    // //         return -1;
-    // //     }
-
-    // //     //const instructor = [];
-    // //     const currentCourses = [];
-    // //     //const instructorsCol = collection(db, 'Instructor');
-    // //     //setLoading(true);
-
-    // //     const getDataCourses = onSnapshot(docSnap, (querySnapshot) => {
-    // //       docSnap.forEach((doc) => {
-    // //           currentCourses.push(doc.data());
-    // //       });
-    // //       setCurrentClasses(currentCourses);
-    // //       return currentCourses;
-    // //     }); 
-        
-    //  }
-    // // function closeNavLink() {
-    // //     window.scroll(0,0);
-    // // }
-    // // function Schedule (db){
-
-    // // }
-
-    // // function Roster(event) {
-
-    // // }
-
-    // // function Grades () {
-
-    // // }
-
-    // async function getRoster (db) {
-
-    // }
-
-    // async function getGrades(db) {
+    // gets the student database
+    async function getWarnings(db){
+        const stuUidtoName = collection(db, 'Students');
+        setLoading(true);
+       onSnapshot(stuUidtoName, (querySnapshot) => {
+          const uidtoName = [];
+          querySnapshot.forEach((doc) => {
+            uidtoName.push(doc.data());
+          });
+          setStudents(uidtoName);
+        });
+        setLoading(false);
+    }
 
 
-    // }
+    // get instrcutor courses 
+    async function getInstructorCourses(db) {
+        const coursesCol = collection(db, 'Instructor', userData.getUd(), "Courses");
+        setLoading(true);
+       onSnapshot(coursesCol, (querySnapshot) => {
+          const course = [];
+          querySnapshot.forEach((doc) => {
+              course.push(doc.data());
+          });
+          console.log(course);
+          setInstructorCourses(course);
+        });
+        setLoading(false);
+      }
 
     useEffect(() => {
         setLoading(true);
-        // getInstructorCourses(db);
-        // getStudents(db);
-        // getTclasses(db);
-        // getLclasses(db);
+        getWarnings(db);
+        getInstructorCourses(db)
       }, []);
+
+      async function Complain(a){
+        // get instructor roster 
+        console.log(a);
+       const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
+        setLoading(true);
+        onSnapshot(instComplainStu, (querySnapshot) => {
+            const instComp = [];
+            querySnapshot.forEach((doc) => {
+                instComp.push(doc.data());
+            });
+            for(let i = 0; i<Students.length; i++){
+                for(let j = 0; j<instComp.length; j++){
+                    if(Students[i].useruiid === instComp[j].Student){;
+                        instComp[j].StudentName = Students[i].firstname + " " + Students[i].lastname;
+                    }
+                }
+            }
+            setInstructorRoster(instComp);
+        });
+        setLoading(false);
+        toggleComplainPopup();
+     }
+
+     async function Complain1(a){
+        // a == student uiid 
+        toggleComplainPopup1();
+     }
+
 
       return (
         <div className = "InstructorPage">
@@ -247,27 +260,37 @@ export default function InstructorView() {
                         </table>    
                         }
 
-                        {(OptionSelected.value === "complaints") && <div className="complaint"style={styles.container}>
-                        <h2> Complaint </h2>
-                            
-                            <textarea className="input-name" id="input-name" ref={instname} placeholder="What's the name?" style={styles.textarea2} />
-                            
-                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
-
-                            <button onClick ={submitComplaint} className="button"> Submit </button>  
-                        </div>
-                        }       
-                        {(OptionSelected.value === "warning") && <table className>
-                                <tr>
-                                    <th>Class</th>
+                        {(OptionSelected.value === "complaints") && 
+                        <div className="complaint"style={styles.container}>
+                        <table className = "CourseStyler2">
+                            <tr>
+                                    <th>Course</th>
                                     <th>Time</th>
                                     <th>Room</th>
+                                    <th>Section</th>
                                 </tr>
-                            { CurrentClasses.map((Class) => (
+                            {InstructorCourses.map((Class) => (
                                 <tr>
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td><button onClick={() => Complain(Class.Class
+                                    )}className="button">Complain</button></td>
+                                </tr>
+                            ))}
+                        </table>         
+                        </div>
+                        }       
+                        {(OptionSelected.value === "warning") && <table className>
+                                <tr>
+                                    <th>Warning</th>
+                                    <th>Warning #</th>
+                                </tr>
+                            { Warnings.map((warn) => (
+                                <tr>
+                                    <td> { warn.Warn } </td>
+                                    <td> { warn.Warnnum } </td>
                                 </tr>
                             ))}
                         </table>    
@@ -294,11 +317,46 @@ export default function InstructorView() {
                 </div>
             </div> 
         </Container>         
-            
-    
-    </div>
 
-    
+
+        {isOpen && <InstructorComplainPopup
+            content={<>
+                <p>Complain on this student</p>
+                <table className="xInstView">
+                <tr>
+                    <th>Student</th>
+                </tr>
+                {InstructorRoster.map((course) => (
+                    <tr>
+                        <td> {course.StudentName} </td>
+                        <td><button onClick={() => Complain1(course.Student
+                                    )}className="complain-popup-button">Complain</button></td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={toggleComplainclosePopup}
+        />} 
+
+        {isOpen1 && <InstructorComplainPopup1
+            content={<>
+                <p>Complain on this student</p>
+                <table className="xInstView2">
+                <tr>
+                    <th>Student</th>
+                </tr>
+                {InstructorRoster.map((course) => (
+                    <tr>
+                        <td> {course.StudentName} </td>
+                        <td><button onClick={() => Complain1(course.Student
+                                    )}className="complain-popup-button">Complain</button></td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={toggleComplainclosePopup1}
+        />} 
+    </div>
     );
 }
 

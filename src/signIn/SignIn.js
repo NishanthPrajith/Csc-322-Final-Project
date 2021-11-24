@@ -61,6 +61,7 @@ export default function SignIn() {
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
+        userData.setPeriod(parseInt(docSnap4.data().classsetup));
         await history.push('Studentview');
       }
       if (docSnap2.exists()) {
@@ -72,6 +73,7 @@ export default function SignIn() {
         userData.setEmail(docSnap2.data().Email);
         userData.setStatus(true);
         userData.setRole(1);
+        userData.setPeriod(parseInt(docSnap4.data().classsetup));
         await history.push('Instructorview');
       }
     } catch (error) {

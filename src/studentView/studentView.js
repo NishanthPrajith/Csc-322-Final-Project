@@ -469,7 +469,8 @@ export default function StudentView() {
                             ))}
                         </table>    
                         }       
-                        {(OptionSelected.value === "rate") && <table className = "CourseStyler">
+                        {((userData.getPeriod() !==3) && (OptionSelected.value === "rate")) && 
+                        <table className = "CourseStyler">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>

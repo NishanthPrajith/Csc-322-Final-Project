@@ -100,7 +100,8 @@ export default function RegistrarsApplications() {
             Room: c,
             Secion: d,
             Size: f,
-            Instructor: firtname + " " + lastname
+            Instructor: firtname + " " + lastname,
+            Class: classes
           });
           await setDoc(doc(db, "AssignedClasses", a), {
             Class: classes,
