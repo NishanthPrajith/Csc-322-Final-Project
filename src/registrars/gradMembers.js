@@ -11,8 +11,8 @@ var StudentRegisterUiid;
 export default function GradMembers(){
   const history = useHistory();
   const [students, setStudents] = useState([]);
+  const [instructors, setInstructors] = useState([]);
   const [studentscourses, setStudentscourses] = useState([]);
-  const [Instructor, setTclasses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [CanceledCourses, setCanceledCourses] = useState([]);
@@ -37,16 +37,16 @@ const closetogglestudentcoursePopup = () => {
     });
     setLoading(false);
   }
+
   async function getInstructor(db) {
     const schoolsCol = collection(db, 'Instructor');
     setLoading(true);
     onSnapshot(schoolsCol, (querySnapshot) => {
-      const topratingclass = [];
+      const instructor = [];
       querySnapshot.forEach((doc) => {
-          topratingclass.push(doc.data());
+          instructor.push(doc.data());
       });
-      console.log(topratingclass)
-      setTclasses(topratingclass.slice(0,5));
+      setInstructors(instructor);
     });
     setLoading(false);
   }
@@ -58,69 +58,35 @@ const closetogglestudentcoursePopup = () => {
 
   }, []);
 
-  // async function  CancelCourses() {
-  //   // const coursesCol = collection(db, 'AssignedCourses');
-  //    const canceledStudents = []
-  //    const courses = [];
-  //    const instructors = [];
-     
-  //    // StudentCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
-  //    //   CoursesEnrolled.numChildren();
-  //    // });
-  //    const studentCol = query(collection(db, "Students"), where("EnoughCourses", "==", false ));
-  //    onSnapshot(studentCol,(querySnapshot) => {
-  //      querySnapshot.forEach((doc) => {
-  //        StudentWarn(doc.get('useruiid'))
-  //     });
-  //   });
- 
-  //   const coursesCol = query(collection(db,'AssignedCourses'), where("Size" , "<", 5));
-  //   const courseSnapshot = await getDocs(coursesCol);
-  //   courseSnapshot.forEach((doc)=> {
-  //     let instructorUiid = doc.data().get("Instructoruiid");  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
-  //     let courseName = doc.data().get("Class");
+  async function WarningCheckStdCourses(){
+    for(let i = 0; i< instructors.length; i++){
+      let studentID = students[i].useruiid;
+      let numOfCourses = students[i].numOfCourses;
+      let coursesCanceled = students[i].coursesCanceled;
+      if(coursesCanceled == false && numOfCourses < 2)
+        StudentWarn(studentID);
+    }
+  }
 
-  //     courses.push(courseName);           //Data pushed into respective course and instructors array.
-  //     instructors.push(instructorUiid);
+  async function SuspensionCheckInstrCourses(){
+    for(let i = 0; i <instructors.length; i++){
+      let instructorID = instructors[i].useruiid;
+      let coursesRemaining = instructors[i].numOfCourses;
+      let coursesCanceled = instructors[i].coursesCanceled;
+      if(coursesCanceled == true && coursesRemaining == 0)
+        Suspend(instructorID);
+    }
+  }
 
-  //     await updateDoc(doc(db,"Instructor", instructorUiid), {CanceledCourses: true});     //Instructors of these courses are given a CanceledCourse: true
-  //     await deleteDoc(doc(db,"Instructor",instructorUiid,"Courses", courseName));     //Class is deleted from their list of courses.
-  //     InstructorWarn(instructorUidd);                                                     // They Receive a warning.
-  //   });
+  async function SuspensionCheckInstrWarnings(){
+    for(let i = 0; i< instructors.length; i++){
+      let instructorID = instructors[i].useruiid;
+      let numOfWarnings = instructors[i].numWarn;
+      if(numOfWarnings >= 3)
+        Suspend(instructorID);
+    }
+  }
 
-  //   coursesSnapshot.forEach((course) => {         //Updates canceledCourses to true for affected students;
-  //     // let CanceledStudents = query(collection(db,"Students"), where("Courses" in [co)) 
-  //     // 
-  //       const allStudents = await getDocs(collection(db,"Students"));
-  //       allStudents.forEach((student) =>{
-  //         let Classes = await getDocs(student.collection("Courses"));
-  //         Classes.forEach((doc) => {
-  //           if(doc.data().get("Class") != course.data().get("Class"))
-  //             break;
-  //           else
-  //             await updateDoc(student, { CanceledCourses: true }); //Or setDoc with ,{merge: true}
-  //             await deleteDoc(student, "Courses", doc);
-  //         });
-
-  //       // instructors.forEach((instructor) => {
-  //       //   let canceledInstructor = query(collection(db,"Instructors"), where(doc.id, "==", instructor));
-
-  //       });
-
-  //     await deleteDoc(doc(db,"AssignedCourses", course)); //Delete the Assigned Course overall.
-  //   });
-
-  // }
-
-  // async function SuspensionCourseRunning(){
-  //   let instructorList = await getDocs(collection(db, "Instructors"));
-  //   instructorList.forEach((instructor) => {
-  //     let numberOfCourses = await getDocs(instructor.collection("Courses"));
-  //     numberOfCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
-  //       CoursesEnrolled.numChildren();
-  //     });
-  //   });
-  // }
 
   // IMPLEMENT LATER
   async function StudentWarn(a){
@@ -149,9 +115,9 @@ const closetogglestudentcoursePopup = () => {
   // IMPLEMENT LATER
   async function InstructorWarn(a){
      // isue a warning to the instructor
-    for(let i = 0; i<Instructor.length; i++){
-      if(Instructor[i].useruiid === a){
-          var warncount = Instructor[i].numWarn;
+    for(let i = 0; i<instructors.length; i++){
+      if(instructors[i].useruiid === a){
+          var warncount = instructors[i].numWarn;
           warncount += 1;
           const washingtonRef = doc(db, "Instructor",a);
           // Set the "capital" field of the city 'DC'
@@ -233,7 +199,7 @@ const closetogglestudentcoursePopup = () => {
           <th>Last Name</th>
           <th>UIID</th>
         </tr>
-        { Instructor.map((tclass) => (
+        { instructors.map((tclass) => (
         <tr>
           <td> { tclass.firstname} </td>
           <td> { tclass.lastname} </td>
