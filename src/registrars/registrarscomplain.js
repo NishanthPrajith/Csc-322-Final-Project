@@ -3,12 +3,15 @@ import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, getDo
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
+import { useHistory } from 'react-router-dom';
 
 
 var instName;
 var instuid;
 export default function RegistrarsComplain(){
-  const [complains, setStudents] = useState([]);
+  const history = useHistory();
+  const [complains, setComplains] = useState([]);
+  const [complainsid, setComplainsid] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -16,14 +19,24 @@ export default function RegistrarsComplain(){
 
   async function getStudents(db) {
     const complainsCol = collection(db, 'Complaints');
+    const complainsColid = collection(db, 'Complaints');
     setLoading(true);
     onSnapshot(complainsCol, (querySnapshot) => {
-      const complain = [];
+      let complain = [];
       querySnapshot.forEach((doc) => {
-        complain.push(doc.data());
+        complain.push(doc.data())
       });
-      setStudents(complain);
-    });
+    onSnapshot(complainsColid, (querySnapshot) => {
+      const complainid = [];
+      querySnapshot.forEach((doc) => {
+        complainid.push(doc.id)
+      });
+      for(let i=0; i<complainid.length; i++){
+        complain[i].Uid = complainid[i];
+      }
+      setComplains(complain)
+      });
+  });
     setLoading(false);
   }
 
@@ -91,8 +104,10 @@ export default function RegistrarsComplain(){
   }, []);
 
   // IMPLEMENT LATER
-  async function HandleComplaint(){
-
+  async function HandleComplaint(a){
+  await deleteDoc(doc(db, "Complaints", a));
+  alert("Thank you for dealing with this complain!");
+  await history.push('RegistrarsComplains');
   }
 
   async function InstructorWarn(a,b){
@@ -170,7 +185,7 @@ export default function RegistrarsComplain(){
             <td> { complain.SentBy } </td>
             <td> { complain.IssuedName } </td>
             <td className="Complain-column"> { complain.Complaint } </td>
-            <td> <button className="handle-button"onClick={() => HandleComplaint()}>Handle</button></td>
+            <td> <button className="handle-button"onClick={() => HandleComplaint(complain.Uid)}>X</button></td>
           </tr>
         ))}
       </table>
