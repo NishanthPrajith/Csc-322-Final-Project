@@ -30,9 +30,31 @@ export default function RegistrarsComplain(){
         for(let i=0; i<complainid.length; i++){
           complain[i].Uid = complainid[i];
         }
-        console.log(complain)
         setComplains(complain)
         });
+    });
+    setLoading(false);
+  }
+  
+  async function getInstructor(db) {
+    const reviewsCol = collection(db, 'Reviews');
+    const reviewsColid = collection(db, 'Reviews');
+    setLoading(true);
+    onSnapshot(reviewsCol, (querySnapshot) => {
+      const review = [];
+      querySnapshot.forEach((doc) => { 
+        review.push(doc.data());
+      });
+      onSnapshot(reviewsColid, (querySnapshot) => {
+        const reviewsid = [];
+        querySnapshot.forEach((doc) => {
+          reviewsid.push(doc.id)
+        });
+        for(let i=0; i<reviewsid.length; i++){
+          review[i].Uid = reviewsid[i];
+        }
+      setReviews(review);
+      });
     });
     setLoading(false);
   }
@@ -46,19 +68,6 @@ export default function RegistrarsComplain(){
         complain.push(doc.data());
       });
       setInstructor(complain);
-    });
-    setLoading(false);
-  }
-
-  async function getInstructor(db) {
-    const reviewsCol = collection(db, 'Reviews');
-    setLoading(true);
-    onSnapshot(reviewsCol, (querySnapshot) => {
-      const review = [];
-      querySnapshot.forEach((doc) => { 
-        review.push(doc.data());
-      });
-      setReviews(review);
     });
     setLoading(false);
   }
@@ -99,7 +108,6 @@ export default function RegistrarsComplain(){
     // Will suspend the instructor by deleting doc and pushing to "suspended" collection
     if(count===3){
       // To copy a collections contents to another collection we do this:
-      
       const instRef = collection(db, 'Instructor');
       setLoading(true);
       onSnapshot(instRef, (querySnapshot) => {
@@ -133,29 +141,34 @@ export default function RegistrarsComplain(){
       for(let i = 0; i<inst.length; i++){
         if(inst[i].useruiid === a){
           var varpush = inst[i];
-          var update = {
-                        firstname: varpush.firstname,
-                        lastname: varpush.lastname,
-                        Email: varpush.Email, 
-                        DateofBirth: varpush.DateofBirth,
-                        password: varpush.password,
-                        Role: varpush.Role,
-                        numWarn: 0, 
-                        numReview: 0, 
-                        Review: 0,
-                        useruiid: a
-                      }
-          setDoc(doc(db, "Instructor", a), update);
+          // var update = {
+          //               firstname: varpush.firstname,
+          //               lastname: varpush.lastname,
+          //               Email: varpush.Email, 
+          //               DateofBirth: varpush.DateofBirth,
+          //               password: varpush.password,
+          //               Role: varpush.Role,
+          //               numWarn: 0, 
+          //               numReview: 0, 
+          //               Review: 0,
+          //               useruiid: a
+          //             }
+          setDoc(doc(db, "Instructor", a), varpush); // change varpush to update
           for(let c = 0; c < complains.length; c++){
             console.log(complains[c].Uid)
             if(complains[c].IssuedName === varpush.firstname + " " + varpush.lastname){
               deleteDoc(doc(db, "Complaints", complains[c].Uid));
             }
           } 
-          setDoc(doc(db, "Suspended", a), update);
-          deleteDoc(doc(db, "Instructor", a));
+          for(let r = 0; r < Reviews.length; r++){
+            console.log(Reviews[r].Uid)
+            if(Reviews[r].InstructorName === varpush.firstname + " " + varpush.lastname){
+              deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
+            }
+          } 
+          // setDoc(doc(db, "Suspended", a), update);
+          // deleteDoc(doc(db, "Instructor", a));
           break;
-
         }
       }
       console.log(inst);
