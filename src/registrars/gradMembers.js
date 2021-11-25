@@ -96,7 +96,6 @@ const closetogglestudentcoursePopup = () => {
           var warncount = students[i].numWarn;
           warncount += 1;
           const washingtonRef = doc(db, "Students",a);
-          // Set the "capital" field of the city 'DC'
           await updateDoc(washingtonRef, {
               numWarn: warncount
           });

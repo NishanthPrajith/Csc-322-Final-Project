@@ -1,9 +1,11 @@
 import './studentView.css'
+import './studentregister.css'
 import { userData } from '../contexts/userProfile';
 import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
+import emailjs from 'emailjs-com';
 import Tabs from '../components/Tabs';
 import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
@@ -26,6 +28,8 @@ export default function StudentView() {
    const experience = useRef();  
    const complaint = useRef();
    const [Student, setStudent] = useState('');
+   const [enrollcourses, setCourses] = useState([]);
+   const [student, setStudent1] = useState([]);
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [Instructor, setInstructor] = useState([]);
    const [complainpopup, setIsOpen] = useState(false);
@@ -34,7 +38,7 @@ export default function StudentView() {
    const [Warnings, setWarnings] = useState([]);
    const [StudentsWarnings, setStudentsWarnings] = useState([]);
    const [ClassStudents, setClassStudents] = useState([]);
-   const [Loading, setLoading] = useState('false');
+   const [Loading, setLoading] = useState(false);
    const [InputValue, setInputValue] = useState('');
    const [OptionSelected, setOptionSelected] = useState("schedule");
    const [CanceledCourses, setCanceledCourses] = useState(false);
@@ -132,25 +136,83 @@ export default function StudentView() {
         });
         setLoading(false);
       }
+    // put the enroll courses
+    async function getCourses(db) {
+        const assignedclassCol = collection(db, 'AssignedClasses');
+        setLoading(true);
+       onSnapshot(assignedclassCol, (querySnapshot) => {
+          const course = [];
+          querySnapshot.forEach((doc) => {
+              course.push(doc.data());
+          });
+          setCourses(course);
+        });
+        setLoading(false);
+      }
     
-    async function getCourses(db){
-            
-        
-            function la(src){
-            console.log(src); 
-            }
-        }
+      async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid){
+        // check if the student is already enrolled in the course
+          // get the data for the students in the course 
+          const studentCol = collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster");
+              onSnapshot(studentCol, (querySnapshot) => {
+              const course = [];
+              querySnapshot.forEach((doc) => {
+                  course.push(doc.data());
+              });
+              // console.log("line 47 "+ course[0].Student);
+              setStudent1(course);
+              });
+          // now we need to perfrom a query to see if the student is in the course
+          for(let i = 0; i<student.length; i++){
+              if(student[i].Student === userData.getUd()){
+                console.log("hi")
+                  alert("You have already enrolled in this course");
+                  await history.push('StudentRegister');
+              }
+          }
+        // first check size of class
+        if(parseInt(size)===0){
+            // put the guy/girl on waitlist
+            await setDoc(doc(db, "Waitlist", userData.getUd()), {
+              Class: classs,
+              DayTime: daytime,
+              Room: room,
+              Secion: section,
+              Instructor: instructor,
+              Instructoruiid: instructoruiid
+            });
+            alert("Class is filled up, you have been placed on the wait list");
+          }
+          // if the class is not filled then...
+         else {
+          // put the student in the instrcutors roster
+          await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+            Student: userData.getUd()
+          });        
+          // await addDoc(doc(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+          //     Student: userData.getUd()
+          //   });
+            // put the course in student database
+          await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
+            Class: classs,
+            DayTime: daytime,
+            Room: room,
+            Secion: section,
+            Instructor: instructor,
+            Instructoruiid: instructoruiid
+          });
+            // constant used to updat the class size
+          let updateclasssize = parseInt(size);
+          --updateclasssize;
+          alert("Enrolled in class sucessfully!");
+            // then we want to update the size of the class 
+            await updateDoc(doc(db, "AssignedClasses", classs), {
+              Size: updateclasssize
+            });
+         } 
+      }
 
-    async function getRoster(db){
 
-        // var e = document.getElementById("dd1");
-        // var strUser = e;
-        // console.log(strUser); // en
-    
-        function la(src){
-        console.log(src); 
-        }                    
-    }
     async function Complain(a,b){
         // Get the Instructor
         const docRef = doc(db, "Instructor", b);
@@ -307,6 +369,7 @@ export default function StudentView() {
     getWarnings(db);
     getInstructor1(db);
     getWarnings1(db);
+    getCourses(db);
   }, []);
 
 
@@ -331,6 +394,10 @@ export default function StudentView() {
     violet: "#c722e0",
     grey: "#a9a9a9",  
     };
+
+    if (Loading) {
+        return <h1> Loading .. </h1>
+      }
 
     return (
         <div className ='studentPage'>
@@ -428,20 +495,35 @@ export default function StudentView() {
                         </table>    
                         }
                         
-                        {(OptionSelected.value === "enroll") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
+                        {(OptionSelected.value === "enroll") && 
+                         <table className="sCourses">
+                         <tr>
+                             <th>Class</th>
+                             <th>Day/Time</th>
+                             <th>Room</th>
+                             <th>Section</th>
+                             <th>Size</th>
+                             <th>Instructor</th>
+                         </tr>
+                         {enrollcourses.map((course) => (
+                             <tr>
+                                 <td> {course.Class} </td>
+                                 <td> {course.DayTime} </td>
+                                 <td> {course.Room} </td>
+                                 <td> {course.Secion} </td>
+                                 <td> {course.Size} </td>
+                                 <td> {course.Instructor} </td>
+                                 <td><button onClick={() => enrollCourse(course.Class, 
+                                                               course.DayTime, 
+                                                               course.Room, 
+                                                               course.Secion, 
+                                                               course.Size,
+                                                               course.Instructor,
+                                                               course.Instructoruiid
+                                                               )}>Enroll Course</button></td>
+                             </tr>
+                         ))}
+                     </table> 
                         }
 
                         {(OptionSelected.value === "grades") && <table className>

@@ -41,11 +41,6 @@ export default function NavBar(){
                 <p className="nav-links">Student Center</p>
               </Link>
             }
-             {(userData.getRole() === 0) &&
-              <Link to='/StudentRegister' onClick={closeNavLink}>
-                <p className="nav-links">Enroll Page</p>
-              </Link>
-            }
             {(userData.getRole() === 2) &&
               <Link to='/RegistrarsApplication' onClick={closeNavLink}>
                 <p className="nav-links">Review Applications</p>
