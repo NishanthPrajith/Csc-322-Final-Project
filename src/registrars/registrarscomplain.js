@@ -152,7 +152,6 @@ export default function RegistrarsComplain(){
       console.log(inst);
       });
     });
-     
     alert("Instructor has been suspended");
     }
   }

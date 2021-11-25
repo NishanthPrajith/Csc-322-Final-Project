@@ -13,7 +13,7 @@ import Select from 'react-select';
 import InstructorComplainPopup from './InstructorComplainPopup';
 import InstructorComplainPopup1 from './InstructorComplainPopup1';
 
-
+var StudentComplainUiid;
 export default function InstructorView() {
     const [Instructor, setInstructor] = useState('');
     const [CurrentClasses, setCurrentClasses] = useState([]);
@@ -149,6 +149,7 @@ export default function InstructorView() {
      }
 
      async function Complain1(a){
+         StudentComplainUiid = a;
         // a == student uiid 
         toggleComplainPopup1();
      }

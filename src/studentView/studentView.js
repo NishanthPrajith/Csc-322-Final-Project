@@ -163,9 +163,6 @@ export default function StudentView() {
                 if(complain[i].Student===Warnings[j].useruiid){
                     complain[i].StudentName = Warnings[j].firstname + " " + Warnings[j].lastname
                 }
-                else if(complain[i].Student=== userData.getUd()){
-                    continue;
-                }
             }
         }
         setClassStudents(complain);

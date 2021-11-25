@@ -1,12 +1,14 @@
 import './gradMembers.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 import { registerVersion } from '@firebase/app';
+import { useHistory } from 'react-router-dom';
 
 export default function GradMembers(){
-const [students, setStudents] = useState([]);
+  const history = useHistory();
+  const [students, setStudents] = useState([]);
   const [Instructor, setTclasses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [CanceledCourses, setCanceledCourses] = useState([]);
@@ -44,78 +46,116 @@ const [students, setStudents] = useState([]);
 
   }, []);
 
-  async function  CancelCourses() {
-    // const coursesCol = collection(db, 'AssignedCourses');
-     const canceledStudents = []
-     const courses = [];
-     const instructors = [];
+  // async function  CancelCourses() {
+  //   // const coursesCol = collection(db, 'AssignedCourses');
+  //    const canceledStudents = []
+  //    const courses = [];
+  //    const instructors = [];
      
-     // StudentCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
-     //   CoursesEnrolled.numChildren();
-     // });
-     const studentCol = query(collection(db, "Students"), where("EnoughCourses", "==", false ));
-     onSnapshot(studentCol,(querySnapshot) => {
-       querySnapshot.forEach((doc) => {
-         StudentWarn(doc.get('useruiid'))
-      });
-    });
+  //    // StudentCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
+  //    //   CoursesEnrolled.numChildren();
+  //    // });
+  //    const studentCol = query(collection(db, "Students"), where("EnoughCourses", "==", false ));
+  //    onSnapshot(studentCol,(querySnapshot) => {
+  //      querySnapshot.forEach((doc) => {
+  //        StudentWarn(doc.get('useruiid'))
+  //     });
+  //   });
  
-    const coursesCol = query(collection(db,'AssignedCourses'), where("Size" , "<", 5));
-    const courseSnapshot = await getDocs(coursesCol);
-    courseSnapshot.forEach((doc)=> {
-      let instructorUiid = doc.data().get("Instructoruiid");  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
-      let courseName = doc.data().get("Class");
+  //   const coursesCol = query(collection(db,'AssignedCourses'), where("Size" , "<", 5));
+  //   const courseSnapshot = await getDocs(coursesCol);
+  //   courseSnapshot.forEach((doc)=> {
+  //     let instructorUiid = doc.data().get("Instructoruiid");  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
+  //     let courseName = doc.data().get("Class");
 
-      courses.push(courseName);           //Data pushed into respective course and instructors array.
-      instructors.push(instructorUiid);
+  //     courses.push(courseName);           //Data pushed into respective course and instructors array.
+  //     instructors.push(instructorUiid);
 
-      await updateDoc(doc(db,"Instructor", instructorUiid), {CanceledCourses: true});     //Instructors of these courses are given a CanceledCourse: true
-      await deleteDoc(doc(db,"Instructor",instructorUiid,"Courses", courseName));     //Class is deleted from their list of courses.
-      InstructorWarn(instructorUidd);                                                     // They Receive a warning.
-    });
+  //     await updateDoc(doc(db,"Instructor", instructorUiid), {CanceledCourses: true});     //Instructors of these courses are given a CanceledCourse: true
+  //     await deleteDoc(doc(db,"Instructor",instructorUiid,"Courses", courseName));     //Class is deleted from their list of courses.
+  //     InstructorWarn(instructorUidd);                                                     // They Receive a warning.
+  //   });
 
-    coursesSnapshot.forEach((course) => {         //Updates canceledCourses to true for affected students;
-      // let CanceledStudents = query(collection(db,"Students"), where("Courses" in [co)) 
-      // 
-        const allStudents = await getDocs(collection(db,"Students"));
-        allStudents.forEach((student) =>{
-          let Classes = await getDocs(student.collection("Courses"));
-          Classes.forEach((doc) => {
-            if(doc.data().get("Class") != course.data().get("Class"))
-              break;
-            else
-              await updateDoc(student, { CanceledCourses: true }); //Or setDoc with ,{merge: true}
-              await deleteDoc(student, "Courses", doc);
+  //   coursesSnapshot.forEach((course) => {         //Updates canceledCourses to true for affected students;
+  //     // let CanceledStudents = query(collection(db,"Students"), where("Courses" in [co)) 
+  //     // 
+  //       const allStudents = await getDocs(collection(db,"Students"));
+  //       allStudents.forEach((student) =>{
+  //         let Classes = await getDocs(student.collection("Courses"));
+  //         Classes.forEach((doc) => {
+  //           if(doc.data().get("Class") != course.data().get("Class"))
+  //             break;
+  //           else
+  //             await updateDoc(student, { CanceledCourses: true }); //Or setDoc with ,{merge: true}
+  //             await deleteDoc(student, "Courses", doc);
+  //         });
+
+  //       // instructors.forEach((instructor) => {
+  //       //   let canceledInstructor = query(collection(db,"Instructors"), where(doc.id, "==", instructor));
+
+  //       });
+
+  //     await deleteDoc(doc(db,"AssignedCourses", course)); //Delete the Assigned Course overall.
+  //   });
+
+  // }
+
+  // async function SuspensionCourseRunning(){
+  //   let instructorList = await getDocs(collection(db, "Instructors"));
+  //   instructorList.forEach((instructor) => {
+  //     let numberOfCourses = await getDocs(instructor.collection("Courses"));
+  //     numberOfCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
+  //       CoursesEnrolled.numChildren();
+  //     });
+  //   });
+  // }
+
+  // IMPLEMENT LATER
+  async function StudentWarn(a){
+    // issue a warning to the student
+    for(let i = 0; i<students.length; i++){
+      if(students[i].useruiid === a){
+          var warncount = students[i].numWarn;
+          warncount += 1;
+          const washingtonRef = doc(db, "Students",a);
+          // Set the "capital" field of the city 'DC'
+          await updateDoc(washingtonRef, {
+              numWarn: warncount
           });
-
-        // instructors.forEach((instructor) => {
-        //   let canceledInstructor = query(collection(db,"Instructors"), where(doc.id, "==", instructor));
-
-        });
-
-      await deleteDoc(doc(db,"AssignedCourses", course)); //Delete the Assigned Course overall.
+          break;
+        }
+    }
+  // add the doc to the warnings
+  await addDoc(collection(db, "Students",a,"Warnings"), {
+      Warn: "You have been given one warnings for taboo words",
+      numofWarn: 1
     });
-
-  }
-
-  async function SuspensionCourseRunning(){
-    let instructorList = await getDocs(collection(db, "Instructors"));
-    instructorList.forEach((instructor) => {
-      let numberOfCourses = await getDocs(instructor.collection("Courses"));
-      numberOfCourses = db.ref.child("Courses").on("value", function(CoursesEnrolled){
-        CoursesEnrolled.numChildren();
-      });
-    });
+    alert("Student has been warned, please update your Complain list!");
+    await history.push('GradMembers');
   }
 
   // IMPLEMENT LATER
-  async function StudentWarn(){
-  
-  }
-
-  // IMPLEMENT LATER
-  async function InstructorWarn(a,b){
-    
+  async function InstructorWarn(a){
+     // isue a warning to the instructor
+    for(let i = 0; i<Instructor.length; i++){
+      if(Instructor[i].useruiid === a){
+          var warncount = Instructor[i].numWarn;
+          warncount += 1;
+          const washingtonRef = doc(db, "Instructor",a);
+          // Set the "capital" field of the city 'DC'
+          await updateDoc(washingtonRef, {
+              numWarn: warncount
+          });
+          break;
+        }
+    }
+  // add the doc to the warnings
+  await addDoc(collection(db, "Instructor",a,"Warnings"), {
+      Warn: "You have been given one warnings for taboo words",
+      numofWarn: 1
+    });
+    alert("Instructor has been warned, please update your Complain list!");
+    await history.push('GradMembers');
   }
 
   // IMPLEMENT LATER
@@ -145,8 +185,7 @@ const [students, setStudents] = useState([]);
           <td> { student.lastname } </td>
           <td> { student.empl } </td>
           <td> { student.useruiid } </td>
-          <td><button className="warn-button-grad"onClick={() => StudentWarn(student.firstname,
-                                                     student.lastname
+          <td><button className="warn-button-grad"onClick={() => StudentWarn(student.useruiid
                                                      )}>Warn</button>
               <button className="de-register-button"onClick={() => De_Register(student.firstname,
                                                      student.lastname
@@ -167,8 +206,7 @@ const [students, setStudents] = useState([]);
           <td> { tclass.firstname} </td>
           <td> { tclass.lastname} </td>
           <td> { tclass.useruiid} </td>
-          <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.firstname,
-                                                      tclass.lastname
+          <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.useruiid
                                                       )}>Warn</button>
                 <button className="suspend-button-grad"onClick={() => Suspend(tclass.firstname,
                                                      tclass.lastname
