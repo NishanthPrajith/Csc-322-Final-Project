@@ -13,7 +13,7 @@ import Select from 'react-select';
 import InstructorComplainPopup from './InstructorComplainPopup';
 import InstructorComplainPopup1 from './InstructorComplainPopup1';
 
-var StudentComplainUiid;
+var studentComplainName;
 export default function InstructorView() {
     const [Instructor, setInstructor] = useState('');
     const [CurrentClasses, setCurrentClasses] = useState([]);
@@ -68,7 +68,7 @@ export default function InstructorView() {
     async function submitComplaint(){
         await addDoc(collection(db, "Complaints"), {
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            IssuedName: document.getElementById("input-name").value,
+            IssuedName: studentComplainName,
             Complaint: document.getElementById("input-details").value 
           });
           alert("Complaint submitted, Thank you for your Feedback!");
@@ -149,7 +149,7 @@ export default function InstructorView() {
      }
 
      async function Complain1(a){
-         StudentComplainUiid = a;
+         studentComplainName = a;
         // a == student uiid 
         toggleComplainPopup1();
      }
@@ -331,7 +331,7 @@ export default function InstructorView() {
                 {InstructorRoster.map((course) => (
                     <tr>
                         <td> {course.StudentName} </td>
-                        <td><button onClick={() => Complain1(course.Student
+                        <td><button onClick={() => Complain1(course.StudentName
                                     )}className="complain-popup-button">Complain</button></td>
                     </tr>
                 ))}
@@ -343,18 +343,11 @@ export default function InstructorView() {
         {isOpen1 && <InstructorComplainPopup1
             content={<>
                 <p>Complain on this student</p>
-                <table className="xInstView2">
-                <tr>
-                    <th>Student</th>
-                </tr>
-                {InstructorRoster.map((course) => (
-                    <tr>
-                        <td> {course.StudentName} </td>
-                        <td><button onClick={() => Complain1(course.Student
-                                    )}className="complain-popup-button">Complain</button></td>
-                    </tr>
-                ))}
-            </table>
+                <div className="complaint"style={styles.container}>
+                        <h2> Complaint </h2>
+                            <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
+                            <button onClick ={submitComplaint} className="button"> Submit </button>  
+                        </div>
             </>}
             handleClose={toggleComplainclosePopup1}
         />} 

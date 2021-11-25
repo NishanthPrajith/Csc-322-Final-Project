@@ -5,13 +5,25 @@ import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
 import { registerVersion } from '@firebase/app';
 import { useHistory } from 'react-router-dom';
+import StudentcourseAssignPopup from './StudentDeregister';
 
+var StudentRegisterUiid;
 export default function GradMembers(){
   const history = useHistory();
   const [students, setStudents] = useState([]);
+  const [studentscourses, setStudentscourses] = useState([]);
   const [Instructor, setTclasses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [CanceledCourses, setCanceledCourses] = useState([]);
+
+  // POP UP FUNCTIONS 
+  const togglestudentcoursePopup = () => {
+    setIsOpen(!isOpen);
+}
+const closetogglestudentcoursePopup = () => {
+    setIsOpen(!isOpen);
+}
 
   async function getStudents(db) {
     const studentsCol = collection(db, 'Students');
@@ -159,8 +171,29 @@ export default function GradMembers(){
   }
 
   // IMPLEMENT LATER
-  async function De_Register(){
-
+  async function De_Register(a){
+    StudentRegisterUiid = a;
+    // DEREGISTER THE STUDENT FROM THE COURSE 
+    // FIRST WE NEED TO GET THE COURSES FROM THE STUDENT COLLECTION
+    const studentCourses = collection(db, 'Students', a,"Courses");
+    setLoading(true);
+   onSnapshot(studentCourses, (querySnapshot) => {
+      const studentcourses = [];
+      querySnapshot.forEach((doc) => {
+          studentcourses.push(doc.data());
+      });
+      setStudentscourses(studentcourses);
+    });
+    setLoading(false);
+    togglestudentcoursePopup();
+  }
+  // IMPLEMENT LATER
+  async function De_Register_Popup(a){
+    // DEREGISTER THE STUDENT FROM THE COURSE 
+    // FIRST WE NEED TO GET THE COURSES FROM THE STUDENT COLLECTION
+    await deleteDoc(doc(db, "Students", StudentRegisterUiid,"Courses",a));
+    alert("De-Registered the student from the course!");
+    await history.push('GradMembers');
   }
 
   // IMPLEMENT LATER
@@ -187,8 +220,7 @@ export default function GradMembers(){
           <td> { student.useruiid } </td>
           <td><button className="warn-button-grad"onClick={() => StudentWarn(student.useruiid
                                                      )}>Warn</button>
-              <button className="de-register-button"onClick={() => De_Register(student.firstname,
-                                                     student.lastname
+              <button className="de-register-button"onClick={() => De_Register(student.useruiid
                                                      )}>De-register</button></td>                                   
         </tr>
         ))}
@@ -215,7 +247,32 @@ export default function GradMembers(){
         </tr>
         ))}
       </table>
-      
+      {isOpen && <StudentcourseAssignPopup
+            content={<>
+                <p>Assign course(s) to this instructor</p>
+                <table className="xCourses">
+                <tr>
+                    <th>Class</th>
+                    <th>Day/Time</th>
+                    <th>Room</th>
+                    <th>Instructor</th>
+                    <th>Section</th>
+                    <th></th>
+                </tr>
+                {studentscourses.map((course) => (
+                    <tr>
+                        <td> {course.Class} </td>
+                        <td> {course.DayTime} </td>
+                        <td> {course.Room} </td>
+                        <td> {course.Instructor} </td>
+                        <td> {course.Secion} </td>
+                        <td><button onClick= {() => De_Register_Popup(course.Class)}>De-Register Course</button></td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={closetogglestudentcoursePopup}
+             />}
     </div>
   )
 };
