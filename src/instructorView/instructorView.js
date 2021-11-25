@@ -63,19 +63,8 @@ export default function InstructorView() {
     async function toggleComplainclosePopup1 () {
         setIsOpen1(!isOpen1);
     }
- 
- 
-    async function submitComplaint(){
-        await addDoc(collection(db, "Complaints"), {
-            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
-            IssuedName: studentComplainName,
-            Complaint: document.getElementById("input-details").value 
-          });
-          alert("Complaint submitted, Thank you for your Feedback!");
-          await history.push('Instructorview');  
-    }
 
-    async function getWarnings(db){
+    async function getWarnings1(db){
         const instWarnings = collection(db, 'Instructor', userData.getUd(),"Warnings");
         setLoading(true);
        onSnapshot(instWarnings, (querySnapshot) => {
@@ -122,6 +111,7 @@ export default function InstructorView() {
     useEffect(() => {
         setLoading(true);
         getWarnings(db);
+        getWarnings1(db);
         getInstructorCourses(db)
       }, []);
 
@@ -153,6 +143,15 @@ export default function InstructorView() {
         // a == student uiid 
         toggleComplainPopup1();
      }
+     async function submitComplaint(){
+        await addDoc(collection(db, "Complaints"), {
+            SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
+            IssuedName: studentComplainName,
+            Complaint: document.getElementById("input-details").value 
+          });
+          alert("Complaint submitted, Thank you for your Feedback!");
+          await history.push('Instructorview');  
+    }
 
 
       return (
@@ -285,14 +284,16 @@ export default function InstructorView() {
                         </div>
                         }       
                         {(OptionSelected.value === "warning") && <table className>
+                            <h1>Total Warnings:</h1>
+                            <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                                 <tr>
-                                    <th>Warning</th>
-                                    <th>Warning #</th>
+                                    <th>Amount</th>
+                                    <th>Reason</th>
                                 </tr>
                             { Warnings.map((warn) => (
                                 <tr>
-                                    <td> { warn.Warn } </td>
-                                    <td> { warn.Warnnum } </td>
+                                    <td> {warn.numofWarn} </td>
+                                    <td> {warn.Warn} </td>
                                 </tr>
                             ))}
                         </table>    

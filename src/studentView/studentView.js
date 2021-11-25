@@ -32,6 +32,7 @@ export default function StudentView() {
    const [complainpopup1, setIsOpen1] = useState(false);
    const [ratepopus, setrateIsOpen] = useState(false);
    const [Warnings, setWarnings] = useState([]);
+   const [StudentsWarnings, setStudentsWarnings] = useState([]);
    const [ClassStudents, setClassStudents] = useState([]);
    const [Loading, setLoading] = useState('false');
    const [InputValue, setInputValue] = useState('');
@@ -101,6 +102,19 @@ export default function StudentView() {
           });
           console.log(warning);
           setWarnings(warning);
+        });
+        setLoading(false);
+     }
+
+     async function getWarnings1(db){
+        const getwarnCol = collection(db, 'Students',userData.getUd(),"Warnings");
+        setLoading(true);
+       onSnapshot(getwarnCol, (querySnapshot) => {
+          const getwarning = [];
+          querySnapshot.forEach((doc) => {
+              getwarning.push(doc.data());
+          });
+          setStudentsWarnings(getwarning);
         });
         setLoading(false);
      }
@@ -292,6 +306,7 @@ export default function StudentView() {
     getStudentCourses(db);
     getWarnings(db);
     getInstructor1(db);
+    getWarnings1(db);
   }, []);
 
 
@@ -499,9 +514,10 @@ export default function StudentView() {
                                         <th>Amount</th>
                                         <th>Reason</th>
                                     </tr>
-                                    { Warnings.map((warn) => (
+                                    { StudentsWarnings.map((warn) => (
                                         <tr>
-                                            <td> { warn.warn } </td>
+                                            <td> { warn.numofWarn } </td>
+                                            <td> { warn.Warn } </td>
                                         </tr>
                                     ))}
                                 </table>   
