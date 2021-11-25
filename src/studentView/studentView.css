@@ -218,6 +218,8 @@ p {
   text-align: "center";
 }
 
+/* Warning Page*/
+
 .CourseStyler-warning th {
   background-color: #7d5cc6;
   color: white;
@@ -266,6 +268,4 @@ p {
   color: rgb(255, 255, 255);
   transition: 250ms;
 }
-/* .dd{
 
- } */

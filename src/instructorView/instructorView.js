@@ -37,9 +37,8 @@ export default function InstructorView() {
     const [CanceledCourses, setCanceledCourses] = useState(false);
     const instructorRef = useRef();
     const courseRef = useRef();
-    const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
-                    {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
-                    {label: "Warning", value: "warning"}];
+    const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, {label: "Enroll", value: "enroll"},
+                    {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"}];
 
 
     const handleInputChange = value => {
@@ -183,7 +182,6 @@ export default function InstructorView() {
                                     <th>Time</th>
                                     <th>Room</th>
                                     <th>Section</th>
-                                    <th> Instructor</th>
                                 </tr>
                             { CurrentClasses.map((Class) => (
                                 <tr>
@@ -191,13 +189,12 @@ export default function InstructorView() {
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
                                     <td> { Class.Section } </td>
-                                    <td> {Class.Instructor } </td>
                                 </tr>
                             ))}
                         </table>    
                         }  
                      
-                        {(OptionSelected.value === "record") && <table className>
+                        {(OptionSelected.value === "grades") && <table className>
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -211,7 +208,7 @@ export default function InstructorView() {
                                 </tr>
                             ))}
                         </table>    
-                        }   
+                        }
                         
                         {(OptionSelected.value === "drop") && <table className>
                                 <tr>
@@ -245,25 +242,9 @@ export default function InstructorView() {
                         </table>    
                         }
 
-                        {(OptionSelected.value === "grades") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }
-
                         {(OptionSelected.value === "complaints") && 
-                        <div className="complaint"style={styles.container}>
-                        <table className = "CourseStyler2">
+                        <div className="instructor-complaint-page"style={styles.container}>
+                        <table className = "CourseStyler-complaint-instructor">
                             <tr>
                                     <th>Course</th>
                                     <th>Time</th>
@@ -277,26 +258,29 @@ export default function InstructorView() {
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
                                     <td><button onClick={() => Complain(Class.Class
-                                    )}className="button">Complain</button></td>
+                                    )}className="complaint-instructor-button">Complain</button></td>
                                 </tr>
                             ))}
                         </table>         
                         </div>
-                        }       
-                        {(OptionSelected.value === "warning") && <table className>
+                        } 
+
+                        {(OptionSelected.value === "warning") && <div className="instructor-warning-page">
                             <h1>Total Warnings:</h1>
                             <p>Reminder: Getting 3 warnings will result in a suspension!</p>
-                                <tr>
-                                    <th>Amount</th>
-                                    <th>Reason</th>
-                                </tr>
-                            { Warnings.map((warn) => (
-                                <tr>
-                                    <td> {warn.numofWarn} </td>
-                                    <td> {warn.Warn} </td>
-                                </tr>
-                            ))}
-                        </table>    
+                                <table className ="CourseStyler-warning-instructor">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                    { Warnings.map((warn) => (
+                                    <tr>
+                                        <td> {warn.numofWarn} </td>
+                                        <td> {warn.Warn} </td>
+                                    </tr>
+                                    ))}
+                                </table>  
+                        </div>  
                         }    
      
                 </div>
@@ -324,8 +308,9 @@ export default function InstructorView() {
 
         {isOpen && <InstructorComplainPopup
             content={<>
-                <p>Complain on this student</p>
-                <table className="xInstView">
+                <h2 className="complaint-h2">Complain on this student</h2>
+                <table className="complain-popup-table-instructor">
+                
                 <tr>
                     <th>Student</th>
                 </tr>
@@ -343,11 +328,10 @@ export default function InstructorView() {
 
         {isOpen1 && <InstructorComplainPopup1
             content={<>
-                <p>Complain on this student</p>
                 <div className="complaint"style={styles.container}>
                         <h2> Complaint </h2>
                             <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
-                            <button onClick ={submitComplaint} className="button"> Submit </button>  
+                            <button onClick ={submitComplaint} className="submit-complaint-popup-button"> Submit </button>  
                         </div>
             </>}
             handleClose={toggleComplainclosePopup1}
@@ -370,7 +354,7 @@ const styles = {
       border: "1px solid #a9a9a9",
       borderRadius: 5,
       padding: 10,
-      margin: "20px 0",
+      margin: "5px 0",
       minHeight: 100,
       width: 300
     },

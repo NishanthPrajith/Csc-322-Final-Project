@@ -214,6 +214,32 @@ img{
   transition: 250ms;
 }
 
+/* Complaint Page*/
+
+.CourseStyler-complaint-instructor th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.CourseStyler-complaint-instructor td {
+  padding: 2% 0%;
+}
+
+.CourseStyler-complaint-instructor {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.CourseStyler-complaint-instructor tr {
+  width: 100%;
+  text-align: center;
+}
+
 .complaint h2{
   margin: 50px;
   padding: 0;
@@ -225,42 +251,71 @@ img{
   text-align: "center";
 }
 
-.CourseStyler2 th {
+.complaint-instructor-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.complaint-instructor-button:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/* Warning Page*/
+
+.CourseStyler-warning-instructor th {
   background-color: #7d5cc6;
   color: white;
   padding: 2% 0%;
   width: 20%;
 }
 
-.CourseStyler2 td {
+.instructor-warning-page h1{
+  padding-left: 5%;
+}
+
+.instructor-warning-page p{
+  padding-left: 5%;
+}
+
+.CourseStyler-warning-instructor td {
   padding: 2% 0%;
 }
 
-.CourseStyler2 {
+.CourseStyler-warning-instructor {
   float: left;
   width: 99%;
-  margin: 1% 0.5%;
+  margin: 2% 0.5%;
   border: none;
   border-collapse: collapse;
 }
 
-.CourseStyler2 tr {
+.CourseStyler-warning-instructor tr {
   width: 100%;
   text-align: center;
 }
 
-.xInstView th {
+/*Complain Popup */
+
+.complain-popup-table-instructor th {
   background-color: #7d5cc6;
   color: white;
   padding: 2% 0%;
   width: 33%;
 }
 
-.xInstView td {
+.complain-popup-table-instructor td {
   padding: 2% 0%;
 }
 
-.xInstView {
+.complain-popup-table-instructor{
   float: left;
   width: 30%;
   margin: 0% 1.5%;
@@ -268,10 +323,32 @@ img{
   border-collapse: collapse;
 }
 
-.xInstView tr {
+.complain-popup-table-instructor tr {
   width: 100%;
   text-align: center;
 }
+
+.submit-complaint-popup-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.submit-complaint-popup-button:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.complaint-h2 h2{
+  padding-left: 5%;
+}
+
 
 .xInstView2 th {
   background-color: #7d5cc6;
