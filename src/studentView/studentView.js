@@ -44,8 +44,8 @@ export default function StudentView() {
    const [CanceledCourses, setCanceledCourses] = useState(false);
    const instructorRef = useRef();
    const courseRef = useRef();
-   const options = [{label: "Schedule", value: "schedule"}, {label:"Record", value: "record"}, {label: "Drop", value: "drop"} , 
-                    {label: "Enroll", value: "enroll"}, {label:"Grades", value: "grades"}, {label: "Complaints", value: "complaints"}, 
+   const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, {label: "Enroll", value: "enroll"}, 
+                    {label: "Drop", value: "drop"}, {label: "Complaints", value: "complaints"}, 
                     {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
 
     const handleInputChange = value => {
@@ -443,7 +443,7 @@ export default function StudentView() {
         </Container>
         <Container className= "Display" maxWidth = "false" >
             <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
-                {OptionSelected.value === "schedule" && <table className = "CourseStyler">
+                {OptionSelected.value === "schedule" && <table className = "student-schedule-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -463,27 +463,11 @@ export default function StudentView() {
                         </table>    
                         }  
                      
-                        {(OptionSelected.value === "record") && <table className>
+                     {(OptionSelected.value === "grades") && <table className ="student-grades-table">
                                 <tr>
                                     <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }   
-                        
-                        {(OptionSelected.value === "drop") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
+                                    <th>Instructor</th>
+                                    <th>Grades</th>
                                 </tr>
                             { CurrentClasses.map((Class) => (
                                 <tr>
@@ -495,15 +479,14 @@ export default function StudentView() {
                         </table>    
                         }
                         
-                        {(OptionSelected.value === "enroll") && 
-                         <table className="sCourses">
-                         <tr>
+                        {(OptionSelected.value === "drop") && <table className="student-drop-table">
+                        <tr>
                              <th>Class</th>
                              <th>Day/Time</th>
                              <th>Room</th>
                              <th>Section</th>
-                             <th>Size</th>
                              <th>Instructor</th>
+                        
                          </tr>
                          {enrollcourses.map((course) => (
                              <tr>
@@ -511,9 +494,40 @@ export default function StudentView() {
                                  <td> {course.DayTime} </td>
                                  <td> {course.Room} </td>
                                  <td> {course.Secion} </td>
-                                 <td> {course.Size} </td>
                                  <td> {course.Instructor} </td>
-                                 <td><button onClick={() => enrollCourse(course.Class, 
+                                
+                                 <td><button className="drop-button"onClick={() => enrollCourse(course.Class, 
+                                                               course.DayTime, 
+                                                               course.Room, 
+                                                               course.Secion, 
+                                                               course.Size,
+                                                               course.Instructor,
+                                                               course.Instructoruiid
+                                                               )}>Drop Course</button></td>
+                             </tr>
+                         ))}
+                        </table>    
+                        }
+                        
+                        {(OptionSelected.value === "enroll") && 
+                         <table className="enroll-student-table">
+                         <tr>
+                             <th>Class</th>
+                             <th>Day/Time</th>
+                             <th>Room</th>
+                             <th>Section</th>
+                             <th className="enroll-instructor-column">Instructor</th>
+                             <th className="enroll-size-column">Size</th>
+                         </tr>
+                         {enrollcourses.map((course) => (
+                             <tr>
+                                 <td> {course.Class} </td>
+                                 <td> {course.DayTime} </td>
+                                 <td> {course.Room} </td>
+                                 <td> {course.Secion} </td>
+                                 <td className="enroll-instructor-column2"> {course.Instructor} </td>
+                                 <td className="enroll-size-column2"> {course.Size} </td>
+                                 <td><button className="enroll-button"onClick={() => enrollCourse(course.Class, 
                                                                course.DayTime, 
                                                                course.Room, 
                                                                course.Secion, 
@@ -526,23 +540,9 @@ export default function StudentView() {
                      </table> 
                         }
 
-                        {(OptionSelected.value === "grades") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }
+                        
 
-                        {(OptionSelected.value === "complaints") && <table className = "CourseStyler">
+                        {(OptionSelected.value === "complaints") && <table className = "student-complaint-table">
                                 <tr>
                                     <th>Name</th>
                                     <th>Time</th>
@@ -559,13 +559,13 @@ export default function StudentView() {
                                     <td> {Class.Instructor } </td>
                                     <td><button onClick={() => Complain(Class.Class,
                                                                         Class.Instructoruiid 
-                                    )}className="button">Complain</button></td>
+                                    )}className="student-complaint-button">Complain</button></td>
                                 </tr>
                             ))}
                         </table>    
                         }       
                         {((userData.getPeriod() !==3) && (OptionSelected.value === "rate")) && 
-                        <table className = "CourseStyler">
+                        <table className = "student-rate-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -611,7 +611,7 @@ export default function StudentView() {
       
         {complainpopup && <ComplainPopup
             content={<>
-                <table className="xCourses">
+                <table className="complaint-popup-table">
                     <h1>Instructor</h1>
                 <tr>
                     <th>Name</th>
@@ -620,10 +620,10 @@ export default function StudentView() {
                                 <tr>
                                     <td> { InstructorTable.data().firstname+ " " + InstructorTable.data().lastname } </td>
                                     <td><button onClick = {() => Complain1(InstructorTable.data().useruiid                              
-                                                                     )}className="button">Complain</button></td>
+                                                                     )}className="complaint-popup-button">Complain</button></td>
                                 </tr>
                 </table>
-                <table className="xCourses">
+                <table className="complaint-popup-table">
                     <h1>Students</h1>
                 <tr>
                     <th>Name</th>
@@ -633,7 +633,7 @@ export default function StudentView() {
                                 <tr>
                                     <td> { Class.StudentName } </td>
                                     <td><button onClick = {() => Complain1(Class.Student                                
-                                                                     )}className="button">Complain</button></td>
+                                                                     )}className="complaint-popup-button">Complain</button></td>
                                 </tr>
                             ))}
                 </table>
@@ -646,7 +646,7 @@ export default function StudentView() {
                 <div className="complaint"style={styles.container}>
                         <h2> Complaint </h2>
                             <textarea className="input-details"id="input-details"ref={complaint} placeholder="Describe your issue." style={styles.textarea} />
-                            <button onClick ={submitComplaint} className="button"> Submit </button>  
+                            <button onClick ={submitComplaint} className="submit-complaint-button"> Submit </button>  
                         </div>
             </>}
             handleClose={complainclosePopUp1}
@@ -674,7 +674,7 @@ export default function StudentView() {
                              })}
                             </div>
                                 <textarea className="input-details" id="input-details"ref={experience} placeholder="What's your experience?" style={styles.textarea} />
-                            <button onClick = {submitreview}className="button"> Submit </button>
+                            <button onClick = {submitreview}className="submit-rating-button"> Submit </button>
                      </div> 
             </>}
             handleClose={closeratePopup}

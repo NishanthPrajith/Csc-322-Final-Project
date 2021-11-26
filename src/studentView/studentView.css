@@ -26,29 +26,7 @@
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-.CourseStyler th {
-  background-color: #7d5cc6;
-  color: white;
-  padding: 2% 0%;
-  width: 20%;
-}
-
-.CourseStyler td {
-  padding: 2% 0%;
-}
-
-.CourseStyler {
-  float: left;
-  width: 99%;
-  margin: 1% 0.5%;
-  border: none;
-  border-collapse: collapse;
-}
-
-.CourseStyler tr {
-  width: 100%;
-  text-align: center;
-}
+/*Student Card Info*/
 
 .Card {
   width: 300px;
@@ -114,6 +92,8 @@ p {
   text-align: justify;
 }
 
+/*Selection Menu Card*/
+
 .Card2 {
   width: 300px;
   height: 250px;
@@ -175,6 +155,8 @@ p {
   float: left;
 }
 
+/*Rating Pop Up*/
+
 .rating h2 {
   margin: 50px;
   padding: 0;
@@ -186,7 +168,7 @@ p {
   text-align: "center";
 }
 
-.button {
+.submit-rating-button {
   padding: 8px 20px;
   border-radius: 4px;
   outline: none;
@@ -195,7 +177,7 @@ p {
   color: purple;
 }
 
-.button:hover {
+.submit-rating-button:hover {
   padding: 8px 20px;
   transition: all 0.3s ease-out;
   background: rgb(184, 42, 240);
@@ -252,6 +234,234 @@ p {
   text-align: center;
 }
 
+/*Student Schedule*/
+
+.student-schedule-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.student-schedule-table td {
+  padding: 2% 0%;
+}
+
+.student-schedule-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.student-schedule-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+/*Student Enroll*/
+/*enroll-instructor-column*/
+
+.enroll-student-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.enroll-student-table td {
+  padding: 2% 0%;
+}
+
+.enroll-student-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.enroll-student-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.enroll-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.enroll-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.enroll-student-table .enroll-instructor-column{
+  padding-left: 1px;
+  padding-right: 75px;
+}
+
+.enroll-student-table .enroll-instructor-column2{
+  padding-left: 1px;
+  padding-right: 75px;
+}
+
+.enroll-student-table .enroll-size-column{
+  padding-left: 1px;
+  padding-right: 75px;
+}
+
+.enroll-student-table .enroll-size-column2{
+  padding-left: 1px;
+  padding-right: 75px;
+}
+
+/* Student Grades*/
+
+.student-grades-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.student-grades-table td {
+  padding: 2% 0%;
+}
+
+.student-grades-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.student-grades-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+/*Student Drop*/
+
+.student-drop-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.student-drop-table td {
+  padding: 2% 0%;
+}
+
+.student-drop-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.student-drop-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.drop-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.drop-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+
+/*Student Orginal Complaint*/
+
+.student-complaint-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.student-complaint-table td {
+  padding: 2% 0%;
+}
+
+.student-complaint-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.student-complaint-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.student-complaint-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.student-complaint-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/*Student Rate*/
+
+.student-rate-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.student-rate-table td {
+  padding: 2% 0%;
+}
+
+.student-rate-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.student-rate-table tr {
+  width: 100%;
+  text-align: center;
+}
 .rate-button {
   padding: 8px 20px;
   border-radius: 4px;
@@ -269,3 +479,62 @@ p {
   transition: 250ms;
 }
 
+/*Complaint Popup*/
+
+.complaint-popup-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.complaint-popup-table td {
+  padding: 2% 0%;
+}
+
+.complaint-popup-table{
+  float: left;
+  width: 50%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.complaint-popup-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.complaint-popup-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.complaint-popup-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.complaint .submit-complaint-button{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.complaint .submit-complaint-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
