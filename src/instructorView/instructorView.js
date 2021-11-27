@@ -37,7 +37,7 @@ export default function InstructorView() {
     const [CanceledCourses, setCanceledCourses] = useState(false);
     const instructorRef = useRef();
     const courseRef = useRef();
-    const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, {label: "Enroll", value: "enroll"},
+    const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
                     {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"}];
 
 
@@ -176,7 +176,7 @@ export default function InstructorView() {
 
         <Container className= "Display" maxWidth = "false" >
         <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
-                {OptionSelected.value === "schedule" && <table className = "CourseStyler">
+                {OptionSelected.value === "schedule" && <table className = "instructor-schedule-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -226,22 +226,6 @@ export default function InstructorView() {
                         </table>    
                         }
                         
-                        {(OptionSelected.value === "enroll") && <table className>
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                </tr>
-                            { CurrentClasses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                </tr>
-                            ))}
-                        </table>    
-                        }
-
                         {(OptionSelected.value === "complaints") && 
                         <div className="instructor-complaint-page"style={styles.container}>
                         <table className = "CourseStyler-complaint-instructor">
@@ -290,7 +274,7 @@ export default function InstructorView() {
             <div className ="MyInfo">
                     <div className='Card'>
                     <div className='upper-container'>
-                            <div className='image-container'>
+                            <div className='image-container2'>
                                 <img src= "https://i.pravatar.cc/150?img=17" alt='' height="100px" width="100px"/>
                             </div>
                     </div>
@@ -313,6 +297,7 @@ export default function InstructorView() {
                 
                 <tr>
                     <th>Student</th>
+                    <th></th>
                 </tr>
                 {InstructorRoster.map((course) => (
                     <tr>
