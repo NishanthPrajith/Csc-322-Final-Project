@@ -7,7 +7,7 @@ import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
 import emailjs from 'emailjs-com';
 import Tabs from '../components/Tabs';
-import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc } from '@firebase/firestore';
+import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc, deleteDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
@@ -20,6 +20,7 @@ var instUid;
 var course;
 var InstructorTable;
 var complainUiid;
+var fetchedassignedclasses = [];
 export default function StudentView() {
     const taboowords = ["shit","dang","damn"];
    const history = useHistory();
@@ -31,6 +32,7 @@ export default function StudentView() {
    const [enrollcourses, setCourses] = useState([]);
    const [student, setStudent1] = useState([]);
    const [CurrentClasses, setCurrentClasses] = useState([]);
+   const [StudentRecord, setStudentRecord] = useState([]);
    const [Instructor, setInstructor] = useState([]);
    const [complainpopup, setIsOpen] = useState(false);
    const [complainpopup1, setIsOpen1] = useState(false);
@@ -82,6 +84,21 @@ export default function StudentView() {
     setrateIsOpen(!ratepopus);
     }
 
+    // get the students records 
+    async function getStudentRecords(db) {
+        const recordCol = collection(db, 'Students', userData.getUd(),"Record");
+        setLoading(true);
+       onSnapshot(recordCol, (querySnapshot) => {
+          const record = [];
+          querySnapshot.forEach((doc) => {
+              record.push(doc.data());
+          });
+          console.log(record)
+          setStudentRecord(record);
+        });
+        setLoading(false);
+      }
+
     async function getStudentCourses(db) {
         const coursesCol = collection(db, 'Students', userData.getUd(),"Courses");
         setLoading(true);
@@ -90,7 +107,6 @@ export default function StudentView() {
           querySnapshot.forEach((doc) => {
               student.push(doc.data());
           });
-          console.log(student);
           setCurrentClasses(student);
         });
         setLoading(false);
@@ -104,7 +120,6 @@ export default function StudentView() {
           querySnapshot.forEach((doc) => {
               warning.push(doc.data());
           });
-          console.log(warning);
           setWarnings(warning);
         });
         setLoading(false);
@@ -149,7 +164,62 @@ export default function StudentView() {
         });
         setLoading(false);
       }
-    
+      // student drop course
+      async function dropCourse(a,b) {
+        // a== classname
+        // b == instructor
+      if(userData.getPeriod()>=1 && userData.getPeriod()<=3){
+      await deleteDoc(doc(db, "Students", userData.getUd(),"Courses",a));
+      // update the class size
+      const assignedCol = collection(db, 'AssignedClasses');
+        setLoading(true);
+       onSnapshot(assignedCol, (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            fetchedassignedclasses.push(doc.data());
+          });
+        });
+        let classsize = 0;
+        for(let i = 0; i<fetchedassignedclasses; i++){
+            if(fetchedassignedclasses[i].Class === a){
+                classsize = fetchedassignedclasses[i].Size;
+                break;
+            }
+        }
+      classsize+=1;
+      // start updating the class size
+      const washingtonRef = doc(db, "AssignedClasses", a);
+        await updateDoc(washingtonRef, {
+        Size: classsize
+        });
+      // setdoc to student record and add a grade W
+      await setDoc(doc(db, "Students", userData.getUd(),"Record",a), {
+        Class: a,
+        Instructor: b,
+        Grade: "W"
+      });
+      // done updating student record with a W
+      // done updating the class size
+      alert("Course has been dropped sucessfully!");
+      if(CurrentClasses.length===1){
+        // add the student to the suspended student doc
+        let studentdata;
+        for(let i = 0; i<Warnings.length; i++){
+            if(Warnings[i].useruiid===userData.getUd()){
+                studentdata = Warnings[i];
+                break;
+            }
+        }
+        // Add a new document in collection "cities"
+        await setDoc(doc(db, "SuspendedStudents", userData.getUd()), studentdata);
+        // await deleteDoc(doc(db, "Studenta", userData.getUd()));
+        alert("You have dropped all courses, therefore you have been suspended!");
+        await history.push('SignIn');
+        }
+        else{
+      await history.push('StudentView');
+        }
+    }
+  }
       async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid){
         // check if the student is already enrolled in the course
           // get the data for the students in the course 
@@ -372,6 +442,7 @@ export default function StudentView() {
     getInstructor1(db);
     getWarnings1(db);
     getCourses(db);
+    getStudentRecords(db);
   }, []);
 
 
@@ -471,43 +542,36 @@ export default function StudentView() {
                                     <th>Instructor</th>
                                     <th>Grades</th>
                                 </tr>
-                            { CurrentClasses.map((Class) => (
+                            { StudentRecord.map((Class) => (
                                 <tr>
                                     <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
+                                    <td> { Class.Instructor } </td>
+                                    <td> { Class.Grade } </td>
                                 </tr>
                             ))}
                         </table>    
                         }
                         
                         {(OptionSelected.value === "drop") && <table className="student-drop-table">
-                        <tr>
-                             <th>Class</th>
-                             <th>Day/Time</th>
-                             <th>Room</th>
-                             <th>Section</th>
-                             <th>Instructor</th>
-                        
-                         </tr>
-                         {enrollcourses.map((course) => (
-                             <tr>
-                                 <td> {course.Class} </td>
-                                 <td> {course.DayTime} </td>
-                                 <td> {course.Room} </td>
-                                 <td> {course.Secion} </td>
-                                 <td> {course.Instructor} </td>
-                                
-                                 <td><button className="drop-button"onClick={() => enrollCourse(course.Class, 
-                                                               course.DayTime, 
-                                                               course.Room, 
-                                                               course.Secion, 
-                                                               course.Size,
-                                                               course.Instructor,
-                                                               course.Instructoruiid
-                                                               )}>Drop Course</button></td>
-                             </tr>
-                         ))}
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                    <th> Instructor</th>
+                                </tr>
+                            { CurrentClasses.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td> {Class.Instructor } </td>
+                                    <td> <button onClick = {() => dropCourse(Class.Class,
+                                                                            Class.Instructor
+                                    )}>Drop</button> </td>
+                                </tr>
+                            ))}
                         </table>    
                         }
                         

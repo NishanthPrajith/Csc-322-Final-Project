@@ -235,14 +235,12 @@ const closetogglestudentcoursePopup = () => {
       if(students[i].useruiid === a){
           let studentfirstname = students[i].firstname;
           let studentlastname = students[i].lastname;
+          let studentuiid = students[i].useruiid;
           var studentdata = students[i];
           console.log(studentdata);
           var warncount = students[i].numWarn;
           warncount += 1;
           if (warncount>=3){
-            // remove the student from all the courses he is in 
-            // then update the class size
-
             // cleare him from the waitlist 
             for(let w = 0; w < waitlist.length; w++){
               if(waitlist[w] === a){
@@ -262,9 +260,9 @@ const closetogglestudentcoursePopup = () => {
               }
             } 
             // delete the student from the students collection
-            // await deleteDoc(doc(db, "Students", a));
+            await deleteDoc(doc(db, "Students", a));
             // add this student to the suspended collection with data
-            await addDoc(collection(db, "Suspended"), studentdata);
+            await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
             alert("Student has reached 3 warnings and student has been suspended!");
             await history.push('GradMembers');
           }
