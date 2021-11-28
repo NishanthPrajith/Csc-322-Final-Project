@@ -173,13 +173,15 @@ export default function StudentView() {
         // first check size of class
         if(parseInt(size)===0){
             // put the guy/girl on waitlist
-            await setDoc(doc(db, "Waitlist", userData.getUd()), {
+            await setDoc(doc(db, "Waitlist", instructoruiid), {
               Class: classs,
               DayTime: daytime,
               Room: room,
               Secion: section,
               Instructor: instructor,
-              Instructoruiid: instructoruiid
+              Instructoruiid: instructoruiid,
+              Student: userData.getUd(),
+              StudentName: userData.getFirstname() + " " + userData.getLastname()
             });
             alert("Class is filled up, you have been placed on the wait list");
           }

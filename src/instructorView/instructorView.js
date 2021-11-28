@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
-import { collection, doc, query, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, doc, query, getDocs, onSnapshot,deleteDoc } from 'firebase/firestore';
 import { getDoc, setDoc,addDoc } from '@firebase/firestore';
 import Tabs from '../components/Tabs';
 import Container from '@material-ui/core/Container';
@@ -18,6 +18,7 @@ export default function InstructorView() {
     const [Instructor, setInstructor] = useState('');
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [Warnings, setWarnings] = useState([]);
+    const [waitlist, setWaitlist] = useState([]);
     const [InstructorCourses, setInstructorCourses] = useState([]);
     const [InstructorRoster, setInstructorRoster] = useState([]);
     const [Students, setStudents] = useState([]);
@@ -38,7 +39,7 @@ export default function InstructorView() {
     const instructorRef = useRef();
     const courseRef = useRef();
     const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
-                    {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"}];
+                    {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];
 
 
     const handleInputChange = value => {
@@ -62,6 +63,21 @@ export default function InstructorView() {
     async function toggleComplainclosePopup1 () {
         setIsOpen1(!isOpen1);
     }
+
+    // get the students on the waitlist 
+    // GET WAITLIST
+  async function getWaitlist(db) {
+    const waitlistCol = collection(db, 'Waitlist');
+    setLoading(true);
+    onSnapshot(waitlistCol, (querySnapshot) => {
+      const waitlist = [];
+      querySnapshot.forEach((doc) => {
+        waitlist.push(doc.data());
+      });
+      setWaitlist(waitlist);
+    });
+    setLoading(false);
+  }
 
     async function getWarnings1(db){
         const instWarnings = collection(db, 'Instructor', userData.getUd(),"Warnings");
@@ -111,7 +127,8 @@ export default function InstructorView() {
         setLoading(true);
         getWarnings(db);
         getWarnings1(db);
-        getInstructorCourses(db)
+        getInstructorCourses(db);
+        getWaitlist(db);
       }, []);
 
       async function Complain(a){
@@ -152,6 +169,23 @@ export default function InstructorView() {
           await history.push('Instructorview');  
     }
 
+    // get student in waitlist
+    async function StudentEnrollWaitlist(a,b,c){
+        // a == studentuiid
+        // b == course
+        // c == Instructoruiid
+        // enroll the student in the course
+        await addDoc(collection(db, "Instructor", c,"Courses",b,"Roster"), {
+            Student: a
+          });
+        // delete the doc with c
+        await deleteDoc(doc(db, "Waitlist", c));
+    }
+
+    // Reject the student from the waitlist 
+    async function RejectStudentEnrollWaitlist(c){
+        await deleteDoc(doc(db, "Waitlist", c));
+    }
 
       return (
         <div className = "InstructorPage">
@@ -183,12 +217,12 @@ export default function InstructorView() {
                                     <th>Room</th>
                                     <th>Section</th>
                                 </tr>
-                            { CurrentClasses.map((Class) => (
+                            { InstructorCourses.map((Class) => (
                                 <tr>
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
-                                    <td> { Class.Section } </td>
+                                    <td> { Class.Secion } </td>
                                 </tr>
                             ))}
                         </table>    
@@ -265,7 +299,36 @@ export default function InstructorView() {
                                     ))}
                                 </table>  
                         </div>  
-                        }    
+                        }
+
+                        {(OptionSelected.value === "waitlist") && 
+                        <div className="instructor-complaint-page"style={styles.container}>
+                        <table className = "CourseStyler-complaint-instructor">
+                            <tr>
+                                    <th>Name</th>
+                                    <th>Course</th>
+                                    <th>Time</th>
+                                    <th>Room</th>
+                                    <th>Section</th>
+                                </tr>
+                            {waitlist.map((Class) => (
+                                <tr>
+                                    <td> { Class.StudentName } </td>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.DayTime } </td>
+                                    <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td><button onClick={() => StudentEnrollWaitlist(Class.Student,
+                                                                                     Class.Class,
+                                                                                     Class.Instructoruiid
+                                    )}className="complaint-instructor-button">Enroll</button></td>
+                                    <td><button onClick={() => RejectStudentEnrollWaitlist(Class.Instructoruiid
+                                    )}className="complaint-instructor-button">X</button></td>
+                                </tr>
+                            ))}
+                        </table>         
+                        </div>
+                        }     
      
                 </div>
             </Container>  

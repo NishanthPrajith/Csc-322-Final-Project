@@ -68,31 +68,19 @@ export default function RegistrarsApplications() {
         if(f === "0"){          
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0}
             console.log(useruiid);
-            // payload sets fields
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
             const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0}
-             // first make the alert dialog/popup appear
              const userid = useruiid;
              firtname = a;
-             lastname = b;
-            //  console.log(useruiid);     
+             lastname = b;  
             togglecourseAssignPopup(useruiid);
-            // then we want to display the classes -- done
-            // then we want to assign the selected classes to the instructor-- done
-            // then close the alert box and return to the page--done 
-            // update user fields and then delte the doc
             await setDoc(doc(db, "Instructor", useruiid), payload);
         }
-        // First await call will add a document to our Student collection
-        // Second await call will remove the student from "Users" collection 
-        // Adjusts role depending on input
     }
 
     async function Assign(a,b,c,d,f){
-        // in this function we will assign the accepted instructor the classes
-        // got the information, now to push this data to the instructor
         classes=a;
         try{
         await setDoc(doc(db, "Instructor", ud, "Courses", a), {
@@ -112,7 +100,6 @@ export default function RegistrarsApplications() {
             Instructor: firtname + " " + lastname,
             Instructoruiid: ud
           });
-        //   await deleteDoc(doc(db, "classes", a));
         }catch{
             alert("Error");
         }

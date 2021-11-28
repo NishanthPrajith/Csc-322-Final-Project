@@ -9,9 +9,13 @@ import StudentcourseAssignPopup from './StudentDeregister';
 
 var StudentRegisterUiid;
 export default function GradMembers(){
+  const string = "You have been warned by the registrar after a complain investigation!"
   const history = useHistory();
   const [students, setStudents] = useState([]);
   const [instructors, setInstructors] = useState([]);
+  const [waitlist, setWaitlist] = useState([]);
+  const [complains, setComplains] = useState([]);
+  const [Reviews, setReviews] = useState([]);
   const [studentscourses, setStudentscourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +28,65 @@ export default function GradMembers(){
 const closetogglestudentcoursePopup = () => {
     setIsOpen(!isOpen);
 }
+  // GET WAITLIST
+  async function getWaitlist(db) {
+    const waitlistCol = collection(db, 'Waitlist');
+    setLoading(true);
+    onSnapshot(waitlistCol, (querySnapshot) => {
+      const waitlist = [];
+      querySnapshot.forEach((doc) => {
+        waitlist.push(doc.id);
+      });
+      setWaitlist(waitlist);
+    });
+    setLoading(false);
+  }
+  // COMPLAIN AND REVIEW
+  async function getComplaint(db) {
+    const complainsCol = collection(db, 'Complaints');
+    const complainsColid = collection(db, 'Complaints');
+    setLoading(true);
+    onSnapshot(complainsCol, (querySnapshot) => {
+      let complain = [];
+      querySnapshot.forEach((doc) => {
+        complain.push(doc.data())
+      });
+      onSnapshot(complainsColid, (querySnapshot) => { // Haroon is the greatest
+        const complainid = [];
+        querySnapshot.forEach((doc) => {
+          complainid.push(doc.id)
+        });
+        for(let i=0; i<complainid.length; i++){
+          complain[i].Uid = complainid[i];
+        }
+        setComplains(complain)
+        });
+    });
+    setLoading(false);
+  }
+  
+  async function getReviews(db) {
+    const reviewsCol = collection(db, 'Reviews');
+    const reviewsColid = collection(db, 'Reviews');
+    setLoading(true);
+    onSnapshot(reviewsCol, (querySnapshot) => {
+      const review = [];
+      querySnapshot.forEach((doc) => { 
+        review.push(doc.data());
+      });
+      onSnapshot(reviewsColid, (querySnapshot) => {
+        const reviewsid = [];
+        querySnapshot.forEach((doc) => {
+          reviewsid.push(doc.id)
+        });
+        for(let i=0; i<reviewsid.length; i++){
+          review[i].Uid = reviewsid[i];
+        }
+      setReviews(review);
+      });
+    });
+    setLoading(false);
+  }
 
   async function getStudents(db) {
     const studentsCol = collection(db, 'Students');
@@ -55,7 +118,9 @@ const closetogglestudentcoursePopup = () => {
     setLoading(true);
     getStudents(db);
     getInstructor(db);
-
+    getReviews(db);
+    getComplaint(db);
+    getWaitlist(db);
   }, []);
 
   async function WarningCheckStdCourses(){
@@ -164,12 +229,45 @@ const closetogglestudentcoursePopup = () => {
     // });
 
   // IMPLEMENT LATER
-  async function StudentWarn(a, string){
+  async function StudentWarn(a){ 
     // issue a warning to the student
     for(let i = 0; i<students.length; i++){
       if(students[i].useruiid === a){
+          let studentfirstname = students[i].firstname;
+          let studentlastname = students[i].lastname;
+          var studentdata = students[i];
+          console.log(studentdata);
           var warncount = students[i].numWarn;
           warncount += 1;
+          if (warncount>=3){
+            // remove the student from all the courses he is in 
+            // then update the class size
+
+            // cleare him from the waitlist 
+            for(let w = 0; w < waitlist.length; w++){
+              if(waitlist[w] === a){
+                deleteDoc(doc(db, "Waitlist", a));
+              }
+            } 
+            // delete complain
+            for(let c = 0; c < complains.length; c++){
+              if(complains[c].SentBy === studentfirstname + " " + studentlastname){
+                deleteDoc(doc(db, "Complaints", complains[c].Uid));
+              }
+            } 
+            // delete review
+            for(let r = 0; r < Reviews.length; r++){
+              if(Reviews[r].SentBy === studentfirstname + " " + studentlastname){
+                deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
+              }
+            } 
+            // delete the student from the students collection
+            // await deleteDoc(doc(db, "Students", a));
+            // add this student to the suspended collection with data
+            await addDoc(collection(db, "Suspended"), studentdata);
+            alert("Student has reached 3 warnings and student has been suspended!");
+            await history.push('GradMembers');
+          }
           const washingtonRef = doc(db, "Students",a);
           await updateDoc(washingtonRef, {
               numWarn: warncount
@@ -187,7 +285,7 @@ const closetogglestudentcoursePopup = () => {
   }
 
   // IMPLEMENT LATER
-  async function InstructorWarn(a, string){
+  async function InstructorWarn(a){
      // isue a warning to the instructor
     for(let i = 0; i<instructors.length; i++){
       if(instructors[i].useruiid === a){
