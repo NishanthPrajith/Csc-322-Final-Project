@@ -1,0 +1,28 @@
+.suspendedStudentHeading {
+    float: left;
+    width: 90%;
+    margin: 2% 5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .suspendedStudentHeading tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .suspendedStudentHeading th {
+    background-color: #7d5cc6;
+    color: white;
+    padding: 1% 0%;
+    width: 14.29%;
+  }
+  
+  .suspendedStudentHeading td {
+    padding: 2% 0%;
+  }
+  
+  .suspendedHeading h1,
+  .suspendedHeading p {
+    padding-left: 5%;
+  }
