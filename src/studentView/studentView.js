@@ -211,7 +211,6 @@ export default function StudentView() {
         }
         // Add a new document in collection "cities"
         await setDoc(doc(db, "SuspendedStudents", userData.getUd()), studentdata);
-        // await deleteDoc(doc(db, "Studenta", userData.getUd()));
         alert("You have dropped all courses, therefore you have been suspended!");
         await history.push('SignIn');
         }

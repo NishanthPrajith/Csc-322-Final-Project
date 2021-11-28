@@ -259,8 +259,6 @@ const closetogglestudentcoursePopup = () => {
                 deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
               }
             } 
-            // delete the student from the students collection
-            await deleteDoc(doc(db, "Students", a));
             // add this student to the suspended collection with data
             await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
             alert("Student has reached 3 warnings and student has been suspended!");
