@@ -66,15 +66,12 @@ export default function RegistrarsApplications() {
 
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
         if(f === "0"){          
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses: 0, canceledCourses: false, registerAllow: true} 
-            //Added numCourses, canceledCourses, and registerAllow fields.
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0}
             console.log(useruiid);
-            // payload sets fields
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
-            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0, numCourses: 0, canceledCourses: false}
-             // first make the alert dialog/popup appear                //Added numCourses and canceledCourses fields
+            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0}
              const userid = useruiid;
              firtname = a;
              lastname = b;  

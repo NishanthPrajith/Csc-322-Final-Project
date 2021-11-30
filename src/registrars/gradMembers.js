@@ -1,5 +1,5 @@
 import './gradMembers.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, getDoc, addDoc, query, where, increment, decrement } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, query, where } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
@@ -124,8 +124,7 @@ const closetogglestudentcoursePopup = () => {
   }, []);
 
   async function WarningCheckStdCourses(){
-    let gradingPeriod = await getDoc(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4"));
-    if(gradingPeriod.data().classsetup != 2)     //Checks if the grading period is correct to apply this.
+    if(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4").data().get('classsetup') != 2)     //Checks if the grading period is correct to apply this.
       return;
     for(let i = 0; i< instructors.length; i++){
       let studentID = students[i].useruiid;
@@ -137,9 +136,8 @@ const closetogglestudentcoursePopup = () => {
   }
 
   async function SuspensionCheckInstrCourses(){
-    let gradingPeriod = await getDoc(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4"));
-    if(gradingPeriod.data().classsetup != 2)     //Checks if the grading period is correct to apply this.
-      return;
+    if(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4").data().get('classsetup') != 2)     //Checks if the grading period is correct to apply this.
+      return; 
     for(let i = 0; i <instructors.length; i++){
       let instructorID = instructors[i].useruiid;
       let coursesRemaining = instructors[i].numOfCourses;
@@ -159,65 +157,68 @@ const closetogglestudentcoursePopup = () => {
   }
 
     async function CancelCourses() {
-      let gradingPeriod = await getDoc(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4"));
-       if(gradingPeriod.data().classsetup != 2)     //Checks if the grading period is correct to apply this.
+       if(doc(collection(db,'gradingperiod', "0t678Obx9SKShD3NR3I4")).data().get('classsetup') != 2)     //Checks if the grading period is correct to apply this.
          return;
    
-      const coursesCol =  query(collection(db,'AssignedClasses'), where("Size" , "<", 5));           //Starts CourseCancellation process
+      const coursesCol = query(collection(db,'AssignedCourses'), where("Size" , "<", 5));           //Starts CourseCancellation process
 
       onSnapshot(coursesCol, (courseSnapshot)=> {       //SetCanceledCourses = True for instructors and warn each one affected.
-        courseSnapshot.forEach((classes)=> {
-          let instructorID = classes.data().Instructoruiid;  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
-          let courseName = classes.data().Class;
-          let instructorDocRef = doc(db,"Instructor", instructorID);
-          let instructorCourseDocRef = doc(db,"Instructor", instructorID,"Courses", courseName);
+        courseSnapshot.forEach((doc)=> {
+          let instructorID = doc.data().get("Instructoruiid");  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
+          let courseName = doc.data().get("Class");
   
-          setDoc(instructorDocRef, {canceledCourses: true}, { merge: true });     //Instructors of these courses are given a CanceledCourse: true
-          updateDoc(instructorDocRef, {numOfCourses: increment(-1)});
-          deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.     
+          updateDoc(doc(db,"Instructor", instructorID), {CanceledCourses: true});     //Instructors of these courses are given a CanceledCourse: true
+          deleteDoc(doc(db,"Instructor", instructorID, "Courses", courseName));     //Class is deleted from their list of courses.
 
-          InstructorWarn(instructorID, "One of your courses has been canceled:" + courseName);       // They Receive a warning.                   
+          collection(db, 'Students', instructorID, "Courses").get().then(snap => {    //reduce numOfCourses -= 1 ;
+            let size = snap.size  // will return the collection size 
+            updateDoc(doc(db,"Instructor", instructorID), {numOfCourses: size} );
+          });
+
+          InstructorWarn(instructorID, "One of your courses has been canceled:" + courseName);                          // They Receive a warning.
 
           for(let i = 0; i< students.length; i++){        //Checks all students to see if the cancelled course is in their Courses
             let allCoursesStudent = collection(db,"Students",students[i].useruiid, "Courses");
             onSnapshot(allCoursesStudent, (studentSnapshot) => {
               studentSnapshot.forEach((studentCourse) =>{
-                if(studentCourse.data().Class != courseName)
+                if(studentCourse.data().get("Class") != courseName)
                   return;
                 
-                let studentDocRef = doc(db,"Students", students[i].useruiid);
-                let studentCourseDocRef = doc(db,"Students", students[i].useruiid,"Courses", courseName);
-                setDoc(studentDocRef, { canceledCourses: true}, { merge: true }); //Or setDoc with ,{merge: true}
-                updateDoc(studentDocRef, {numOfCourses: increment(-1)} );
-                deleteDoc(studentCourseDocRef);
+                updateDoc(doc(db,"Students", students[i].useruiid), { CanceledCourses: true }); //Or setDoc with ,{merge: true}
+                deleteDoc(doc(db,"Students", students[i].useruiid, "Courses", courseName));
+                
+                collection(db, 'Students', students[i].useruiid, "Courses").get().then(snap => {    //reduce numOfCourses -= 1 ;
+                  let size = snap.size - 1 // will return the collection size
+                  updateDoc(doc(db,"Students", students[i].useruiid), {numOfCourses: size} );
+                });
               });
             }); 
           }
-         deleteDoc(doc(db,"AssignedClasses", courseName)); //Delete the Assigned Course overall.
+
+          deleteDoc(doc(db,"AssignedCourses", courseName)); //Delete the Assigned Course overall.
         });  
       });
     }
   
         
     async function secondChanceEnrollment() {
-      let gradingPeriod = await getDoc(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4"));
-       if(gradingPeriod.data().classsetup != 2)     //Checks if the grading period is correct to apply this.
-         return;
+      if(doc(db,'gradingperiod', "0t678Obx9SKShD3NR3I4").data().get('classsetup') != 2)     //Checks if the grading period is correct to apply this.
+        return;
       for(let i = 0; i < students.length; i++){
           let studentID = students[i].useruiid;
-          let eachStudent = await getDoc(doc(db, "Students", studentID));
-          if(eachStudent.data().canceledCourses == true)
-            updateDoc(doc(db, "Students", studentID), {registerAllow: true});
+          let eachStudent = doc(db, "Students", studentID);
+          if(eachStudent.data().get("canceledCourses") == true)
+            updateDoc(eachStudent, {registerAllow: true});
           else
-            updateDoc(doc(db, "Students", studentID), {registerAllow: false});
+            updateDoc(eachStudent, {registerCourse: false});
       }
     }
 
     async function registrationToRunning() {
-      //WarningCheckStdCourses();
+      WarningCheckStdCourses();
       CancelCourses();
-      //SuspensionCheckInstrCourses();
-      //SuspensionCheckInstrWarnings();
+      SuspensionCheckInstrCourses();
+      SuspensionCheckInstrWarnings();
       secondChanceEnrollment();
     }
 
@@ -228,7 +229,7 @@ const closetogglestudentcoursePopup = () => {
     // });
 
   // IMPLEMENT LATER
-  async function StudentWarn(a, reason){ 
+  async function StudentWarn(a){ 
     // issue a warning to the student
     for(let i = 0; i<students.length; i++){
       if(students[i].useruiid === a){
@@ -286,7 +287,7 @@ const closetogglestudentcoursePopup = () => {
     }
   // add the doc to the warnings
   await addDoc(collection(db, "Students",a,"Warnings"), {
-      Warn: reason,
+      Warn: string,
       numofWarn: 1
     });
     alert("Student has been warned, please update your Complain list!");
@@ -294,7 +295,7 @@ const closetogglestudentcoursePopup = () => {
   }
 
   // IMPLEMENT LATER
-  async function InstructorWarn(a, reason){
+  async function InstructorWarn(a){
      // isue a warning to the instructor
     for(let i = 0; i<instructors.length; i++){
       if(instructors[i].useruiid === a){
@@ -310,7 +311,7 @@ const closetogglestudentcoursePopup = () => {
     }
   // add the doc to the warnings
   await addDoc(collection(db, "Instructor",a,"Warnings"), {
-      Warn: reason,
+      Warn: string,
       numofWarn: 1
     });
     alert("Instructor has been warned, please update your Complain list!");
@@ -421,7 +422,7 @@ const closetogglestudentcoursePopup = () => {
             handleClose={closetogglestudentcoursePopup}
              />}
 
-       <button onClick ={() => registrationToRunning()}> SuspensionCheck </button>
+       {/* <button onClick ={() => RegistrationToRunning()}> SuspensionCheck </button> */}
     </div>
   )
 };
