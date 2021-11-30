@@ -258,7 +258,21 @@ const closetogglestudentcoursePopup = () => {
               if(Reviews[r].SentBy === studentfirstname + " " + studentlastname){
                 deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
               }
-            } 
+            }
+            // send out an email to the student since he has been suspended to the student's email
+            // email template params
+            var templateParams = {
+              name: studentfirstname + " " + studentlastname,
+              message: "You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!",
+              from_name: " CCNYZero"
+              };
+            // email js
+            emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
+            .then((result) => {
+                console.log(result.text);
+            }, (error) => {
+                console.log(error.text);
+            }); 
             // add this student to the suspended collection with data
             await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
             alert("Student has reached 3 warnings and student has been suspended!");
