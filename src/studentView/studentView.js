@@ -34,6 +34,7 @@ export default function StudentView() {
    const [CurrentClasses, setCurrentClasses] = useState([]);
    const [StudentRecord, setStudentRecord] = useState([]);
    const [Instructor, setInstructor] = useState([]);
+   const [CurrentClassesTimes, setCurrentClassesTimes] = useState([]);
    const [complainpopup, setIsOpen] = useState(false);
    const [complainpopup1, setIsOpen1] = useState(false);
    const [ratepopus, setrateIsOpen] = useState(false);
@@ -138,6 +139,20 @@ export default function StudentView() {
         setLoading(false);
      }
 
+     // Get Student Courses Day Time
+    async function getStudentCoursesDayTime(db) {
+        const coursesCol = collection(db, 'Students', userData.getUd(),"Courses");
+        setLoading(true);
+        onSnapshot(coursesCol, (querySnapshot) => {
+            const student = [];
+            querySnapshot.forEach((doc) => {
+                student.push(doc.data().DayTime);
+        });
+        setCurrentClassesTimes(student);
+        });
+        setLoading(false);
+    }
+
      async function getInstructor1(db) {
         const complainsCol = collection(db, 'Instructor');
         setLoading(true);
@@ -232,56 +247,134 @@ export default function StudentView() {
               setStudent1(course);
               });
           // now we need to perfrom a query to see if the student is in the course
+        
+          /* This code isn't working
           for(let i = 0; i<student.length; i++){
               if(student[i].Student === userData.getUd()){
                 console.log("hi")
                   alert("You have already enrolled in this course");
-                  await history.push('StudentRegister');
+                  await history.push('StudentView');
               }
           }
-        // first check size of class
-        if(parseInt(size)===0){
-            // put the guy/girl on waitlist
-            await setDoc(doc(db, "Waitlist", instructoruiid), {
-              Class: classs,
-              DayTime: daytime,
-              Room: room,
-              Secion: section,
-              Instructor: instructor,
-              Instructoruiid: instructoruiid,
-              Student: userData.getUd(),
-              StudentName: userData.getFirstname() + " " + userData.getLastname()
-            });
-            alert("Class is filled up, you have been placed on the wait list");
-          }
-          // if the class is not filled then...
-         else {
-          // put the student in the instrcutors roster
-          await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
-            Student: userData.getUd()
-          });        
+          */
+
+        // All this code makes sure that the courses time doesn't conflict with eachother
+        let timeSegments =[];
+
+        var timeSegments1 = function(time) {
+            var timeArray = time.split("-");
+            return timeArray;
+        }
+        console.log(CurrentClassesTimes);
+        for(let i = 0; i<CurrentClassesTimes.length; i++){
+            let timeValue = timeSegments1(CurrentClassesTimes[i]);
+            timeSegments.push(timeValue);
+        }
+
+        let timeValue2 = timeSegments1(daytime);
+        timeSegments.push(timeValue2);
+        console.log(timeSegments);
+            
+        function getTime(time) {
+            var array = time.split(":");
+            var x = parseInt(array[0]);
+            var u = parseInt(array[1]);
+            return (x * 1000) + u;
+        }
+        
+        // Sorts the courses's time
+        function timesort(arr){
+            for(let i = 0; i < arr.length; i++){
+                let k = i;
+                for (let j = i; j < arr.length; j++) {
+                    if (arr[j][0] < arr[k][0]) {
+                        k = j;
+                    } else if (arr[j][0] === arr[k][0]) {
+                        if (getTime(arr[j][2]) < getTime(arr[k][2])) {
+                            k = j;
+                        } else if (getTime(arr[j][3]) < getTime(arr[k][3])) {
+                            k = j;
+                        }
+                      }
+                    }
+
+                    let temp = arr[k];
+                    arr[k] = arr[i];
+                    arr[i] = temp;    
+                }
+                return arr;
+            }
+
+            timeSegments = timesort(timeSegments);
+
+            // Checks if the courses's time overlaps with one another
+            const checkOverlap = (timeSegments) => {
+
+                for (let i = 0; i < timeSegments.length - 1; i++) {
+                    const currentEndTime = timeSegments[i][3];
+                    const nextStartTime = timeSegments[i + 1][2];
+                    const currentDay = timeSegments[i][0];
+                    const nextDay = timeSegments[i+1][0];
+
+                    if(currentDay === nextDay){
+                        if (currentEndTime > nextStartTime) {    
+                            return true;
+                        }
+                    }
+                }
+            
+                return false;
+            };
+
+            if(checkOverlap(timeSegments) === true){
+                alert("This course's time conflicts with your other classes's time.");
+                await history.push('StudentView');
+            }
+            else {
+                // first check size of class
+                if(parseInt(size)===0){
+                // put the guy/girl on waitlist
+                    await setDoc(doc(db, "Waitlist", instructoruiid), {
+                    Class: classs,
+                    DayTime: daytime,
+                    Room: room,
+                    Secion: section,
+                    Instructor: instructor,
+                    Instructoruiid: instructoruiid,
+                    Student: userData.getUd(),
+                    StudentName: userData.getFirstname() + " " + userData.getLastname()
+                    });
+                    alert("Class is filled up, you have been placed on the wait list");
+                }
+                // if the class is not filled then...
+                else {
+                // put the student in the instrcutors roster
+                    await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+                    Student: userData.getUd()
+                });        
           // await addDoc(doc(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
           //     Student: userData.getUd()
           //   });
             // put the course in student database
-          await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
-            Class: classs,
-            DayTime: daytime,
-            Room: room,
-            Secion: section,
-            Instructor: instructor,
-            Instructoruiid: instructoruiid
-          });
+            await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
+                Class: classs,
+                DayTime: daytime,
+                Room: room,
+                Secion: section,
+                Instructor: instructor,
+                Instructoruiid: instructoruiid
+            });
             // constant used to updat the class size
-          let updateclasssize = parseInt(size);
-          --updateclasssize;
-          alert("Enrolled in class sucessfully!");
+            let updateclasssize = parseInt(size);
+            --updateclasssize;
+            alert("Enrolled in class sucessfully!");
             // then we want to update the size of the class 
             await updateDoc(doc(db, "AssignedClasses", classs), {
-              Size: updateclasssize
+                Size: updateclasssize
             });
-         } 
-      }
+            }   
+        }
+    }
 
 
     async function Complain(a,b){
@@ -442,6 +535,7 @@ export default function StudentView() {
     getWarnings1(db);
     getCourses(db);
     getStudentRecords(db);
+    getStudentCoursesDayTime(db);
   }, []);
 
 
