@@ -66,6 +66,12 @@ export default function NavBar(){
                 <p className="nav-links">Class set-up period</p>
               </Link>
             }
+            {((userData.getRole() === 2) && (userData.getPeriod() === 3)) &&
+              <Link to='/GradingReview' onClick={closeNavLink}>
+                <p className="nav-links">Grading Review</p>
+              </Link>
+            }
+
           </div>
 
         </div>

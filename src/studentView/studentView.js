@@ -745,7 +745,14 @@ export default function StudentView() {
                                 </tr>
                             ))}
                         </table>     
+                        }
+                        {((userData.getPeriod() === 3) && (OptionSelected.value === "rate")) && 
+                        <div className = "student-rate-table-after-period">
+                                <h1>You cannot rate during this period.</h1>
+                                <h2>Please try again next semester!</h2>
+                        </div>     
                         }   
+                   
                 
                         {(OptionSelected.value === "warning") && <div className="warning-page">
                             <h1>Total Warnings:</h1>

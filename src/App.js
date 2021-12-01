@@ -15,7 +15,10 @@ import Registrarscomplain from './registrars/registrarscomplain.js';
 import GradMembers from './registrars/gradMembers.js';
 import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
+import GradingReview from './registrars/GradingReview.js'
 import SuspendedStudents from './registrars/suspendedStudents'
+
+
 import {
   Route,
   Switch,
@@ -81,6 +84,11 @@ function App() {
           {(userData.getRole() === 2) &&
             <Route exact path="/SuspendedStudents">
               <SuspendedStudents/>
+            </Route>
+          }
+          {(userData.getRole() === 2) &&
+            <Route exact path="/GradingReview">
+              <GradingReview/>
             </Route>
           }
           {(userData.getRole() === 0) &&

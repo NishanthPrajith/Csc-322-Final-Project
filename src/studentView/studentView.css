@@ -545,3 +545,9 @@ p {
   color: rgb(255, 255, 255);
   transition: 250ms;
 }
+
+/*Rating Page when it's too late to do it*/
+
+.student-rate-table-after-period h1 h2 {
+  text-align: center
+}
