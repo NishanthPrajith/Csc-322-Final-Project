@@ -215,7 +215,7 @@ const closetogglestudentcoursePopup = () => {
     }
 
     async function registrationToRunning() {
-      WarningCheckStdCourses();
+      WarningCheckStdCourses(); 
       CancelCourses();
       SuspensionCheckInstrCourses();
       SuspensionCheckInstrWarnings();
@@ -344,9 +344,13 @@ const closetogglestudentcoursePopup = () => {
     await history.push('GradMembers');
   }
 
-  // IMPLEMENT LATER
-  async function Suspend(){
-
+  async function Suspend(c){     
+      for(let i = 0; i<instructors.length; i++){
+        if(instructors[i].useruiid === c){
+          var varpush = instructors[i];
+         await setDoc(doc(db, "Suspended", c), varpush);
+      }
+    }
   }
 
   return (
@@ -388,8 +392,8 @@ const closetogglestudentcoursePopup = () => {
           <td> { tclass.useruiid} </td>
           <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.useruiid
                                                       )}>Warn</button>
-                <button className="suspend-button-grad"onClick={() => Suspend(tclass.firstname,
-                                                     tclass.lastname
+                <button className="suspend-button-grad"onClick={() => Suspend(
+                                                     tclass.useruiid
                                                      )}>Suspend</button>
           </td>
         </tr>
