@@ -349,8 +349,10 @@ const closetogglestudentcoursePopup = () => {
         if(instructors[i].useruiid === c){
           var varpush = instructors[i];
          await setDoc(doc(db, "Suspended", c), varpush);
+        //  await deleteDoc(doc(db, "Instructor", c), varpush); 
       }
     }
+    alert("Instructor has been suspended!");
   }
 
   return (
