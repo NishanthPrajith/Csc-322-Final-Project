@@ -183,7 +183,7 @@ export default function StudentView() {
       async function dropCourse(a,b) {
         // a== classname
         // b == instructor
-      if(userData.getPeriod()>=1 && userData.getPeriod()<=3){
+    if(userData.getPeriod()>=1 && userData.getPeriod()<=3){
       await deleteDoc(doc(db, "Students", userData.getUd(),"Courses",a));
       // update the class size
       const assignedCol = collection(db, 'AssignedClasses');
@@ -237,7 +237,20 @@ export default function StudentView() {
     }
   }
       async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid){
-        // check if the student is already enrolled in the course
+            // check if the student got an F in this course
+            // get the data for the students in the course
+            let failedcourseboolean = false; 
+            let firsttimetakingcourse = false;
+            for(let i = 0; i<StudentRecord.length; i++){
+                if(StudentRecord[i].Class===classs){
+                    if(StudentRecord[i].Grade==="F"){
+                        failedcourseboolean = true;
+                        break;
+                    }
+                }
+                firsttimetakingcourse = true;
+            }
+           // check if the student is already enrolled in the course
           // get the data for the students in the course 
           const studentCol = collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster");
               onSnapshot(studentCol, (querySnapshot) => {
@@ -245,7 +258,6 @@ export default function StudentView() {
               querySnapshot.forEach((doc) => {
                   course.push(doc.data());
               });
-              // console.log("line 47 "+ course[0].Student);
               setStudent1(course);
               });
           // now we need to perfrom a query to see if the student is in the course
@@ -253,7 +265,6 @@ export default function StudentView() {
           /* This code isn't working*/
           for(let i = 0; i<student.length; i++){
               if(student[i].Student === userData.getUd()){
-                console.log("hi")
                   alert("You have already enrolled in this course");
                   await history.push('StudentView');
                   break;
@@ -329,53 +340,55 @@ export default function StudentView() {
                 return false;
             };
 
-            if(checkOverlap(timeSegments) === true){
+        if(checkOverlap(timeSegments) === true){
                 alert("This course's time conflicts with your other classes's time.");
                 await history.push('StudentView');
-            }
-            else {
+        }
+        else if(failedcourseboolean || firsttimetakingcourse){
                 // first check size of class
                 if(parseInt(size)===0){
-                // put the guy/girl on waitlist
-                    await setDoc(doc(db, "Waitlist", instructoruiid), {
-                    Class: classs,
-                    DayTime: daytime,
-                    Room: room,
-                    Secion: section,
-                    Instructor: instructor,
-                    Instructoruiid: instructoruiid,
-                    Student: userData.getUd(),
-                    StudentName: userData.getFirstname() + " " + userData.getLastname()
-                    });
-                    alert("Class is filled up, you have been placed on the wait list");
-                }
                 // if the class is not filled then...
-                else {
-                // put the student in the instrcutors roster
-                    await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
-                    Student: userData.getUd()
-                });        
-          // await addDoc(doc(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
-          //     Student: userData.getUd()
-          //   });
-            // put the course in student database
-            await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
+                // put the guy/girl on waitlist
+                await setDoc(doc(db, "Waitlist", instructoruiid), {
                 Class: classs,
                 DayTime: daytime,
                 Room: room,
                 Secion: section,
                 Instructor: instructor,
-                Instructoruiid: instructoruiid
-            });
-            // constant used to updat the class size
-            let updateclasssize = parseInt(size);
-            --updateclasssize;
-            alert("Enrolled in class sucessfully!");
-            // then we want to update the size of the class 
-            await updateDoc(doc(db, "AssignedClasses", classs), {
-                Size: updateclasssize
-            });
+                Instructoruiid: instructoruiid,
+                Student: userData.getUd(),
+                StudentName: userData.getFirstname() + " " + userData.getLastname()
+                });
+                alert("Class is filled up, you have been placed on the wait list");
+              }
+         else{
+                // put the student in the instrcutors roster
+                await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+                Student: userData.getUd()
+                }); 
+
+                // put the course in student database
+                await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
+                    Class: classs,
+                    DayTime: daytime,
+                    Room: room,
+                    Secion: section,
+                    Instructor: instructor,
+                    Instructoruiid: instructoruiid
+                });
+
+                // constant used to updat the class size
+                let updateclasssize = parseInt(size);
+                --updateclasssize;
+                alert("Enrolled in class sucessfully!");
+                // then we want to update the size of the class 
+                await updateDoc(doc(db, "AssignedClasses", classs), {
+                    Size: updateclasssize
+                });
             }   
+        }
+        else {
+            alert("You have already passed this class, and therefore cannot retake this class");
         }
     }
 
