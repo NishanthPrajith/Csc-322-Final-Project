@@ -1,0 +1,88 @@
+/* Popup style */
+.popup-boxc {
+    position: fixed;
+    background: #00000050;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
+   
+  .boxc {
+    position: relative;
+    width: 70%;
+    margin: 0 auto;
+    height: auto;
+    max-height: 70vh;
+    margin-top: calc(100vh - 85vh - 20px);
+    background: #fff;
+    border-radius: 4px;
+    padding: 20px;
+    border: 1px solid #999;
+    overflow: auto;
+  }
+   
+  .close-iconc {
+    content: 'x';
+    cursor: pointer;
+    position: fixed;
+    right: calc(15% - 30px);
+    top: calc(100vh - 85vh - 33px);
+    background: #ededed;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    line-height: 20px;
+    text-align: center;
+    border: 1px solid #999;
+    font-size: 20px;
+  }
+
+  /* xPeriod is for the class setup period table. ~Chris to Loofy*/
+
+.xPeriod {
+    float: left;
+    width: 90%;
+    margin: 2% 5%;
+    border: none;
+    border-collapse: collapse;
+  }
+  
+  .xPeriod tr {
+    width: 100%;
+    text-align: center;
+  }
+  
+  .xPeriod th {
+    background-color: #7d5cc6;
+    color: white;
+    padding: 1% 0%;
+    width: 14.29%;
+  }
+  
+  .xPeriod td {
+    padding: 2% 0%;
+  }
+  
+  .applicationHeading h1,
+  .applicationHeading p {
+    padding-left: 5%;
+  }
+  
+  .xPeriod button {
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: purple;
+  }
+  
+  .xPeriod button:hover {
+    padding: 8px 20px;
+    transition: all 0.3s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
+  }
+  

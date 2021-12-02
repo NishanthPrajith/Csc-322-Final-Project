@@ -3,8 +3,10 @@ import { db } from "../firebase.js";
 import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import { useRef } from 'react';
 import emailjs from 'emailjs-com';
 import CourseAssignPopup from './courseAssignPopup';
+import ClassSetUpPeriodPopup from './classSetUpPeriodPopup';
 
 var ud;
 var firtname;
@@ -13,8 +15,11 @@ var classes;
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [period, setPeriod] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
     const [loading, setLoading] = useState(false);
+    const periodNum = useRef();
 
     const togglecourseAssignPopup = (a) => {
         setIsOpen(!isOpen);
@@ -23,6 +28,14 @@ export default function RegistrarsApplications() {
     async function togglecourseAssignclosePopup () {
         setIsOpen(!isOpen);
         await deleteDoc(doc(db, "Users", ud));
+    }
+
+    const toggleclassSetUpPeriodPopup = () => {
+        setIsOpen2(!isOpen2);
+    }
+    function toggleclassSetUpPeriodclosePopup () {
+        setIsOpen2(!isOpen2);
+        alert("Class Set-Up Period changed successfully!");
     }
  
       
@@ -35,6 +48,19 @@ export default function RegistrarsApplications() {
                 user.push(doc.data());
             });
             setUser(user);
+        });
+        setLoading(false);
+    }
+
+    async function getPeriod(db) {
+        const gp = collection(db, 'gradingperiod');
+        setLoading(true);
+        onSnapshot(gp, (querySnapshot) => {
+            const p = [];
+            querySnapshot.forEach((doc) => {
+                p.push(doc.data());
+            });
+            setPeriod(p);
         });
         setLoading(false);
     }
@@ -54,6 +80,7 @@ export default function RegistrarsApplications() {
 
     useEffect(() => {
         setLoading(true);
+        getPeriod(db);
         getCourses(db);
         getUser(db);
     }, []);
@@ -126,10 +153,46 @@ export default function RegistrarsApplications() {
         }
             await deleteDoc(doc(db, "Users",d));
     }
+
+    async function changePeriod(event) {
+        event.preventDefault();
+        var period = {  classsetup: periodNum.current.value}
+        try{
+            await setDoc(doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"), period);
+            alert("Class Period Updated Sucessfully"); 
+          }catch{
+            document.getElementById('error').style.display = "block";
+        }
+    }
+    async function changePeriodcset(){
+        toggleclassSetUpPeriodPopup();
+    }
+
     return (
 
         <div className = "applicationHeading">
             <h1>Pending applications</h1>
+            <button className="class-button" onClick={changePeriodcset}>Change Period</button>
+            {isOpen2 && <ClassSetUpPeriodPopup
+            content={<>
+                <table className="xPeriod">
+            <tr>
+                    <th>Current Period</th>
+                    <th>Change Period</th>
+                </tr>
+                {period.map((p) => (
+                    <tr>
+                        <td> {p.classsetup} </td>
+                        <input type="number" ref={periodNum} className="five" placeholder="Class" autoComplete="off" required />                  
+                        <button className="class-button" onClick={changePeriod}>Change Period</button>
+                       
+                    </tr>
+                ))}
+
+            </table>
+            </>}
+            handleClose={toggleclassSetUpPeriodclosePopup}
+             />}
             <p>Key: Role 1: Instructor, Role 0: Student</p>
             <table className="xApplication">
                 <tr>
