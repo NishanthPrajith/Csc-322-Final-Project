@@ -1,5 +1,5 @@
 import './suspendedStudents.css';
-import { collection, doc, deleteDoc, onSnapshot} from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc} from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 
@@ -29,6 +29,18 @@ export default function SuspendedStudents() {
 
       //This button will handle the students suspension (if chosen to take action)
       async function UnSuspend(a){
+        for(let i = 0; i<suspendedStudents.length; i++){
+          if(suspendedStudents[i].useruiid===a){
+            var data = suspendedStudents[i];
+            console.log("hello");
+            await setDoc(doc(db, "Students", a), data);
+            const washingtonRef = doc(db, "Students", a);
+            await updateDoc(washingtonRef, {
+              numWarn: 0,
+              numOfCourses: 0
+            });
+          }
+        }
         await deleteDoc(doc(db, "SuspendedStudents", a));
         alert("Student has been removed from suspended list");
       }

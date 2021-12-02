@@ -276,6 +276,8 @@ const closetogglestudentcoursePopup = () => {
             // add this student to the suspended collection with data
             await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
             alert("Student has reached 3 warnings and student has been suspended!");
+            // delete the student from the student collection       
+            await deleteDoc(doc(db, "Students", a));
             await history.push('GradMembers');
           }
           const washingtonRef = doc(db, "Students",a);
@@ -285,14 +287,14 @@ const closetogglestudentcoursePopup = () => {
           break;
         }
     }
-  // add the doc to the warnings
-  await addDoc(collection(db, "Students",a,"Warnings"), {
-      Warn: string,
-      numofWarn: 1
-    });
-    alert("Student has been warned, please update your Complain list!");
-    await history.push('GradMembers');
-  }
+    // add the doc to the warnings
+    await addDoc(collection(db, "Students",a,"Warnings"), {
+        Warn: string,
+        numofWarn: 1
+      });
+      alert("Student has been warned, please update your Complain list!");
+      await history.push('GradMembers');
+}
 
   // IMPLEMENT LATER
   async function InstructorWarn(a){
