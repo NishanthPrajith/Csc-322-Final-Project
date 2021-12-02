@@ -52,10 +52,6 @@ export function AuthProvider({ children }) {
     userData.setRole(-1);
     userData.setStatus(false);
     history.push('/SignIn');
-    // userData.setName(auth);
-    // userData.setRole(-1);
-    // userData.setLoading(true);
-    // this.history.push('/SignIn')
   }
   
   function updateEmail(email) {

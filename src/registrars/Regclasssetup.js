@@ -2,7 +2,7 @@ import './Regclasssetup.css'
 import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
-import { collection, addDoc,setDoc,doc } from 'firebase/firestore';
+import { setDoc,doc } from 'firebase/firestore';
 
 export default function Regclasssetup(){
     const classRef = useRef();
@@ -19,7 +19,6 @@ export default function Regclasssetup(){
           DayTime: dayRef.current.value,
           Room: roomRef.current.value,
           Size: sizeRef.current.value}
-          console.log(classRef.current.value);
         try{
           await setDoc(doc(db, "classes",classRef.current.value), data);
           alert("Class Created Sucessfully");
@@ -33,6 +32,7 @@ export default function Regclasssetup(){
         <div className="create-page">
             <h1>Create A Class</h1>
             <p>During the class set up period the registrars set up classes, class time, course instructors and class size.</p>
+            <p>Use format Day-Day-Time-Time (Mo-Tu-10:30-12:30)</p>
             <br></br>
             <br></br>
             <div className="create-class">

@@ -1,5 +1,5 @@
 import './registrarscomplain.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, getDoc, getDocs, orderBy, where, query } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc} from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -7,11 +7,9 @@ import { useHistory } from 'react-router-dom';
 export default function RegistrarsComplain(){
   const history = useHistory();
   const [complains, setComplains] = useState([]);
-  const [complainsid, setComplainsid] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [StuCol, setStuCol] = useState([]);
 
   async function getComplaints(db) {
     const complainsCol = collection(db, 'Complaints');
@@ -112,7 +110,6 @@ export default function RegistrarsComplain(){
         }
       }
       // WITHOUT UID IS ADD DOC
-      console.log(count);
       await addDoc(collection(db, "Instructor",a,"Warnings"), { 
         Warn: "You have been Reviewed with a low rating. Please improve your effort in teaching.",
         Warnnum: count
@@ -168,13 +165,11 @@ export default function RegistrarsComplain(){
                       }
           setDoc(doc(db, "Instructor", a), update);
           for(let c = 0; c < complains.length; c++){
-            console.log(complains[c].Uid)
             if(complains[c].IssuedName === varpush.firstname + " " + varpush.lastname){
               deleteDoc(doc(db, "Complaints", complains[c].Uid));
             }
           } 
           for(let r = 0; r < Reviews.length; r++){
-            console.log(Reviews[r].Uid)
             if(Reviews[r].InstructorName === varpush.firstname + " " + varpush.lastname){
               deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
             }
@@ -185,7 +180,6 @@ export default function RegistrarsComplain(){
           break;
         }
       }
-      console.log(inst);
     });
         });
       });

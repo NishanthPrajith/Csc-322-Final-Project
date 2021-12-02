@@ -3,11 +3,8 @@ import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
-import { collection, doc, query, getDocs, onSnapshot,deleteDoc } from 'firebase/firestore';
-import { getDoc, setDoc,addDoc } from '@firebase/firestore';
-import Tabs from '../components/Tabs';
+import { collection, doc, onSnapshot,deleteDoc, addDoc } from 'firebase/firestore';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import InstructorComplainPopup from './InstructorComplainPopup';
@@ -15,7 +12,6 @@ import InstructorComplainPopup1 from './InstructorComplainPopup1';
 
 var studentComplainName;
 export default function InstructorView() {
-    const [Instructor, setInstructor] = useState('');
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [Warnings, setWarnings] = useState([]);
     const [waitlist, setWaitlist] = useState([]);
@@ -27,17 +23,12 @@ export default function InstructorView() {
     const [isOpen1, setIsOpen1] = useState(false);
     const [Loading, setLoading] = useState('false');
     const [ScheduleSelected, setScheduleSelected] = useState('false');
-    console.log(userData.getUd()); 
 
     const history = useHistory();
-    const instname = useRef();
-    const classname = useRef(); 
     const complaint = useRef();
     const [InputValue, setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
     const [CanceledCourses, setCanceledCourses] = useState(false);
-    const instructorRef = useRef();
-    const courseRef = useRef();
     const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
                     {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];
 
@@ -87,7 +78,6 @@ export default function InstructorView() {
           querySnapshot.forEach((doc) => {
               warn.push(doc.data());
           });
-          console.log(warn);
           setWarnings(warn);
         });
         setLoading(false);
@@ -108,7 +98,7 @@ export default function InstructorView() {
     }
 
 
-    // get instrcutor courses 
+    // get instructor courses 
     async function getInstructorCourses(db) {
         const coursesCol = collection(db, 'Instructor', userData.getUd(), "Courses");
         setLoading(true);
@@ -117,7 +107,6 @@ export default function InstructorView() {
           querySnapshot.forEach((doc) => {
               course.push(doc.data());
           });
-          console.log(course);
           setInstructorCourses(course);
         });
         setLoading(false);
@@ -133,7 +122,6 @@ export default function InstructorView() {
 
       async function Complain(a){
         // get instructor roster 
-        console.log(a);
        const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
         setLoading(true);
         onSnapshot(instComplainStu, (querySnapshot) => {

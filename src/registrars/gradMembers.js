@@ -3,7 +3,6 @@ import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, query
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
 import emailjs from 'emailjs-com';
-import { registerVersion } from '@firebase/app';
 import { useHistory } from 'react-router-dom';
 import StudentcourseAssignPopup from './StudentDeregister';
 
@@ -51,7 +50,7 @@ const closetogglestudentcoursePopup = () => {
       querySnapshot.forEach((doc) => {
         complain.push(doc.data())
       });
-      onSnapshot(complainsColid, (querySnapshot) => { // Haroon is the greatest
+      onSnapshot(complainsColid, (querySnapshot) => { 
         const complainid = [];
         querySnapshot.forEach((doc) => {
           complainid.push(doc.id)
@@ -221,13 +220,6 @@ const closetogglestudentcoursePopup = () => {
       SuspensionCheckInstrWarnings();
       secondChanceEnrollment();
     }
-
-    // export const RegistrationToRunning = functions.database.ref('/gradingperiod/0t678Obx9SKShD3NR3I4').onUpdate((snapshot, context) => {
-    //   const gradingPeriodData = snapshot.val();
-    //   let value = gradingPeriodData.classsetup;
-    //   return snapshot.ref.update()
-    // });
-
   // IMPLEMENT LATER
   async function StudentWarn(a){ 
     // issue a warning to the student
@@ -237,7 +229,6 @@ const closetogglestudentcoursePopup = () => {
           let studentlastname = students[i].lastname;
           let studentuiid = students[i].useruiid;
           var studentdata = students[i];
-          console.log(studentdata);
           var warncount = students[i].numWarn;
           warncount += 1;
           if (warncount>=3){
@@ -269,9 +260,7 @@ const closetogglestudentcoursePopup = () => {
             // email js
             emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
             .then((result) => {
-                console.log(result.text);
             }, (error) => {
-                console.log(error.text);
             }); 
             // add this student to the suspended collection with data
             await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);

@@ -32,7 +32,6 @@ export default function SuspendedStudents() {
         for(let i = 0; i<suspendedStudents.length; i++){
           if(suspendedStudents[i].useruiid===a){
             var data = suspendedStudents[i];
-            console.log("hello");
             await setDoc(doc(db, "Students", a), data);
             const washingtonRef = doc(db, "Students", a);
             await updateDoc(washingtonRef, {

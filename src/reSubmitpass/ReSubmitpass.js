@@ -12,14 +12,12 @@ export default function ForgotPassword() {
   
     async function changePassword(event) {
       event.preventDefault()
-      console.log(passwordRef.current.value)
       try {
         await resetPassword(passwordRef.current.value);
         await history.push('SignIn');    
       } catch {
         document.getElementById('error').style.display = "block";
       }
-      console.log(auth.currentUser);
     }
 
     return (

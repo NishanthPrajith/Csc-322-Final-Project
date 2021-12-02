@@ -18,9 +18,7 @@ export default function RegistrarsApplications() {
 
     const togglecourseAssignPopup = (a) => {
         setIsOpen(!isOpen);
-        console.log("line 18"+a);
         ud = a;
-        console.log("line 20"+ud);
     }
     async function togglecourseAssignclosePopup () {
         setIsOpen(!isOpen);
@@ -67,7 +65,6 @@ export default function RegistrarsApplications() {
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
         if(f === "0"){          
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0}
-            console.log(useruiid);
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
@@ -119,16 +116,12 @@ export default function RegistrarsApplications() {
         if(parseInt(c) < 1.9){
             emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
             .then((result) => {
-                console.log(result.text);
             }, (error) => {
-                console.log(error.text);
             });
         }else{
             emailjs.send('gmail', 'template_g5n9s3v', templateParams2, 'user_n9Gt3cMzwdE1CRjrKfdqY')
             .then((result) => {
-                console.log(result.text);
             }, (error) => {
-                console.log(error.text);
             });
         }
             await deleteDoc(doc(db, "Users",d));
