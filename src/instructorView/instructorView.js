@@ -9,6 +9,7 @@ import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import InstructorComplainPopup from './InstructorComplainPopup';
 import InstructorComplainPopup1 from './InstructorComplainPopup1';
+import InstructorRosterPopup from './InstructorRosterPopup';
 
 var studentComplainName;
 export default function InstructorView() {
@@ -21,6 +22,7 @@ export default function InstructorView() {
     const [CurrentRoster, setCurrentRoster] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen1, setIsOpen1] = useState(false);
+    const [isOpen2, setIsOpen2] = useState(false);
     const [Loading, setLoading] = useState('false');
     const [ScheduleSelected, setScheduleSelected] = useState('false');
 
@@ -54,6 +56,15 @@ export default function InstructorView() {
     async function toggleComplainclosePopup1 () {
         setIsOpen1(!isOpen1);
     }
+
+    const toggleRosterPopup = (a) => {
+        setIsOpen2(!isOpen2);
+    }
+    async function toggleRosterclosePopup () {
+        setIsOpen2(!isOpen2);
+    }
+
+
 
     // get the students on the waitlist 
     // GET WAITLIST
@@ -175,6 +186,29 @@ export default function InstructorView() {
         await deleteDoc(doc(db, "Waitlist", c));
     }
 
+    // Roster Function for Grades
+    async function Roster(a){
+        // get instructor roster 
+       const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
+        setLoading(true);
+        onSnapshot(instComplainStu, (querySnapshot) => {
+            const instComp = [];
+            querySnapshot.forEach((doc) => {
+                instComp.push(doc.data());
+            });
+            for(let i = 0; i<Students.length; i++){
+                for(let j = 0; j<instComp.length; j++){
+                    if(Students[i].useruiid === instComp[j].Student){;
+                        instComp[j].StudentName = Students[i].firstname + " " + Students[i].lastname;
+                    }
+                }
+            }
+            setInstructorRoster(instComp);
+        });
+        setLoading(false);
+        toggleRosterPopup();
+     }
+
       return (
         <div className = "InstructorPage">
         <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
@@ -216,17 +250,21 @@ export default function InstructorView() {
                         </table>    
                         }  
                      
-                        {(OptionSelected.value === "grades") && <table className>
+                        {(OptionSelected.value === "grades") && <table className = "instructor-grades-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
+                                    <th>Section</th>
                                     <th>Room</th>
                                 </tr>
-                            { CurrentClasses.map((Class) => (
+                            { InstructorCourses.map((Class) => (
                                 <tr>
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
+                                    <td> { Class.Secion } </td>
                                     <td> { Class.Room } </td>
+                                    <td><button onClick={() => Roster(Class.Class
+                                    )}className="roster-instructor-button">Roster</button></td>
                                 </tr>
                             ))}
                         </table>    
@@ -371,6 +409,27 @@ export default function InstructorView() {
                         </div>
             </>}
             handleClose={toggleComplainclosePopup1}
+        />} 
+
+        {isOpen2 && <InstructorRosterPopup
+            content={<>
+                <h2 className="roster-h2">Assign a grade</h2>
+                <table className="roster-popup-table-instructor">
+                
+                <tr>
+                    <th>Student</th>
+                    <th>Grade</th>
+                </tr>
+                {InstructorRoster.map((course) => (
+                    <tr>
+                        <td> {course.StudentName} </td>
+                        <td> Input Field </td>
+                        <td><button className="assign-grades-popup-button">Assign</button></td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={toggleRosterclosePopup}
         />} 
     </div>
     );
