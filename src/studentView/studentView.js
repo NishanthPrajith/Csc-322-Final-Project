@@ -227,7 +227,9 @@ export default function StudentView() {
         // Add a new document in collection "cities"
         await setDoc(doc(db, "SuspendedStudents", userData.getUd()), studentdata);
         alert("You have dropped all courses, therefore you have been suspended!");
-        await history.push('SignIn');
+        userData.setRole(-1);
+        userData.setStatus(false);
+        await history.push('/');
         }
         else{
       await history.push('StudentView');
@@ -248,15 +250,16 @@ export default function StudentView() {
               });
           // now we need to perfrom a query to see if the student is in the course
         
-          /* This code isn't working
+          /* This code isn't working*/
           for(let i = 0; i<student.length; i++){
               if(student[i].Student === userData.getUd()){
                 console.log("hi")
                   alert("You have already enrolled in this course");
                   await history.push('StudentView');
+                  break;
               }
           }
-          */
+          
 
         // All this code makes sure that the courses time doesn't conflict with eachother
         let timeSegments =[];
