@@ -1,6 +1,6 @@
 import './registrarsApplications.css';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useRef } from 'react';
@@ -19,7 +19,11 @@ export default function RegistrarsApplications() {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [In, setUserIn] = useState(false);
+    const [In2, setUserIn2] = useState(false);
     const periodNum = useRef();
+
+    var temp = [];
 
     const togglecourseAssignPopup = (a) => {
         setIsOpen(!isOpen);
@@ -38,7 +42,6 @@ export default function RegistrarsApplications() {
         alert("Class Set-Up Period changed successfully!");
     }
  
-      
     async function getUser(db) {
         const studentsCol = collection(db, 'Users');
         setLoading(true);
@@ -71,15 +74,31 @@ export default function RegistrarsApplications() {
         onSnapshot(courses, (querySnapshot) => {
             const course = [];
             querySnapshot.forEach((doc) => {
-                course.push(doc.data());
+                var f = doc.data();
+                f['check'] = true;
+                course.push(f);
             });
             setCourses(course);
         });
         setLoading(false);
     }
 
+    async function getInstructor(db) {
+        const wash2 = collection(db, "Instructor");
+        setLoading(true);
+        onSnapshot(wash2, (querySnapshot) => {
+            const userIn2 = [];
+            querySnapshot.forEach((doc) => {
+                userIn2.push(doc.data());
+            });
+            setUserIn2(userIn2);
+        });
+        setLoading(false);
+    }
+
     useEffect(() => {
         setLoading(true);
+        getInstructor(db)
         getPeriod(db);
         getCourses(db);
         getUser(db);
@@ -95,10 +114,15 @@ export default function RegistrarsApplications() {
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
+            var v = courses;
+            for (var i = 0; i < courses.length; i++) {
+                v[i]['check'] = true;
+            }
+            setCourses(courses);
             const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0,numCourses:0,coursesCanceled:false,Suspended:false,}
-             const userid = useruiid;
-             firtname = a;
-             lastname = b;  
+            const userid = useruiid;
+            firtname = a;
+            lastname = b;  
             togglecourseAssignPopup(useruiid);
             await setDoc(doc(db, "Instructor", useruiid), payload);
         }
@@ -115,6 +139,7 @@ export default function RegistrarsApplications() {
             Instructor: firtname + " " + lastname,
             Class: classes
           });
+          console.log("Hi")
           await setDoc(doc(db, "AssignedClasses", a), {
             Class: classes,
             DayTime: b,
@@ -125,10 +150,50 @@ export default function RegistrarsApplications() {
             Instructoruiid: ud,
             StudentsEnrolled:0
           });
+          console.log("Hi")
         }catch{
             alert("Error");
         }
-    }
+        
+        var v = courses;
+        for (let i = 0; i < courses.length; i++) {
+           if (v[i]['Class'] == classes) {
+               v[i]['check'] = false;
+               break;
+           }
+        }
+        setCourses(v);
+        console.log(courses);
+        
+
+        const washingtonRef = collection(db, "Instructor", ud, "Courses");
+        setLoading(true);
+        onSnapshot(washingtonRef, (querySnapshot) => {
+            const userIn = [];
+            querySnapshot.forEach((doc) => {
+                userIn.push(doc.data());
+            });
+            setUserIn(userIn); 
+        });
+
+        const docRef = doc(db, "Instructor", ud);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          console.log("Document data:", docSnap.data());
+        } else {
+          console.log("No such document!");
+        }
+
+        const instRef = doc(db, "Instructor", ud);
+
+        await updateDoc(instRef, {
+            numCourses: docSnap.data()['numCourses'] + 1,
+        });
+
+        setLoading(false);
+
+}
 
     async function sendEmail(a,b,c,d){
         var templateParams = {
@@ -250,12 +315,12 @@ export default function RegistrarsApplications() {
                         <td> {course.Room} </td>
                         <td> {course.Section} </td>
                         <td> {course.Size} </td>
-                        <td><button onClick={() => Assign(course.Class, 
+                        {course.check && <td><button onClick={() => Assign(course.Class, 
                                                       course.DayTime, 
                                                       course.Room, 
                                                       course.Section, 
                                                       course.Size
-                                                      )}>Assign Course</button></td>
+                                                      )}>Assign Course</button></td> }
                     </tr>
                 ))}
             </table>
