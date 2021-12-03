@@ -14,11 +14,19 @@ export default function Regclasssetup(){
 
     async function createClass(event) {
         event.preventDefault();
-        var data = {  Class: classRef.current.value,
+        var data = {  
+          Class: classRef.current.value,
           Section: secRef.current.value,
           DayTime: dayRef.current.value,
           Room: roomRef.current.value,
-          Size: sizeRef.current.value}
+          Size: sizeRef.current.value
+        }
+        // checks to see if the value is null or not
+        if((classRef.current.value === null) || (secRef.current.value === null) || (dayRef.current.value === null) || (roomRef.current.value === null) || (sizeRef.current.value === null)){
+          alert("Failed to create a new class");
+          await history.push('Regclasssetup'); 
+        }
+        else{
         try{
           await setDoc(doc(db, "classes",classRef.current.value), data);
           alert("Class Created Sucessfully");
@@ -26,6 +34,7 @@ export default function Regclasssetup(){
         }catch{
             document.getElementById('error').style.display = "block";
         }
+      }
     }
 
     return(
