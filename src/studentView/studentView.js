@@ -94,7 +94,6 @@ export default function StudentView() {
           querySnapshot.forEach((doc) => {
               record.push(doc.data());
           });
-          console.log(record)
           setStudentRecord(record);
         });
         setLoading(false);
@@ -161,7 +160,6 @@ export default function StudentView() {
           querySnapshot.forEach((doc) => {
               complain.push(doc.data());
           });
-          console.log(complain);
           setInstructor(complain);
         });
         setLoading(false);
@@ -170,7 +168,7 @@ export default function StudentView() {
     async function getCourses(db) {
         const assignedclassCol = collection(db, 'AssignedClasses');
         setLoading(true);
-       onSnapshot(assignedclassCol, (querySnapshot) => {
+        onSnapshot(assignedclassCol, (querySnapshot) => {
           const course = [];
           querySnapshot.forEach((doc) => {
               course.push(doc.data());
@@ -178,33 +176,52 @@ export default function StudentView() {
           setCourses(course);
         });
         setLoading(false);
-      }
-      // student drop course
-      async function dropCourse(a,b) {
+    }
+
+    // student drop course
+    async function dropCourse(a,b) {
         // a== classname
         // b == instructor
+    let amount_of_student_courses = 0;
+    let classsize = 0;
+    let sutdentsenrolled = 0;
+    for(let i = 0; i<Warnings.length;i++){
+        if(Warnings[i].useruiid===userData.getUd()){
+            amount_of_student_courses = Warnings[i].numCourses;
+        }
+    }
     if(userData.getPeriod()>=1 && userData.getPeriod()<=3){
       await deleteDoc(doc(db, "Students", userData.getUd(),"Courses",a));
       // update the class size
-      const assignedCol = collection(db, 'AssignedClasses');
-        setLoading(true);
-       onSnapshot(assignedCol, (querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            fetchedassignedclasses.push(doc.data());
-          });
-        });
-        let classsize = 0;
-        for(let i = 0; i<fetchedassignedclasses; i++){
-            if(fetchedassignedclasses[i].Class === a){
-                classsize = fetchedassignedclasses[i].Size;
+    //   const assignedCol = collection(db, 'AssignedClasses');
+    //     setLoading(true);
+    //    onSnapshot(assignedCol, (querySnapshot) => {
+    //       querySnapshot.forEach((doc) => {
+    //         fetchedassignedclasses.push(doc.data());
+    //       });
+    //     });
+        console.log(enrollcourses);
+        for(let i = 0; i<enrollcourses.length; i++){
+            if(enrollcourses[i].Class === a){
+                console.log("Hello!");
+                classsize = enrollcourses[i].Size;
+                sutdentsenrolled = enrollcourses[i].StudentsEnrolled;
                 break;
             }
         }
       classsize+=1;
+      sutdentsenrolled-=1;
       // start updating the class size
       const washingtonRef = doc(db, "AssignedClasses", a);
         await updateDoc(washingtonRef, {
-        Size: classsize
+        Size: classsize,
+        StudentsEnrolled: sutdentsenrolled
+        });
+      // start updating the num of student courses
+      --amount_of_student_courses;
+      const StudentsRef = doc(db, "Students", userData.getUd());
+        await updateDoc(StudentsRef, {
+        numCourses: amount_of_student_courses
         });
       // setdoc to student record and add a grade W
       await setDoc(doc(db, "Students", userData.getUd(),"Record",a), {
@@ -236,24 +253,30 @@ export default function StudentView() {
         }
     }
   }
-      async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid){
+      async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid,StudentsEnrolled){
             // Jouse wants, 
             // to update the numofCourses in the student feild
-
-
+            // update the studentsenrolled feild in assigned classes
 
             // check if the student got an F in this course
             // get the data for the students in the course
             let failedcourseboolean = false; 
-            let firsttimetakingcourse = false;
+            let firsttimetakingcourse = true;
             for(let i = 0; i<StudentRecord.length; i++){
                 if(StudentRecord[i].Class===classs){
+                    firsttimetakingcourse = false;
                     if(StudentRecord[i].Grade==="F"){
                         failedcourseboolean = true;
                         break;
                     }
                 }
-                firsttimetakingcourse = true;
+            }
+
+            let studentcourses = 0;
+            for(let i = 0; i<Warnings.length; i++){
+                if(Warnings[i].useruiid===userData.getUd()){
+                    studentcourses = Warnings[i].numCourses;
+                }
             }
            // check if the student is already enrolled in the course
           // get the data for the students in the course 
@@ -344,7 +367,7 @@ export default function StudentView() {
             
                 return false;
             };
-
+        console.log(failedcourseboolean,firsttimetakingcourse);
         if(checkOverlap(timeSegments) === true){
                 alert("This course's time conflicts with your other classes's time.");
                 await history.push('StudentView');
@@ -389,6 +412,16 @@ export default function StudentView() {
                 // then we want to update the size of the class 
                 await updateDoc(doc(db, "AssignedClasses", classs), {
                     Size: updateclasssize
+                });
+                // update the num of students enrolled in the course
+                ++StudentsEnrolled;
+                await updateDoc(doc(db, "AssignedClasses", classs), {
+                    StudentsEnrolled: StudentsEnrolled
+                });
+                // update the number of courses the student is currently taking
+                ++studentcourses;
+                await updateDoc(doc(db, "Students", userData.getUd()), {
+                    numCourses: studentcourses
                 });
             }   
         }
@@ -713,7 +746,8 @@ export default function StudentView() {
                                                                course.Secion, 
                                                                course.Size,
                                                                course.Instructor,
-                                                               course.Instructoruiid
+                                                               course.Instructoruiid,
+                                                               course.StudentsEnrolled
                                                                )}>Enroll Course</button></td>
                              </tr>
                          ))}
