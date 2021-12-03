@@ -237,6 +237,11 @@ export default function StudentView() {
     }
   }
       async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid){
+            // Jouse wants, 
+            // to update the numofCourses in the student feild
+
+
+
             // check if the student got an F in this course
             // get the data for the students in the course
             let failedcourseboolean = false; 

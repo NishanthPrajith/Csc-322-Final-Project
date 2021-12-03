@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
-import { collection, doc, onSnapshot,deleteDoc, addDoc } from 'firebase/firestore';
+import { collection, doc, onSnapshot,deleteDoc, addDoc, setDoc} from 'firebase/firestore';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
@@ -169,16 +169,28 @@ export default function InstructorView() {
     }
 
     // get student in waitlist
-    async function StudentEnrollWaitlist(a,b,c){
-        // a == studentuiid
-        // b == course
-        // c == Instructoruiid
+    async function StudentEnrollWaitlist(a,b,c,d,e){
+        // a == class 
+        // b == DayTime 
+        // c == Room 
+        // d == Section 
+        // e == studnetuiid
+        let data={
+            Class:a,
+            DayTime:b,
+            Instructor: userData.getFirstname() + " " + userData.getLastname(),
+            Instructoruiid: userData.getUd(),
+            Room: c,
+            Secion: d
+        }
         // enroll the student in the course
-        await addDoc(collection(db, "Instructor", c,"Courses",b,"Roster"), {
-            Student: a
+        await addDoc(collection(db, "Instructor", userData.getUd(),"Courses",a,"Roster"), {
+            Student: e
           });
-        // delete the doc with c
-        await deleteDoc(doc(db, "Waitlist", c));
+        // add the accepted student to their courses
+        await setDoc(doc(db, "Students", e,"Courses",a), data);
+        // delete the doc with instrcutor userdata
+        await deleteDoc(doc(db, "Waitlist", userData.getUd()));
     }
 
     // Reject the student from the waitlist 
@@ -344,9 +356,11 @@ export default function InstructorView() {
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
-                                    <td><button onClick={() => StudentEnrollWaitlist(Class.Student,
-                                                                                     Class.Class,
-                                                                                     Class.Instructoruiid
+                                    <td><button onClick={() => StudentEnrollWaitlist(Class.Class,
+                                                                                     Class.DayTime,
+                                                                                     Class.Room,
+                                                                                     Class.Secion,
+                                                                                     Class.Student
                                     )}className="complaint-instructor-button">Enroll</button></td>
                                     <td><button onClick={() => RejectStudentEnrollWaitlist(Class.Instructoruiid
                                     )}className="complaint-instructor-button">X</button></td>
