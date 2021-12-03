@@ -21,9 +21,10 @@ export default function Regclasssetup(){
           Room: roomRef.current.value,
           Size: sizeRef.current.value
         }
+        console.log(classRef.current.value)
         // checks to see if the value is null or not
-        if((classRef.current.value === null) || (secRef.current.value === null) || (dayRef.current.value === null) || (roomRef.current.value === null) || (sizeRef.current.value === null)){
-          alert("Failed to create a new class");
+        if((classRef.current.value === "") || (secRef.current.value === "") || (dayRef.current.value === "") || (roomRef.current.value === "") || (sizeRef.current.value === "")){
+          alert("Failed to create class, check your feild values!");
           await history.push('Regclasssetup'); 
         }
         else{
