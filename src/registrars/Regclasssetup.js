@@ -21,11 +21,16 @@ export default function Regclasssetup(){
           Room: roomRef.current.value,
           Size: sizeRef.current.value
         }
-        console.log(classRef.current.value)
         // checks to see if the value is null or not
         if((classRef.current.value === "") || (secRef.current.value === "") || (dayRef.current.value === "") || (roomRef.current.value === "") || (sizeRef.current.value === "")){
-          alert("Failed to create class, check your feild values!");
-          await history.push('Regclasssetup'); 
+          alert("Failed to create class, check your field values!");
+          await history.push('Regclasssetup');
+          return 
+        }
+        if(sizeRef.current.value>10){
+          alert("Failed to create class, due to class size!");
+          await history.push('Regclasssetup');
+          return 
         }
         else{
         try{
@@ -42,7 +47,7 @@ export default function Regclasssetup(){
         <div className="create-page">
             <h1>Create A Class</h1>
             <p>During the class set up period the registrars set up classes, class time, course instructors and class size.</p>
-            <p>Use format Day-Day-Time-Time (Mo-Tu-10:30-12:30)</p>
+            <p>Use format Day-Day-Time-Time (M-W-10:30-12:30)</p>
             <br></br>
             <br></br>
             <div className="create-class">
@@ -53,7 +58,6 @@ export default function Regclasssetup(){
               <input type="number" ref={roomRef} className="five" placeholder="Room" autoComplete="off" required />
               <input type="number" ref={sizeRef} className="five" placeholder="Class Size" autoComplete="off" required />
               <p id="error" className="error">Failed to add class, try again</p>
-             
             </form>
             <button className="class-button" onClick={createClass}>Create</button>
           </div>
