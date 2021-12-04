@@ -68,7 +68,7 @@ export default function SuspendedStudents() {
                         <td> {suspendedStudents.empl} </td>
                         <td> {suspendedStudents.Reason} </td>
                         <td>                       
-                        <button onClick={() => UnSuspend(suspendedStudents.useruiid,
+                        <button className = "unsuspend-button-registrar" onClick={() => UnSuspend(suspendedStudents.useruiid,
                                                             )}>Un-Suspend</button></td>
                     </tr>
                 ))}

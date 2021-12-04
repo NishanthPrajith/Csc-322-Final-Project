@@ -237,25 +237,30 @@ export default function RegistrarsApplications() {
     return (
 
         <div className = "applicationHeading">
-            <h1>Pending applications</h1>
-            <button className="class-button" onClick={changePeriodcset}>Change Period</button>
+            <h1>Pending applications
+            <button className="change-period-class-button" onClick={changePeriodcset}>Change Period</button>
+            </h1>
+            
             {isOpen2 && <ClassSetUpPeriodPopup
             content={<>
-                <table className="xPeriod">
-            <tr>
+                <table className="period-table-registrar">
+                <tr>
                     <th>Current Period</th>
                     <th>Change Period</th>
+                    
                 </tr>
                 {period.map((p) => (
                     <tr>
                         <td> {p.classsetup} </td>
-                        <input type="number" ref={periodNum} className="five" placeholder="Class" autoComplete="off" required />                  
-                        <button className="class-button" onClick={changePeriod}>Change Period</button>
-                       
+                        <td><input type="number" ref={periodNum} className="five" placeholder="0"autoComplete="off" required /></td>               
+                        <td> <button className="class-button-actually" onClick={changePeriod}>Change Period</button></td>
+                        
                     </tr>
+                    
                 ))}
-
+                    
             </table>
+            
             </>}
             handleClose={toggleclassSetUpPeriodclosePopup}
              />}

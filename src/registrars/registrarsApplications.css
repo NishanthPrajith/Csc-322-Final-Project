@@ -44,3 +44,78 @@
   transition: 250ms;
 }
 
+.change-period-class-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+  margin-left:1285px;   
+}
+
+.change-period-class-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.period-table-registrar {
+  
+  width: 77%;
+  margin: 3% 2%;
+  border: none;
+  border-collapse: collapse;
+  text-align: center;
+ 
+}
+
+.period-table-registrar tr {
+  width: 100%;
+  text-align: center;
+}
+
+.period-table-registrar th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 1% 0%;
+  width: 14.29%;
+}
+
+.period-table-registrar td {
+  padding: 2% 0%;
+}
+
+.class-button-actually{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+  text-align: center;
+  margin: auto;
+  display: flex;
+}
+
+.class-button-actually:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+  
+}
+
+.period-table-registrar input {
+  outline: 0;
+    border-radius: 15px;
+    border: 1px #d2d2d7 solid;
+    width: 45%;
+    margin: 10px 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
