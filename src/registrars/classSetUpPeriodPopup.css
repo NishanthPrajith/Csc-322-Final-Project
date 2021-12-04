@@ -38,51 +38,6 @@
     font-size: 20px;
   }
 
-  /* xPeriod is for the class setup period table. ~Chris to Loofy*/
-
-.xPeriod {
-    float: left;
-    width: 90%;
-    margin: 2% 5%;
-    border: none;
-    border-collapse: collapse;
-  }
   
-  .xPeriod tr {
-    width: 100%;
-    text-align: center;
-  }
   
-  .xPeriod th {
-    background-color: #7d5cc6;
-    color: white;
-    padding: 1% 0%;
-    width: 14.29%;
-  }
-  
-  .xPeriod td {
-    padding: 2% 0%;
-  }
-  
-  .applicationHeading h1,
-  .applicationHeading p {
-    padding-left: 5%;
-  }
-  
-  .xPeriod button {
-    padding: 8px 20px;
-    border-radius: 4px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    color: purple;
-  }
-  
-  .xPeriod button:hover {
-    padding: 8px 20px;
-    transition: all 0.3s ease-out;
-    background: rgb(184, 42, 240);
-    color: rgb(255, 255, 255);
-    transition: 250ms;
-  }
   

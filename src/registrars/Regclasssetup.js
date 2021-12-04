@@ -47,7 +47,7 @@ export default function Regclasssetup(){
         <div className="create-page">
             <h1>Create A Class</h1>
             <p>During the class set up period the registrars set up classes, class time, course instructors and class size.</p>
-            <p>Use format Day-Day-Time-Time (M-W-10:30-12:30)</p>
+            <p>Use format Day-Day-Time-Time (M-W-10:30-12:30 or T-Th-14:30-17:30)</p>
             <br></br>
             <br></br>
             <div className="create-class">
