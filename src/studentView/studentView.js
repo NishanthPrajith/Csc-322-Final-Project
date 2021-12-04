@@ -11,7 +11,7 @@ import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc, deleteDoc }
 import Container from '@material-ui/core/Container';
 import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
-import { FaStar } from "react-icons/fa";
+import { FaRedditSquare, FaStar } from "react-icons/fa";
 import ComplainPopup from './studentcomplainPopup';
 import ComplaintPopup from './complainPopup';
 import RatePopup from './ratePopus';
@@ -178,6 +178,7 @@ export default function StudentView() {
         setLoading(false);
     }
 
+   
     // student drop course
     async function dropCourse(a,b) {
         // a== classname
@@ -252,8 +253,19 @@ export default function StudentView() {
       await history.push('StudentView');
         }
     }
+    else{
+        alert("Cannot Drop classes, due to current grading period!");
+    }
   }
       async function enrollCourse(classs,daytime,room,section,size,instructor,instructoruiid,StudentsEnrolled){
+
+        // first check if student is already taking the course
+        for(let i = 0; i<CurrentClasses.length; i++){
+            if(CurrentClasses[i].Class===classs){
+                alert("You have already enrolled this course!");
+                return
+            }
+        }
             // Jouse wants, 
             // to update the numofCourses in the student feild
             // update the studentsenrolled feild in assigned classes
@@ -262,6 +274,8 @@ export default function StudentView() {
             // get the data for the students in the course
             let failedcourseboolean = false; 
             let firsttimetakingcourse = true;
+            let studentcourses = 0;
+            let timeSegments =[];
             for(let i = 0; i<StudentRecord.length; i++){
                 if(StudentRecord[i].Class===classs){
                     firsttimetakingcourse = false;
@@ -271,43 +285,17 @@ export default function StudentView() {
                     }
                 }
             }
-
-            let studentcourses = 0;
             for(let i = 0; i<Warnings.length; i++){
                 if(Warnings[i].useruiid===userData.getUd()){
                     studentcourses = Warnings[i].numCourses;
                 }
             }
-           // check if the student is already enrolled in the course
-          // get the data for the students in the course 
-          const studentCol = collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster");
-              onSnapshot(studentCol, (querySnapshot) => {
-              const course = [];
-              querySnapshot.forEach((doc) => {
-                  course.push(doc.data());
-              });
-              setStudent1(course);
-              });
-          // now we need to perfrom a query to see if the student is in the course
         
-          /* This code isn't working*/
-          for(let i = 0; i<student.length; i++){
-              if(student[i].Student === userData.getUd()){
-                  alert("You have already enrolled in this course");
-                  await history.push('StudentView');
-                  break;
-              }
-          }
-          
-
         // All this code makes sure that the courses time doesn't conflict with eachother
-        let timeSegments =[];
-
         var timeSegments1 = function(time) {
             var timeArray = time.split("-");
             return timeArray;
         }
-        console.log(CurrentClassesTimes);
         for(let i = 0; i<CurrentClassesTimes.length; i++){
             let timeValue = timeSegments1(CurrentClassesTimes[i]);
             timeSegments.push(timeValue);
@@ -315,7 +303,6 @@ export default function StudentView() {
 
         let timeValue2 = timeSegments1(daytime);
         timeSegments.push(timeValue2);
-        console.log(timeSegments);
             
         function getTime(time) {
             var array = time.split(":");
@@ -357,20 +344,18 @@ export default function StudentView() {
                     const nextStartTime = timeSegments[i + 1][2];
                     const currentDay = timeSegments[i][0];
                     const nextDay = timeSegments[i+1][0];
-
                     if(currentDay === nextDay){
                         if (currentEndTime > nextStartTime) {    
                             return true;
                         }
                     }
                 }
-            
                 return false;
             };
-        console.log(failedcourseboolean,firsttimetakingcourse);
         if(checkOverlap(timeSegments) === true){
                 alert("This course's time conflicts with your other classes's time.");
                 await history.push('StudentView');
+                return
         }
         else if(failedcourseboolean || firsttimetakingcourse){
                 // first check size of class
