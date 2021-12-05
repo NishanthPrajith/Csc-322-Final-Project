@@ -7,6 +7,8 @@ import { useRef } from 'react';
 import emailjs from 'emailjs-com';
 import CourseAssignPopup from './courseAssignPopup';
 import ClassSetUpPeriodPopup from './classSetUpPeriodPopup';
+import PeriodChanger from './PeriodChanger';
+
 
 var ud;
 var firtname;
@@ -15,6 +17,8 @@ var classes;
 export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
+    const [Students, setStudents] = useState([]);
+    const [Instructors, setInstructors] = useState([]);
     const [period, setPeriod] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
@@ -22,6 +26,9 @@ export default function RegistrarsApplications() {
     const [In, setUserIn] = useState(false);
     const [In2, setUserIn2] = useState(false);
     const periodNum = useRef();
+    const [waitlist, setWaitlist] = useState([]);
+    const [complains, setComplains] = useState([]);
+    const [Reviews, setReviews] = useState([]);
 
     var temp = [];
 
@@ -96,12 +103,101 @@ export default function RegistrarsApplications() {
         setLoading(false);
     }
 
+    async function getInstructors(db) {
+        const instructors = collection(db, "Instructor");
+        setLoading(true);
+        onSnapshot(instructors, (querySnapshot) => {
+            const instructor = [];
+            querySnapshot.forEach((doc) => {
+                instructor.push(doc.data());
+            });
+            setInstructors(instructor);
+        });
+        setLoading(false);
+    } 
+    
+    async function getStudents(db) {
+        const students = collection(db, "Students");
+        setLoading(true);
+        onSnapshot(students, (querySnapshot) => {
+            const student = [];
+            querySnapshot.forEach((doc) => {
+                student.push(doc.data());
+            });
+            setStudents(student);
+        });
+        setLoading(false);
+    }
+    async function getWaitlist(db) {
+        const waitlistCol = collection(db, 'Waitlist');
+        setLoading(true);
+        onSnapshot(waitlistCol, (querySnapshot) => {
+          const waitlist = [];
+          querySnapshot.forEach((doc) => {
+            waitlist.push(doc.id);
+          });
+          setWaitlist(waitlist);
+        });
+        setLoading(false);
+      }
+      // COMPLAIN AND REVIEW
+      async function getComplaint(db) {
+        const complainsCol = collection(db, 'Complaints');
+        const complainsColid = collection(db, 'Complaints');
+        setLoading(true);
+        onSnapshot(complainsCol, (querySnapshot) => {
+          let complain = [];
+          querySnapshot.forEach((doc) => {
+            complain.push(doc.data())
+          });
+          onSnapshot(complainsColid, (querySnapshot) => { 
+            const complainid = [];
+            querySnapshot.forEach((doc) => {
+              complainid.push(doc.id)
+            });
+            for(let i=0; i<complainid.length; i++){
+              complain[i].Uid = complainid[i];
+            }
+            setComplains(complain)
+            });
+        });
+        setLoading(false);
+      }
+      
+      async function getReviews(db) {
+        const reviewsCol = collection(db, 'Reviews');
+        const reviewsColid = collection(db, 'Reviews');
+        setLoading(true);
+        onSnapshot(reviewsCol, (querySnapshot) => {
+          const review = [];
+          querySnapshot.forEach((doc) => { 
+            review.push(doc.data());
+          });
+          onSnapshot(reviewsColid, (querySnapshot) => {
+            const reviewsid = [];
+            querySnapshot.forEach((doc) => {
+              reviewsid.push(doc.id)
+            });
+            for(let i=0; i<reviewsid.length; i++){
+              review[i].Uid = reviewsid[i];
+            }
+          setReviews(review);
+          });
+        });
+        setLoading(false);
+      }        
+
     useEffect(() => {
         setLoading(true);
         getInstructor(db)
         getPeriod(db);
         getCourses(db);
         getUser(db);
+        getInstructors(db);
+        getStudents(db)
+        getReviews(db);
+        getComplaint(db);
+        getWaitlist(db);
     }, []);
 
     if (loading) {
@@ -110,7 +206,7 @@ export default function RegistrarsApplications() {
 
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
         if(f === "0"){         
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThanRwoCourses:false,Graduate:false}
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false}
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{
@@ -119,7 +215,7 @@ export default function RegistrarsApplications() {
                 v[i]['check'] = true;
             }
             setCourses(courses);
-            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0,numCourses:0,coursesCanceled:false,Suspended:false,}
+            const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0,numCourses:0,canceledCourses:false,Suspended:false, gradingTime: false}
             const userid = useruiid;
             firtname = a;
             lastname = b;  
@@ -193,7 +289,7 @@ export default function RegistrarsApplications() {
 
         setLoading(false);
 
-}
+    }
 
     async function sendEmail(a,b,c,d){
         var templateParams = {
@@ -225,7 +321,8 @@ export default function RegistrarsApplications() {
         var period = {  classsetup: periodNum.current.value}
         try{
             await setDoc(doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"), period);
-            alert("Class Period Updated Sucessfully"); 
+            alert("Class Period Updated Sucessfully");
+            PeriodChanger(Students,Instructors,waitlist,complains,Reviews);
           }catch{
             document.getElementById('error').style.display = "block";
         }
