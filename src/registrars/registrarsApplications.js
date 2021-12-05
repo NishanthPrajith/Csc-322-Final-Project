@@ -1,9 +1,10 @@
 import './registrarsApplications.css';
 import { db } from "../firebase.js";
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, getDoc, addDoc } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, getDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import React from 'react';
 import { useRef } from 'react';
+import emailjs from 'emailjs-com';
 import CourseAssignPopup from './courseAssignPopup';
 import ClassSetUpPeriodPopup from './classSetUpPeriodPopup';
 import PeriodChanger from './PeriodChanger';
@@ -290,30 +291,29 @@ export default function RegistrarsApplications() {
 
     }
 
-    async function sendEmail(c,d,e){
-        // e == role
-        // d == useruiid
+    async function sendEmail(a,b,c,d){
         var templateParams = {
+            name: a + " " + b,
             message: "Sorry to inform you, however, due to your gpa we can not accept you into this program and you have been rejected.",
+            from_name: " CCNYZero"
             };
         var templateParams2 = {
-            message: "Sorry to inform you, however, our program has already been filled. "
+            name: a + " " + b,
+            message: "Sorry to inform you, however, our program has already been filled. ",
+            from_name: " CCNYZero"
             };
-        var templateParams3 = {
-            message: "Thank you for applying to be an instructor @ CCNYZero. After careful review of your application, our team has decided to pursue other candidates whom we feel more closely align with our needs at this time. ",
-            };
-        if(parseInt(c) < 2){
-            await setDoc(doc(db, "Rejected", d), templateParams);     
-            await deleteDoc(doc(db, "Users", d));           
+        if(parseInt(c) < 1.9){
+            emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
+            .then((result) => {
+            }, (error) => {
+            });
+        }else{
+            emailjs.send('gmail', 'template_g5n9s3v', templateParams2, 'user_n9Gt3cMzwdE1CRjrKfdqY')
+            .then((result) => {
+            }, (error) => {
+            });
         }
-        else if(e==="1"){
-            await setDoc(doc(db, "Rejected", d), templateParams3);
-            await deleteDoc(doc(db, "Users", d));  
-        }
-        else{
-            await setDoc(doc(db, "Rejected", d), templateParams2);
-            await deleteDoc(doc(db, "Users", d));   
-        }
+            await deleteDoc(doc(db, "Users",d));
     }
 
     async function changePeriod(event) {
@@ -390,10 +390,10 @@ export default function RegistrarsApplications() {
                                                       user.useruiid,
                                                       user.empl
                                                       )}>Accept</button>
-                        <button onClick={() => sendEmail(
+                        <button onClick={() => sendEmail(user.firstname,
+                                                         user.lastname,
                                                          user.gpa,
-                                                         user.useruiid,
-                                                         user.role
+                                                         user.useruiid
                                                          )}>Reject</button>  </td>
                     </tr>
                 ))}

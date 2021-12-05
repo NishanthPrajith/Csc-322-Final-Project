@@ -22,13 +22,6 @@ export default function ForgotPassword() {
 
     return (
       <div>
-        <iframe
-            title='video'
-            width="560"
-            height="315"
-            src="https://www.youtube.com/embed/V2NaL8P8Lhs?&autoplay=1&loop=1&rel=0&showinfo=0&color=white&iv_load_policy=3&playlist=V2NaL8P8Lhs"
-            frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
         <div className ="forgot-page">
           <div className ="form">
             <p className = "title"> Update your password</p>
@@ -36,6 +29,7 @@ export default function ForgotPassword() {
               <input type="text" ref={passwordRef} className = "five" placeholder="New Password" autoComplete = "off" required/>
               <p id = "error" className = "error">Email was entered incorrectly or does not exist.</p>
               <button onClick = {changePassword}>Submit</button>
+              <p className="message" > Go back to home page? <Link to="/SignIn">Home</Link></p>
             </form>
           </div>
         </div>
