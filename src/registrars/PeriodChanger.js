@@ -1,7 +1,6 @@
 import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc,getDoc, query, where, increment, orderBy, limit } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
-import emailjs from 'emailjs-com';
 import { useHistory } from 'react-router-dom';
 import StudentcourseAssignPopup from './StudentDeregister';
 
@@ -283,20 +282,12 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                     deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
                   }
                 }
-                // send out an email to the student since he has been suspended to the student's email
-                // email template params
-                var templateParams = {
-                  name: studentfirstname + " " + studentlastname,
-                  message: "You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!",
-                  from_name: " CCNYZero"
-                  };
-                // email js
-                emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
-                .then((result) => {
-                }, (error) => {
-                }); 
                 // add this student to the suspended collection with data
                 await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
+                const washingtonRef = doc(db, "SuspendedStudents", studentuiid);
+                await updateDoc(washingtonRef, {
+                  message:  studentfirstname + " " + studentlastname + ". You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!"
+                });
                 alert("Student has reached 3 warnings and student has been suspended!");
                 // delete the student from the student collection       
                 await deleteDoc(doc(db, "Students", a));

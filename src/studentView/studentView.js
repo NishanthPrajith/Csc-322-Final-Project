@@ -5,7 +5,6 @@ import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
-import emailjs from 'emailjs-com';
 import Tabs from '../components/Tabs';
 import { getDoc,collection,onSnapshot, setDoc,doc,addDoc, updateDoc, deleteDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';

@@ -2,13 +2,12 @@ import './gradMembers.css';
 import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc, query, where } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
-import emailjs from 'emailjs-com';
 import { useHistory } from 'react-router-dom';
 import StudentcourseAssignPopup from './StudentDeregister';
 
 var StudentRegisterUiid;
 export default function GradMembers(){
-  const string = "You have been warned by the registrar after a complain investigation!"
+  const messagestring = "You have been warned by the registrar after a complain investigation!"
   const history = useHistory();
   const [students, setStudents] = useState([]);
   const [instructors, setInstructors] = useState([]);
@@ -221,16 +220,16 @@ const closetogglestudentcoursePopup = () => {
   //     secondChanceEnrollment();
   //   }
   // IMPLEMENT LATER
-  async function StudentWarn(a, message){ 
+  async function StudentWarn(a){ 
     // issue a warning to the student
     for(let i = 0; i<students.length; i++){
       if(students[i].useruiid === a){
-          let studentfirstname = students[i].firstname;
-          let studentlastname = students[i].lastname;
-          let studentuiid = students[i].useruiid;
-          var studentdata = students[i];
-          var warncount = students[i].numWarn;
-          warncount += 1;
+        let studentfirstname = students[i].firstname;
+        let studentlastname = students[i].lastname;
+        let studentuiid = students[i].useruiid;
+        var studentdata = students[i];
+        var warncount = students[i].numWarn;
+        warncount += 1;
           if (warncount>=3){
             // cleare him from the waitlist 
             for(let w = 0; w < waitlist.length; w++){
@@ -250,35 +249,27 @@ const closetogglestudentcoursePopup = () => {
                 deleteDoc(doc(db, "Reviews", Reviews[r].Uid));
               }
             }
-            // send out an email to the student since he has been suspended to the student's email
-            // email template params
-            var templateParams = {
-              name: studentfirstname + " " + studentlastname,
-              message: "You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!",
-              from_name: " CCNYZero"
-              };
-            // email js
-            emailjs.send('gmail', 'template_g5n9s3v', templateParams, 'user_n9Gt3cMzwdE1CRjrKfdqY')
-            .then((result) => {
-            }, (error) => {
-            }); 
             // add this student to the suspended collection with data
             await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
+            const washingtonRef = doc(db, "SuspendedStudents", studentuiid);
+            await updateDoc(washingtonRef, {
+              message:  studentfirstname + " " + studentlastname + ". You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!"
+            });
             alert("Student has reached 3 warnings and student has been suspended!");
             // delete the student from the student collection       
             await deleteDoc(doc(db, "Students", a));
             await history.push('GradMembers');
           }
-          const washingtonRef = doc(db, "Students",a);
-          await updateDoc(washingtonRef, {
-              numWarn: warncount
-          });
-          break;
+        const washingtonRef = doc(db, "Students",a);
+        await updateDoc(washingtonRef, {
+            numWarn: warncount
+        });
+        break;
         }
     }
     // add the doc to the warnings
     await addDoc(collection(db, "Students",a,"Warnings"), {
-        Warn: message,
+        Warn: messagestring,
         numofWarn: 1
       });
       alert("Student has been warned, please update your Complain list!");
@@ -286,7 +277,7 @@ const closetogglestudentcoursePopup = () => {
 }
 
   // IMPLEMENT LATER
-  async function InstructorWarn(a,message){
+  async function InstructorWarn(a){
      // isue a warning to the instructor
     for(let i = 0; i<instructors.length; i++){
       if(instructors[i].useruiid === a){
@@ -302,7 +293,7 @@ const closetogglestudentcoursePopup = () => {
     }
   // add the doc to the warnings
   await addDoc(collection(db, "Instructor",a,"Warnings"), {
-      Warn: message,
+      Warn: messagestring,
       numofWarn: 1
     });
     alert("Instructor has been warned, please update your Complain list!");
@@ -385,9 +376,8 @@ const closetogglestudentcoursePopup = () => {
           <td> { tclass.useruiid} </td>
           <td> <button className="warn-button-grad2"onClick={() => InstructorWarn(tclass.useruiid
                                                       )}>Warn</button>
-                <button className="suspend-button-grad"onClick={() => Suspend(
-                                                     tclass.useruiid
-                                                     )}>Suspend</button>
+                <button className="suspend-button-grad"onClick={() => Suspend(tclass.useruiid
+                                                      )}>Suspend</button>
           </td>
         </tr>
         ))}
