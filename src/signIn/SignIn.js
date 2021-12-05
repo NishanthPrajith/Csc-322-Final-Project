@@ -24,6 +24,7 @@ export default function SignIn() {
       const docRef3 = doc(db, "Users", useruiid); // Users
       const docRef5 = doc(db, "Suspended", useruiid); // Suspended instructors
       const docRef6 = doc(db, "SuspendedStudents", useruiid); // Suspended students and instructors
+      const docRef7 = doc(db, "Rejected", useruiid); // Rejected students and instructors
       var docRef4 = doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4" ); // grading period
       const docSnap = await getDoc(docRef); // admin
       const docSnap1 = await getDoc(docRef1); //student
@@ -31,7 +32,13 @@ export default function SignIn() {
       const docSnap3 = await getDoc(docRef3); // Users
       const docSnap5 = await getDoc(docRef5); // Suspended Instructors
       const docSnap6 = await getDoc(docRef6); // Suspended Students
+      const docSnap7 = await getDoc(docRef7); // Rejected Students
       var docSnap4 = await getDoc(docRef4); // grading period
+      if(docSnap7.exists()){ // Checking for rejected students/ instructors that are suspended
+        alert(docSnap7.data().message);
+        await history.push('SignIn');
+        return
+      }
       if(docSnap5.exists()){ // Checking instructors that are suspended
         alert("Error: Account suspended by the Registrars!");
         await history.push('SignIn');

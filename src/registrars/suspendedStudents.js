@@ -44,7 +44,10 @@ export default function SuspendedStudents() {
         alert("Student has been removed from suspended list");
       }
 
-
+      if (loading) {
+        return <h1> Loading .. </h1>
+      }
+  
     return(
         <div className = "suspendedStudentHeading">
             <h1>Currently Suspended Students</h1>

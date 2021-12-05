@@ -3,8 +3,6 @@ import { auth } from "../firebase"
 import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail,updatePassword} from 'firebase/auth';
 import { useHistory } from "react-router-dom";
 import { userData } from './userProfile';
-import { db } from "../firebase"
-import { doc, updateDoc} from "firebase/firestore"; 
 
 const AuthContext = React.createContext()
 
@@ -17,7 +15,7 @@ export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState()
   const [loading, setLoading] = useState(true)
 
-  async function signup(firstname, lastname, email, password, role, gpa, dob, empl) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
+  async function signup(email, password, empl) { // Our async function is important because this allows our data to update live rather than waiting to refresh.
 
    const ret2 = createUserWithEmailAndPassword(auth,email, password)
     .then((userCredential) => {
@@ -58,19 +56,17 @@ export function AuthProvider({ children }) {
     return currentUser.updateEmail(email)
   }
 
-  async function resetPassword(password) {
-    console.log("im in updatepassword")
-    const user = auth.currentUser;
-    updatePassword(user, password).then(() => {
-      var data = {
-        password: password,
-      };
-      updateDoc(doc(db, "Users", user.uid), data);
-      }).catch((error) => {
-        console.log(error);
-      });
-      console.log("done updatepassword")
-  };
+  async function resetPassword(email) {
+    await sendPasswordResetEmail(auth, email)
+        .then(() => {
+          alert('Check your inbox for further instructions')
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(errorCode + errorMessage)
+        });
+  }
 
   useEffect(() => {
     onAuthStateChanged(auth, user => {
