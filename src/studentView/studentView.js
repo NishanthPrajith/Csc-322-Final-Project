@@ -699,7 +699,7 @@ export default function StudentView() {
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
                                     <td> {Class.Instructor } </td>
-                                    <td> <button onClick = {() => dropCourse(Class.Class,
+                                    <td> <button className= "student-drop-button"onClick = {() => dropCourse(Class.Class,
                                                                             Class.Instructor
                                     )}>Drop</button> </td>
                                 </tr>

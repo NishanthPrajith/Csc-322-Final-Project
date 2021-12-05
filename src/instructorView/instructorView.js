@@ -282,17 +282,20 @@ export default function InstructorView() {
                         </table>    
                         }
                         
-                        {(OptionSelected.value === "drop") && <table className>
-                                <tr>
+                        {(OptionSelected.value === "drop") && <table className = "instructor-drop-table">
+                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
                                     <th>Room</th>
+                                    <th>Section</th>
                                 </tr>
-                            { CurrentClasses.map((Class) => (
+                            { InstructorCourses.map((Class) => (
                                 <tr>
                                     <td> { Class.Class } </td>
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
+                                    <td> { Class.Secion } </td>
+                                    <td><button className= "drop-instructor-button">Drop</button></td>
                                 </tr>
                             ))}
                         </table>    

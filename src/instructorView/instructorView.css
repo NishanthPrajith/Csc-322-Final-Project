@@ -514,6 +514,50 @@ img{
 }
 
 
+/*Instructor Drop Table*/
+
+.instructor-drop-table th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.instructor-drop-table td {
+  padding: 2% 0%;
+}
+
+.instructor-drop-table {
+  float: left;
+  width: 99%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.instructor-drop-table tr {
+  width: 100%;
+  text-align: center;
+}
+
+.drop-instructor-button {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.drop-instructor-button:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+
 /* DO WE NEED THIS? CAUSE IMA DELETE IT*/
 
 .schedule Schedule{

@@ -63,13 +63,11 @@
 }
 
 .period-table-registrar {
-  
+  float: left;
   width: 77%;
   margin: 3% 2%;
   border: none;
   border-collapse: collapse;
-  text-align: center;
- 
 }
 
 .period-table-registrar tr {
@@ -95,9 +93,6 @@
   border: none;
   cursor: pointer;
   color: purple;
-  text-align: center;
-  margin: auto;
-  display: flex;
 }
 
 .class-button-actually:hover {
