@@ -3,6 +3,7 @@ import './studentregister.css'
 import { userData } from '../contexts/userProfile';
 import { useState, useEffect, useRef } from 'react';
 import React from 'react'
+import { useAuth } from "../contexts/Authcontext";
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
 import Tabs from '../components/Tabs';
@@ -20,8 +21,17 @@ var course;
 var InstructorTable;
 var complainUiid;
 var fetchedassignedclasses = [];
+var popupswitch = false;
+
+// var dummy;
+// function dumm() {
+//     clearTimeout(dummy);
+//     console.log("i am in dummy function");
+// }
+
 export default function StudentView() {
-    const taboowords = ["shit","dang","damn"];
+   const taboowords = ["shit","dang","damn"];
+   const { logout } = useAuth();
    const history = useHistory();
    const instname = useRef();
    const classname = useRef(); 
@@ -73,6 +83,9 @@ export default function StudentView() {
     setIsOpen1(!complainpopup1);
     }
 
+   
+
+
     // ratepopup
   const ratePopup = (a,b) => {
     course = a;
@@ -119,6 +132,60 @@ export default function StudentView() {
           querySnapshot.forEach((doc) => {
               warning.push(doc.data());
           });
+          for(let i = 0; i< warning.length; i++){
+              if((warning[i].useruiid === userData.getUd())){
+                  if(parseFloat(warning[i].GPA)<2 && userData.getPeriod()===4){ 
+                    let studentdata = warning[i];
+                    setTimeout(async function () {
+                        alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " which is below our university standards and due to this the committe has decided to expel you.");
+                        await setDoc(doc(db, "SuspendedStudents", userData.getUd()), studentdata);
+                        const washingtonRef = doc(db, "SuspendedStudents", userData.getUd());
+                        await updateDoc(washingtonRef, {
+                        message: "You have been suspended due to achieving a gpa below 2"
+                        });
+                        // delete the student from the student doc
+                        // await deleteDoc(doc(db, "Students", userData.getUd()));
+                        logout();
+                        await history.push('/');
+                    }, 2000);
+                    break;
+                  }
+                  if((parseFloat(warning[i].GPA))>=3.5 && userData.getPeriod()===4 && popupswitch===false){
+                    setTimeout(async function () {
+                        alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciatiom, we have decided to remove a warning from your record.");
+                        const washingtonRef = doc(db, "Students", userData.getUd());
+                        await updateDoc(washingtonRef, {
+                        HonorRollStudent: "★★★★★"
+                        });
+                        // remove a random warning
+                        console.log(StudentsWarnings)
+                        popupswitch = true;
+                    }, 3000);
+                    break;
+                  }
+                  else if((parseFloat(warning[i].GPA)>=2 && parseFloat(warning[i].GPA)<=2.25) && userData.getPeriod()===4 && popupswitch===false){
+                    var targetDate = new Date();
+                    targetDate.setDate(targetDate.getDate() + 10);
+                    let numofwarnings = warning[i].numWarn;
+                    const washingtonRef = doc(db, "Students", userData.getUd());
+                    ++numofwarnings;
+                    setTimeout(async function () {
+                        // alert the student
+                      alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " , you have recieved a warning and also have a upcoming interview with the registrar on " + targetDate);
+                      // update the number of student warnings  
+                      await updateDoc(washingtonRef, {
+                        numWarn: numofwarnings
+                      });
+                      await addDoc(collection(db, "Students", userData.getUd(),"Warnings"), {
+                        Warn: "You have achieved a " + userData.getGPA() + " , you have recieved a warning and also have a upcoming interview with the registrar on " + targetDate,
+                        numofWarn: 1
+                      });
+                        popupswitch = true;
+                    }, 3000);
+                    break;
+                  }
+              }
+          }
           setWarnings(warning);
         });
         setLoading(false);
@@ -176,7 +243,7 @@ export default function StudentView() {
         });
         setLoading(false);
     }
-
+    // clearTimeout(myGreeting_honor);
    
     // student drop course
     async function dropCourse(a,b) {
@@ -565,6 +632,12 @@ export default function StudentView() {
           await history.push('Studentview');  
     }
 
+    // async function gpacheck(){
+    //     if(parseInt(userData.getGPA())<4){
+    //         alert("Your GPA IS LESS THAN 4");
+    //     }
+    // } 
+
  useEffect(() => {
     setLoading(true);
     getStudentCourses(db);
@@ -641,6 +714,7 @@ export default function StudentView() {
                             <p>GPA: {userData.getGPA()}</p>
                             <p>EMPL: {userData.getEmpl()}</p>
                             <p>Email: {userData.getEmail()}</p>
+                            <p>Honor Roll Student: {userData.getEmail()}</p>
                     </div>
                 </div>
             </div> 
@@ -668,6 +742,21 @@ export default function StudentView() {
                         }  
                      
                      {(OptionSelected.value === "grades") && <table className ="student-grades-table">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Instructor</th>
+                                    <th>Grades</th>
+                                </tr>
+                            { StudentRecord.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.Instructor } </td>
+                                    <td> { Class.Grade } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }
+                        {(OptionSelected.value === "haha") && <table className ="student-grades-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Instructor</th>
@@ -737,9 +826,9 @@ export default function StudentView() {
                          ))}
                      </table> 
                         }
-
-                        
-
+                        {/* {(userData.getPeriod()===3) &&
+                            gpacheck()
+                        } */}
                         {(OptionSelected.value === "complaints") && <table className = "student-complaint-table">
                                 <tr>
                                     <th>Name</th>
@@ -792,7 +881,24 @@ export default function StudentView() {
                         </div>     
                         }   
                    
-                
+                        {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA())>=3.5) && userData.getPeriod()===4) && <div className="warning-page">
+                            <h1>Total Warnings:</h1>
+                            <p>Reminder: Getting 3 warnings will result in a suspension!</p>
+                                <table className ="CourseStyler-warning">
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                    { StudentsWarnings.map((warn) => (
+                                        <tr>
+                                            <td> { warn.numofWarn } </td>
+                                            <td> { warn.Warn } </td>
+                                            <td>X</td>
+                                        </tr>
+                                    ))}
+                                </table>   
+                        </div> 
+                        } 
                         {(OptionSelected.value === "warning") && <div className="warning-page">
                             <h1>Total Warnings:</h1>
                             <p>Reminder: Getting 3 warnings will result in a suspension!</p>

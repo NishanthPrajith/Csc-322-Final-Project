@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
-import { collection, doc, onSnapshot,deleteDoc, addDoc, setDoc} from 'firebase/firestore';
+import { collection, doc, onSnapshot,deleteDoc, addDoc, setDoc, updateDoc} from 'firebase/firestore';
 import Container from '@material-ui/core/Container';
 import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
@@ -12,7 +12,10 @@ import InstructorComplainPopup1 from './InstructorComplainPopup1';
 import InstructorRosterPopup from './InstructorRosterPopup';
 
 var studentComplainName;
+var studentassigncourse;
+var studentassigngrade;
 export default function InstructorView() {
+    const gradeRef = useRef();
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [Warnings, setWarnings] = useState([]);
     const [waitlist, setWaitlist] = useState([]);
@@ -58,6 +61,7 @@ export default function InstructorView() {
     }
 
     const toggleRosterPopup = (a) => {
+        studentassigncourse = a;
         setIsOpen2(!isOpen2);
     }
     async function toggleRosterclosePopup () {
@@ -68,18 +72,18 @@ export default function InstructorView() {
 
     // get the students on the waitlist 
     // GET WAITLIST
-  async function getWaitlist(db) {
-    const waitlistCol = collection(db, 'Waitlist');
-    setLoading(true);
-    onSnapshot(waitlistCol, (querySnapshot) => {
-      const waitlist = [];
-      querySnapshot.forEach((doc) => {
-        waitlist.push(doc.data());
-      });
-      setWaitlist(waitlist);
-    });
-    setLoading(false);
-  }
+    async function getWaitlist(db) {
+        const waitlistCol = collection(db, 'Waitlist');
+        setLoading(true);
+        onSnapshot(waitlistCol, (querySnapshot) => {
+        const waitlist = [];
+        querySnapshot.forEach((doc) => {
+            waitlist.push(doc.data());
+        });
+        setWaitlist(waitlist);
+        });
+        setLoading(false);
+    }
 
     async function getWarnings1(db){
         const instWarnings = collection(db, 'Instructor', userData.getUd(),"Warnings");
@@ -218,8 +222,298 @@ export default function InstructorView() {
             setInstructorRoster(instComp);
         });
         setLoading(false);
-        toggleRosterPopup();
+        toggleRosterPopup(a);
      }
+    // function for terminating the student
+     async function Terminate_Student(a){
+        const washingtonRef1 = doc(db, "Students", a);
+        let studentdata; 
+        // a == studentuiid
+        const StuRecord = collection(db, "Students");
+        setLoading(true);
+        onSnapshot(StuRecord, (querySnapshot) => {
+            const instComp = [];
+            querySnapshot.forEach((doc) => {
+                instComp.push(doc.data());
+            });
+            for(let i = 0; i<instComp.length; i++){
+                if(instComp[i].useruiid === a){
+                    studentdata = instComp[i];
+                    break; 
+                }
+            }
+        }); 
+        await setDoc(doc(db, "SuspendedStudents", a), studentdata);
+        const washingtonRef = doc(db, "SuspendedStudents", a);
+        await updateDoc(washingtonRef, {
+            message: "You have failed two same courses, therefore you have been terminated!"
+        });
+        return
+    }
+
+    // function for instructor to enter grades
+    async function Instructor_Grade(a){
+        // a == instructoruiid
+        const washingtonRef1 = doc(db, "Students", a);
+        const washingtonRef2 = doc(db, "Instructor", userData.getUd(),"Courses",studentassigncourse);
+        let t_total;
+        let numberinstructorclassgpa;
+        // extract the teachers class GPA
+        for(let i = 0; i<InstructorCourses.length; i++){
+            if(InstructorCourses[i].Class === studentassigncourse){
+                const instructorclassgpa = InstructorCourses[i].ClassGPA;
+                numberinstructorclassgpa = InstructorCourses[i].StudentsGraded;
+                t_total = (instructorclassgpa) * (numberinstructorclassgpa);
+            }
+        }
+        // query to get the students GPA
+        let studentGPA;
+        const StuGPA = collection(db, "Students");
+        setLoading(true);
+        onSnapshot(StuGPA, (querySnapshot) => {
+            const instComp = [];
+            querySnapshot.forEach((doc) => {
+                instComp.push(doc.data());
+            });
+            console.log(instComp)
+            for(let i = 0; i<instComp.length; i++){
+                if(instComp[i].useruiid === a){
+                    studentGPA = instComp[i].GPA;
+                    break; 
+                }
+            }
+        });
+        // check if the student is getting their second "F"
+        const StuRecord = collection(db, "Students",a, "Record");
+        setLoading(true);
+        onSnapshot(StuRecord, (querySnapshot) => {
+            const instComp = [];
+            querySnapshot.forEach((doc) => {
+                instComp.push(doc.data());
+            });
+            console.log(instComp);
+            for(let i = 0; i<instComp.length; i++){
+                if(instComp[i].Class === studentassigncourse){
+                    if(instComp[i].Grade === "F"){
+                        if(gradeRef.current.value === "F"){
+                            // terminate the student
+                            Terminate_Student(a)
+                        }
+                    }
+                    else{
+                        break;
+                    }
+                }
+            }
+        });
+        // setting the grade for the particular student
+        await setDoc(doc(db, "Students", a,"Record",studentassigncourse), {
+            Class: studentassigncourse,
+            Grade: gradeRef.current.value.toUpperCase(),
+            Instructor: userData.getFirstname() + " " + userData.getLastname()
+        });
+        // adjust the gpa after assigning the grade 
+        switch (gradeRef.current.value.toUpperCase()) {
+            case 'A':
+            case 'A+':
+                let avg = ((parseFloat(studentGPA) + 4.0) /2).toFixed(2).toString();
+                let new_total = (t_total) + (4.0);
+                var new_updated_total = (new_total)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'A-':
+                let avg1 = ((parseFloat(studentGPA) + 3.7) /2).toFixed(2).toString();
+                let new_total1 = (t_total) + (3.7);
+                var new_updated_total1 = (new_total1)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg1
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total1,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total1,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });                  
+                break;
+            case 'B+':
+                let avg2 = ((parseFloat(studentGPA) + 3.3) /2).toFixed(2).toString();
+                let new_total2 = (t_total) + (3.3);
+                var new_updated_total2 = (new_total2)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg2
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total2,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total2,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'B':
+                let avg3 = ((parseFloat(studentGPA) + 3.0) /2).toFixed(2).toString();
+                let new_total3 = (t_total) + (3.0);
+                var new_updated_total3 = (new_total3)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg3
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total3,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total3,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'B-':
+                let avg4 = ((parseFloat(studentGPA) + 2.7) /2).toFixed(2).toString();
+                let new_total4 = (t_total) + (2.7);
+                var new_updated_total4 = (new_total4)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg4
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total4,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total4,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'C+':
+                let avg5 = ((parseFloat(studentGPA) + 2.3) /2).toFixed(2).toString();
+                let new_total5 = (t_total) + (2.3);
+                var new_updated_total5 = (new_total5)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg5
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total5,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total5,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'C':
+                let avg6 = ((parseFloat(studentGPA) + 2.0) /2).toFixed(2).toString();
+                let new_total6 = (t_total) + (2.0);
+                var new_updated_total6 = (new_total6)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg6
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total6,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total6,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'C-':
+                let avg7 = ((parseFloat(studentGPA) + 1.7) /2).toFixed(2).toString();
+                let new_total7 = (t_total) + (1.7);
+                var new_updated_total7 = (new_total7)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg7
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total7,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total7,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'D+':
+                let avg8 = ((parseFloat(studentGPA) + 1.3) /2).toFixed(2).toString();
+                let new_total8 = (t_total) + (1.3);
+                var new_updated_total8 = (new_total8)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg8
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total8,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total8,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            case 'D':
+                let avg9 = ((parseFloat(studentGPA) + 1.0) /2).toFixed(2).toString();
+                let new_total9 = (t_total) + (1.0);
+                var new_updated_total9 = (new_total9)/((numberinstructorclassgpa) + 1);
+                ++numberinstructorclassgpa;
+                await updateDoc(washingtonRef1, {
+                GPA: avg9
+                });
+                await updateDoc(washingtonRef2, {
+                ClassGPA: new_updated_total9,
+                StudentsGraded: numberinstructorclassgpa
+                });
+                await setDoc(doc(db, "GradedClasses", studentassigncourse), {
+                Class: studentassigncourse,
+                ClassGPA: new_updated_total9,
+                Instructor: userData.getFirstname() + " " + userData.getLastname(),
+                InstructorUIID: userData.getUd()
+                });
+                break;
+            default:
+          }
+        // since the student got the grade and the GPA was updated sucesfully, now we can delte the current course from his schedule
+        await deleteDoc(doc(db, "Students",a,"Courses",studentassigncourse));
+        alert("Sucessfully graded studnet!");
+        // now we also need to update the class GPA average
+
+        toggleRosterclosePopup()
+    }
 
       return (
         <div className = "InstructorPage">
@@ -440,8 +734,9 @@ export default function InstructorView() {
                 {InstructorRoster.map((course) => (
                     <tr>
                         <td> {course.StudentName} </td>
-                        <td> Input Field </td>
-                        <td><button className="assign-grades-popup-button">Assign</button></td>
+                        <td> <input type="text" ref={gradeRef} id="studentgrade" name="fname" /></td>
+                        <td><button className="assign-grades-popup-button" onClick = {() => Instructor_Grade(course.Student,
+                                                                                                            )}>Assign</button></td>
                     </tr>
                 ))}
             </table>
