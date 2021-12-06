@@ -67,8 +67,8 @@
   font-size: 1.1rem;
 }
 
-.AboutSecondHeader {
-  font-size: 1.3rem;
+.AboutSecondHeader3 {
+  font-size: 2.3rem;
   text-align: center;
   clear: both;
   height: 50vh;
@@ -78,23 +78,24 @@
   background-color: #7d5cc6;
 }
 
-.AboutSecondHeader-div {
+.AboutSecondHeader3-div {
   font-style: italic;
   width: 32%;
   float: left;
-  font-size: 1.1rem;
-  margin: 0% 0.25% 1% 0.25%;
+  font-size: 1.8rem;
+  margin: .25% 0.25% 1% 0.25%;
 }
 
-.AboutSecondHeader-divTwo {
+.AboutSecondHeader3-divTwo {
   font-style: italic;
   width: 50%;
   float: left;
-  font-size: 1.1rem;
+  font-size: 1.8rem;
+  
 }
 
-.AboutSecondHeader h2 {
-  margin-bottom: 3%;
+.AboutSecondHeader3 h2 {
+  margin-bottom: 5%;
 }
 
 .AboutThirdHeader {

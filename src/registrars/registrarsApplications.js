@@ -8,7 +8,6 @@ import CourseAssignPopup from './courseAssignPopup';
 import ClassSetUpPeriodPopup from './classSetUpPeriodPopup';
 import PeriodChanger from './PeriodChanger';
 
-
 var ud;
 var firtname;
 var lastname;
@@ -363,7 +362,7 @@ export default function RegistrarsApplications() {
             </>}
             handleClose={toggleclassSetUpPeriodclosePopup}
              />}
-            <p>Key: Role 1: Instructor, Role 0: Student</p>
+            <p>Key: Role 1: Instructor, Role 0: Student, Role 3: Students applied for graduation</p>
             <table className="xApplication">
                 <tr>
                     <th>First Name</th>

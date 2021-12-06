@@ -86,31 +86,31 @@ export default function AboutUs() {
         </div>
       </div>
 
-      <div className = "AboutSecondHeader" >
+      <div className = "AboutSecondHeader3" >
         <div>
           <h2>CCNY Schools and Divisions</h2>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>The Bernard and Anne Spitzer School of Architecture</p>
           </div>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>CUNY School of Medicine</p>
           </div>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>The Grove School of Engineering</p>
           </div>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>Division of Humanities & the Arts</p>
           </div>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>Colin Powell School for Civic and Global Leadership</p>
           </div>
-          <div className = "AboutSecondHeader-div">
+          <div className = "AboutSecondHeader3-div">
             <p>School of Education</p>
           </div>
-          <div className = "AboutSecondHeader-divTwo">
+          <div className = "AboutSecondHeader3-divTwo">
             <p>Division of Interdisciplinary Studies at the Center for Worker Education</p>
           </div>
-          <div className = "AboutSecondHeader-divTwo">
+          <div className = "AboutSecondHeader3-divTwo">
             <p>The Division of Science</p>
           </div>
         </div>
