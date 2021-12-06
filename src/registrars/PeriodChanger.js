@@ -34,45 +34,34 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
             }
         }
     }
-    else if(docData === "2"){
+    else if(docData === "2"){ //This is Req 4
        alert("Class Running Period");
         for(let i = 0; i < Students.length; i++){
             let studentID = Students[i].useruiid;
             Students[i].registerAllow = false;
-            updateDoc(doc(db, "Students", studentID), {registerAllow: false});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
-        }
-        alert("a");
-
-        for(let i = 0; i < Students.length; i++){
-            let studentID = Students[i].useruiid;
             if(Students[i].numCourses < 2 && !(Students[i].lessThan2CoursesWarning)){
-                StudentWarn2(studentID,"You have received a warning for enrolling in less than 2 classes", Students, waitlist, complains, Reviews);
-                Students[i].lessThan2CoursesWarning = true;
+              alert("a");
+              console.log(Students[i]);
+              StudentWarn2(studentID,"You have received a warning for enrolling in less than 2 classes", Students, waitlist, complains, Reviews);
+              Students[i].lessThan2CoursesWarning = true;
             }
-            updateDoc(doc(db, "Students", studentID), {lessThan2CoursesWarning: true});
+            updateDoc(doc(db, "Students", studentID), {registerAllow: false, lessThan2CoursesWarning: Students[i].lessThan2CoursesWarning});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
         }
-        alert("b");
+        
 
-        //CancelCourses();   
-        const clistDelete = [];          
+        //CancelCourses();           
         const coursesCol = query(collection(db,'AssignedClasses'), where("StudentsEnrolled" , "<", 2)); 
-        console.log(coursesCol);    
-            //Starts CourseCancellation process
-
-        onSnapshot(coursesCol, async function(courseSnapshot) {
-        console.log(courseSnapshot); 
+        onSnapshot(coursesCol, async function(courseSnapshot) { 
         //SetCanceledCourses = True for instructors and warn each one affected.
-        courseSnapshot.forEach(async function(classes){
+          courseSnapshot.forEach(async function(classes){
             if(classes.exists){
-              let instructorID = classes.data().Instructoruiid;  //InstructorUiid and courseName is assigned for each instance of a class of Size < 5
+              let instructorID = classes.data().Instructoruiid;  //InstructorUiid and courseName is assigned for each instance of a class of StudentsEnrolled < 5
               let courseName = classes.data().Class;
               let instructorDocRef = doc(db,"Instructor", instructorID);
               let instructorCourseDocRef = doc(db,"Instructor", instructorID,"Courses", courseName);
-              const docSnap = await getDoc(instructorCourseDocRef);
-              clistDelete.push(courseName);
-              console.log("CourseName : ", courseName);
+              const instructorDocSnap = await getDoc(instructorCourseDocRef);
               for(let i = 0; i<Instructors.length; i++){  //Change was made.
-                if((Instructors[i].useruiid == instructorID) && docSnap.exists()){
+                if((Instructors[i].useruiid == instructorID) && instructorDocSnap.exists()){
                   Instructors[i].canceledCourses = true;
                   let temp = Instructors[i].numCourses
                   Instructors[i].numCourses = temp - 1;
@@ -80,12 +69,8 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                   if (Instructors[i].numCourses == 0) {
                     test = true;
                   }
-                  //updateDoc(instructorDocRef, {canceledCourses: true, numCourses: increment(-1), numWarn: warncount});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
-                  //deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.
                   let warncount = Instructors[i].numWarn + 1;
                   Instructors[i].numWarn = warncount;
-                  //updateDoc(instructorDocRef, {numWarn: warncount});
-                  //  break;
                   // add the doc to the warnings
                   await updateDoc(instructorDocRef, {canceledCourses: true, Suspended: test, numCourses: Instructors[i].numCourses, numWarn: warncount});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
                   await deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.                  
@@ -93,72 +78,32 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
 
                 }
               }
-    
-         //   updateDoc(instructorDocRef, {canceledCourses: true, numCourses: increment(-1)});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
-         //   deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.     
-    
-            //InstructorWarn2(instructorID, "One of your courses has been canceled:" + courseName, Instructors);       // This is being repeated 3 times, for 2 classes?                  
-            // for(let i = 0; i<Instructors.length; i++){  //Fix  this
-            //     if(Instructors[i].useruiid === instructorID){
-            //       let warncount = Instructors[i].numWarn + 1;
-            //       alert(warncount);
-            //         const washingtonRef = doc(db, "Instructor",instructorID);
-            //         // Set the "capital" field of the city 'DC'
-            //         updateDoc(washingtonRef, {
-            //             numWarn: warncount
-            //         });
-            //       //  break;
-            //       // add the doc to the warnings
-            //       addDoc(collection(db, "Instructor",instructorID,"Warnings"), {
-            //       Warn: "One of your courses has been canceled:" + courseName,
-            //       numofWarn: warncount
-            //       });
-            //       }
-            //   }
-      
-              for(let i = 0; i< Students.length; i++){        //Checks all students to see if the cancelled course is in their Courses
+          
+              for(let i = 0; i< Students.length; i++){        //Checks all students to see if the cancelled course is in their Courses  //Fix this
                 let allCoursesStudent = collection(db,"Students",Students[i].useruiid, "Courses");
-                onSnapshot(allCoursesStudent, (studentSnapshot) => {
-                  studentSnapshot.forEach((studentCourse) =>{
-                    if(studentCourse.data().Class != courseName)
-                      return;
+                onSnapshot(allCoursesStudent, async function (studentSnapshot) {
+                  studentSnapshot.forEach(async function(studentCourse){
                     let studentDocRef = doc(db,"Students", Students[i].useruiid);
                     let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", courseName);
-                    updateDoc(studentDocRef, {canceledCourses: true, numCourses: increment(-1)}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
-                    deleteDoc(studentCourseDocRef);
+                    let studentDocSnap = await getDoc(studentCourseDocRef);
+                    if(studentCourse.data().Class == courseName && studentDocSnap.exists()){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
+                      //console.log("Student Course: " + courseName +"vs" + studentCourse.data().Class); 
+                      //console.log(Students[i].firstname);
+                      let tempStd = Students[i].numCourses;
+                      if(tempStd == 0)  //Work-Around.
+                        tempStd += 1;
+                      Students[i].numCourses = tempStd - 1;
+                      //console.log(Students[i].numCourses);
+                      await updateDoc(studentDocRef, {canceledCourses: true, numCourses: Students[i].numCourses}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
+                      await deleteDoc(studentCourseDocRef);
+                    }
                   });
                 }); 
               }
-              //alert("wow");
               await deleteDoc(doc(db,"AssignedClasses", courseName)); //Delete the Assigned Course overall.
             }
           });  
-        });  
-        
-
-        //console.log("Initial : ", clistDelete);
-        //console.log(clistDelete.length);
-
-        //  for (let k = 0; k < clistDelete.length; k++) {
-        //    console.log(clistDelete[k]);
-        //    console.log(k);
-        //    deleteDoc(doc(db,"AssignedClasses", clistDelete[k]));
-        //  }
-        
-        // console.log(Instructors.length);
-        // for(let i = 0; i <Instructors.length; i++){
-        //     let CANCELED = Instructors[i].canceledCourses;
-        //     let NUMCOURSES = Instructors[i].numCourses;
-        //     if(CANCELED == true){   //FIX THIS
-        //         alert("d");
-        //         if(NUMCOURSES == 0){ 
-        //             alert(NUMCOURSES);
-        //             Instructors[i].Suspended = true;
-        //             updateDoc(doc(db, "Instructor", Instructors[i].useruiid), {Suspended: true});   //, canceledCourses: false
-        //         }
-        //     }
-        // }
-        
+        }); 
     }
 
     else if(docData === "3"){
@@ -286,7 +231,7 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                 await setDoc(doc(db, "SuspendedStudents", studentuiid), studentdata);
                 const washingtonRef = doc(db, "SuspendedStudents", studentuiid);
                 await updateDoc(washingtonRef, {
-                  message:  studentfirstname + " " + studentlastname + ". You are recieving this message, becuase you have recieved 3 warnigs and you MUST pay $100 in fines to the registrar!"
+                  message:  studentfirstname + " " + studentlastname + ", You are receiving this message because you have received 3 warnings and MUST pay $100 in fines to the Registrar!"
                 });
                 alert("Student has reached 3 warnings and student has been suspended!");
                 // delete the student from the student collection       
