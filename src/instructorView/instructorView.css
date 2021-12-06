@@ -557,6 +557,13 @@ img{
   transition: 250ms;
 }
 
+/*Display Container*/
+
+.Display {
+  border-radius: 10px;
+  box-shadow: 0px 1px 10px;
+}
+
 
 /* DO WE NEED THIS? CAUSE IMA DELETE IT*/
 

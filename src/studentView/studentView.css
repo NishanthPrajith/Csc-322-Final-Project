@@ -551,3 +551,10 @@ p {
 .student-rate-table-after-period h1 h2 {
   text-align: center
 }
+
+/*Display Container*/
+
+.Display {
+  border-radius: 10px;
+  box-shadow: 0px 1px 10px;
+}
