@@ -565,3 +565,58 @@ p {
 .calor{
   color:brown
 }
+
+/*Graduate Page*/
+
+.student-graduate-table h2{
+  padding-left: 5%;
+  color: #7d5cc6;
+}
+
+.student-graduate-table h3{
+  padding-left: 5%;
+}
+
+.heading-for-graduate h3, h2{
+  /* display on the same line display: inline-block;  */
+}
+
+.student-graduate-button{
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  color: purple;
+}
+
+.student-graduate-button:hover {
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.page-button-css{
+  padding-left: 5%;
+}
+
+.body-for-graduate p{
+  padding-left: 5%;
+}
+
+.comment-for-graduate p{
+  padding-left: 5%;
+  padding-top: 2%;
+}
+
+.comment-for-graduate .comment-details-graduate {
+  padding-left: 5%;
+}
+
+.body-for-graduate .body-for-p {
+  padding-bottom: 5%;
+}
+
+

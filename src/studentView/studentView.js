@@ -943,20 +943,28 @@ const handleInputChange = value => {
                             ))}
                         </table>    
                         }
-                        {(OptionSelected.value === "graduate") && <table className ="student-grades-table">
-                                <tr>
-                                    <th>Class</th>
-                                    <th>Instructor</th>
-                                    <th>Grades</th>
-                                </tr>
-                            { StudentRecord.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.Instructor } </td>
-                                    <td> { Class.Grade } </td>
-                                </tr>
-                            ))}
-                        </table>    
+                        {(OptionSelected.value === "graduate") && <div className ="student-graduate-table">
+                            <div className="heading-for-graduate">
+                                <h2>Institution:</h2> 
+                                <h3>CCNYZero</h3>
+                            </div>
+
+                            <div className="heading-for-graduate">
+                                <h2>Career:</h2> 
+                                <h3>Undergraduate</h3>
+                            </div>
+                        
+                            <div className="body-for-graduate">
+                                <p >Name: </p>
+                                <p >Empl: </p>
+                                <p className="body-for-p">GPA: </p>
+                            </div>
+
+                            <div className="page-button-css">
+                                <button className= "student-graduate-button">Apply For Graduation</button>
+                            </div>
+
+                        </div>    
                         }
                         {(OptionSelected.value === "haha") && <table className ="student-grades-table">
                                 <tr>
@@ -1259,4 +1267,8 @@ const styles = {
     },
   };
 
+  /*<div className="comment-for-graduate">
+                                <p>Comment: </p>
+                                <textarea className="comment-details-graduate" id="input-details"ref={experience} placeholder="Leave a comment if you have any" style={styles.textarea} />
+                            </div>*/ 
 
