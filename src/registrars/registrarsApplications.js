@@ -204,7 +204,7 @@ export default function RegistrarsApplications() {
 
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
         if(f === "0"){         
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false}
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false, numCoursesPassed:0}
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
         }else{

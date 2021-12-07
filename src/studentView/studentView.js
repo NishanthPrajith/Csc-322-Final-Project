@@ -14,6 +14,7 @@ import Select from 'react-select';
 import { FaRedditSquare, FaStar } from "react-icons/fa";
 import ComplainPopup from './studentcomplainPopup';
 import ComplaintPopup from './complainPopup';
+import SecondChancePopup from './secondChancePopup';
 import RatePopup from './ratePopus';
 
 var instUid;
@@ -23,11 +24,12 @@ var complainUiid;
 var fetchedassignedclasses = [];
 var popupswitch = false;
 var onewarning = false;
-
+var cc;
 export default function StudentView() {
    const taboowords = ["shit","dang","damn"];
    const { logout } = useAuth();
    const history = useHistory();
+   const [secondChances, setIsOpen3] = useState(false);
    const instname = useRef();
    const classname = useRef(); 
    const experience = useRef();  
@@ -53,10 +55,10 @@ export default function StudentView() {
    const courseRef = useRef();
    const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, {label: "Enroll", value: "enroll"}, 
                     {label: "Drop", value: "drop"}, {label: "Complaints", value: "complaints"}, 
-                    {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"}];
+                    {label: "Rate", value: "rate"}, {label: "Warning", value: "warning"},{label: "Graduate", value: "graduate"}];
 
-    const handleInputChange = value => {
-      setInputValue(value);
+const handleInputChange = value => {
+    setInputValue(value);
   }
 
   const handleChange = value => {
@@ -78,9 +80,15 @@ export default function StudentView() {
     setIsOpen1(!complainpopup1);
     }
 
+    const secondChancePopup = () => {
+        setIsOpen3(!secondChances);
+        }
+    async function secondChanceclosePopup () {
+        cc = false;
+        await updateDoc(doc(db, "Students",userData.getUd()), {canceledCourses: cc});
+        setIsOpen3(!secondChances);
+    }
    
-
-
     // ratepopup
   const ratePopup = (a,b) => {
     course = a;
@@ -128,7 +136,19 @@ export default function StudentView() {
               warning.push(doc.data());
           });
           for(let i = 0; i< warning.length; i++){
-              if((warning[i].useruiid === userData.getUd())){
+                if((warning[i].useruiid === userData.getUd())){
+                    cc = warning[i].canceledCourses;
+                  // popup for canceled courses
+                if(userData.getPeriod() === 2 && warning[i].canceledCourses===true && popupswitch===false){
+                    secondChancePopup();
+                    // Keep at bottom
+                    popupswitch = true;
+                }
+                if(warning[i].Graduate===true && popupswitch===false){
+                    alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You are eligible to apply for graduation!");
+                    // Keep at bottom
+                    popupswitch = true;
+                }
                   if(parseFloat(warning[i].GPA)<2 && userData.getPeriod()===4){ 
                     let studentdata = warning[i];
                     setTimeout(async function () {
@@ -141,8 +161,8 @@ export default function StudentView() {
                         // delete the student from the student doc
                         // await deleteDoc(doc(db, "Students", userData.getUd()));
                         logout();
-                        await history.push('/');
-                    }, 2000);
+                        // await history.push('/');
+                    }, 3000);
                     break;
                   }
                   if((parseFloat(warning[i].GPA))>=3.5 && userData.getPeriod()===4 && popupswitch===false){
@@ -209,7 +229,6 @@ export default function StudentView() {
     });
     setLoading(false);
     }
-
 
      // Get Student Courses Day Time
     async function getStudentCoursesDayTime(db) {
@@ -428,6 +447,162 @@ export default function StudentView() {
         if(checkOverlap(timeSegments) === true){
                 alert("This course's time conflicts with your other classes's time.");
                 await history.push('StudentView');
+                return
+        }
+        else if(failedcourseboolean || firsttimetakingcourse){
+                // first check size of class
+                if(parseInt(size)===0){
+                // if the class is not filled then...
+                // put the guy/girl on waitlist
+                await setDoc(doc(db, "Waitlist", instructoruiid), {
+                Class: classs,
+                DayTime: daytime,
+                Room: room,
+                Secion: section,
+                Instructor: instructor,
+                Instructoruiid: instructoruiid,
+                Student: userData.getUd(),
+                StudentName: userData.getFirstname() + " " + userData.getLastname()
+                });
+                alert("Class is filled up, you have been placed on the wait list");
+              }
+         else{
+                // put the student in the instrcutors roster
+                await addDoc(collection(db, "Instructor", instructoruiid,"Courses", classs, "Roster"), {
+                Student: userData.getUd()
+                }); 
+
+                // put the course in student database
+                await setDoc(doc(db, "Students", userData.getUd(),"Courses", classs), {
+                    Class: classs,
+                    DayTime: daytime,
+                    Room: room,
+                    Secion: section,
+                    Instructor: instructor,
+                    Instructoruiid: instructoruiid
+                });
+
+                // constant used to updat the class size
+                let updateclasssize = parseInt(size);
+                --updateclasssize;
+                alert("Enrolled in class sucessfully!");
+                // then we want to update the size of the class 
+                await updateDoc(doc(db, "AssignedClasses", classs), {
+                    Size: updateclasssize
+                });
+                // update the num of students enrolled in the course
+                ++StudentsEnrolled;
+                await updateDoc(doc(db, "AssignedClasses", classs), {
+                    StudentsEnrolled: StudentsEnrolled
+                });
+                // update the number of courses the student is currently taking
+                ++studentcourses;
+                await updateDoc(doc(db, "Students", userData.getUd()), {
+                    numCourses: studentcourses
+                });
+            }   
+        }
+        else {
+            alert("You have already passed this class, and therefore cannot retake this class");
+        }
+    }
+
+    async function enrollCourse1(classs,daytime,room,section,size,instructor,instructoruiid,StudentsEnrolled){
+
+        // first check if student is already taking the course
+        for(let i = 0; i<CurrentClasses.length; i++){
+            if(CurrentClasses[i].Class===classs){
+                alert("You have already enrolled this course!");
+            }
+        }
+            // Jouse wants, 
+            // to update the numofCourses in the student feild
+            // update the studentsenrolled feild in assigned classes
+
+            // check if the student got an F in this course
+            // get the data for the students in the course
+            let failedcourseboolean = false; 
+            let firsttimetakingcourse = true;
+            let studentcourses = 0;
+            let timeSegments =[];
+            for(let i = 0; i<StudentRecord.length; i++){
+                if(StudentRecord[i].Class===classs){
+                    firsttimetakingcourse = false;
+                    if(StudentRecord[i].Grade==="F"){
+                        failedcourseboolean = true;
+                        break;
+                    }
+                }
+            }
+            for(let i = 0; i<Warnings.length; i++){
+                if(Warnings[i].useruiid===userData.getUd()){
+                    studentcourses = Warnings[i].numCourses;
+                }
+            }
+        
+        // All this code makes sure that the courses time doesn't conflict with eachother
+        var timeSegments1 = function(time) {
+            var timeArray = time.split("-");
+            return timeArray;
+        }
+        for(let i = 0; i<CurrentClassesTimes.length; i++){
+            let timeValue = timeSegments1(CurrentClassesTimes[i]);
+            timeSegments.push(timeValue);
+        }
+
+        let timeValue2 = timeSegments1(daytime);
+        timeSegments.push(timeValue2);
+            
+        function getTime(time) {
+            var array = time.split(":");
+            var x = parseInt(array[0]);
+            var u = parseInt(array[1]);
+            return (x * 1000) + u;
+        }
+        
+        // Sorts the courses's time
+        function timesort(arr){
+            for(let i = 0; i < arr.length; i++){
+                let k = i;
+                for (let j = i; j < arr.length; j++) {
+                    if (arr[j][0] < arr[k][0]) {
+                        k = j;
+                    } else if (arr[j][0] === arr[k][0]) {
+                        if (getTime(arr[j][2]) < getTime(arr[k][2])) {
+                            k = j;
+                        } else if (getTime(arr[j][3]) < getTime(arr[k][3])) {
+                            k = j;
+                        }
+                      }
+                    }
+
+                    let temp = arr[k];
+                    arr[k] = arr[i];
+                    arr[i] = temp;    
+                }
+                return arr;
+            }
+
+            timeSegments = timesort(timeSegments);
+
+            // Checks if the courses's time overlaps with one another
+            const checkOverlap = (timeSegments) => {
+
+                for (let i = 0; i < timeSegments.length - 1; i++) {
+                    const currentEndTime = timeSegments[i][3];
+                    const nextStartTime = timeSegments[i + 1][2];
+                    const currentDay = timeSegments[i][0];
+                    const nextDay = timeSegments[i+1][0];
+                    if(currentDay === nextDay){
+                        if (currentEndTime > nextStartTime) {    
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            };
+        if(checkOverlap(timeSegments) === true){
+                alert("This course's time conflicts with your other classes's time.");
                 return
         }
         else if(failedcourseboolean || firsttimetakingcourse){
@@ -768,6 +943,21 @@ export default function StudentView() {
                             ))}
                         </table>    
                         }
+                        {(OptionSelected.value === "graduate") && <table className ="student-grades-table">
+                                <tr>
+                                    <th>Class</th>
+                                    <th>Instructor</th>
+                                    <th>Grades</th>
+                                </tr>
+                            { StudentRecord.map((Class) => (
+                                <tr>
+                                    <td> { Class.Class } </td>
+                                    <td> { Class.Instructor } </td>
+                                    <td> { Class.Grade } </td>
+                                </tr>
+                            ))}
+                        </table>    
+                        }
                         {(OptionSelected.value === "haha") && <table className ="student-grades-table">
                                 <tr>
                                     <th>Class</th>
@@ -838,9 +1028,6 @@ export default function StudentView() {
                          ))}
                      </table> 
                         }
-                        {/* {(userData.getPeriod()===3) &&
-                            gpacheck()
-                        } */}
                         {(OptionSelected.value === "complaints") && <table className = "student-complaint-table">
                                 <tr>
                                     <th>Name</th>
@@ -1002,7 +1189,44 @@ export default function StudentView() {
                      </div> 
             </>}
             handleClose={closeratePopup}
-            />}                    
+            />}
+            {secondChances && <SecondChancePopup
+                        content={<>
+                        <h1>Special Registration Period</h1>
+                        <p>Due to your course(s) being canceled, you are given another chance to enroll.</p>
+                        <h2 className= "calor">WARNING: Once you exit this window, you will not have another chance to enroll!</h2>
+                        <table className="enroll-student-table">
+                        <tr>
+                            <th>Class</th>
+                            <th>Day/Time</th>
+                            <th>Room</th>
+                            <th>Section</th>
+                            <th className="enroll-instructor-column">Instructor</th>
+                            <th className="enroll-size-column">Size</th>
+                        </tr>
+                        {enrollcourses.map((course) => (
+                            <tr>
+                                <td> {course.Class} </td>
+                                <td> {course.DayTime} </td>
+                                <td> {course.Room} </td>
+                                <td> {course.Secion} </td>
+                                <td className="enroll-instructor-column2"> {course.Instructor} </td>
+                                <td className="enroll-size-column2"> {course.Size} </td>
+                                <td><button className="enroll-button"onClick={() => enrollCourse1(course.Class, 
+                                                                                                 course.DayTime, 
+                                                                                                 course.Room, 
+                                                                                                 course.Secion, 
+                                                                                                 course.Size,
+                                                                                                 course.Instructor,
+                                                                                                 course.Instructoruiid,
+                                                                                                 course.StudentsEnrolled
+                                                                                                 )}>Enroll Course</button></td>
+                            </tr>
+                        ))}
+                        </table>                             
+                        </>}
+                        handleClose={secondChanceclosePopup}
+                         />}                    
     </div>
     );
 }

@@ -51,7 +51,8 @@ export function AuthProvider({ children }) {
     console.log("logged out");
     userData.setRole(-1);
     userData.setStatus(false);
-    history.push('/SignIn');
+    history.push('/');
+    window.location.reload();
   }
   
   function updateEmail(email) {
@@ -69,7 +70,6 @@ export function AuthProvider({ children }) {
       }).catch((error) => {
         console.log(error);
       });
-      console.log("done updatepassword")
   };
 
   useEffect(() => {

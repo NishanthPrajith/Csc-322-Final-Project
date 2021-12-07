@@ -274,6 +274,9 @@ export default function InstructorView() {
         }
         // query to get the students GPA
         let studentGPA;
+        let studentscoursespassed;
+        let studentgraduate;
+        let studentscoursepasstolerance = 2;
         const StuGPA = collection(db, "Students");
         setLoading(true);
         onSnapshot(StuGPA, (querySnapshot) => {
@@ -284,6 +287,8 @@ export default function InstructorView() {
             for(let i = 0; i<instComp.length; i++){
                 if(instComp[i].useruiid === a){
                     studentGPA = instComp[i].GPA;
+                    studentscoursespassed = instComp[i].numCoursesPassed;
+                    studentgraduate = instComp[i].Graduate;
                     break; 
                 }
             }
@@ -310,6 +315,10 @@ export default function InstructorView() {
                 }
             }
         });
+        // if the students is close to graduating, update the booleanvalue to true
+        if((studentscoursespassed+studentscoursepasstolerance)>=8){
+            studentgraduate = true;
+        }
         // setting the grade for the particular student
         await setDoc(doc(db, "Students", a,"Record",studentassigncourse), {
             Class: studentassigncourse,
@@ -324,8 +333,11 @@ export default function InstructorView() {
                 let new_total = (t_total) + (4.0);
                 var new_updated_total = (new_total)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg
+                GPA: avg,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total,
@@ -343,8 +355,11 @@ export default function InstructorView() {
                 let new_total1 = (t_total) + (3.7);
                 var new_updated_total1 = (new_total1)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg1
+                GPA: avg1,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total1,
@@ -362,8 +377,11 @@ export default function InstructorView() {
                 let new_total2 = (t_total) + (3.3);
                 var new_updated_total2 = (new_total2)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg2
+                GPA: avg2,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total2,
@@ -381,8 +399,11 @@ export default function InstructorView() {
                 let new_total3 = (t_total) + (3.0);
                 var new_updated_total3 = (new_total3)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg3
+                GPA: avg3,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total3,
@@ -400,8 +421,11 @@ export default function InstructorView() {
                 let new_total4 = (t_total) + (2.7);
                 var new_updated_total4 = (new_total4)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg4
+                GPA: avg4,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total4,
@@ -419,8 +443,11 @@ export default function InstructorView() {
                 let new_total5 = (t_total) + (2.3);
                 var new_updated_total5 = (new_total5)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg5
+                GPA: avg5,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total5,
@@ -438,8 +465,11 @@ export default function InstructorView() {
                 let new_total6 = (t_total) + (2.0);
                 var new_updated_total6 = (new_total6)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg6
+                GPA: avg6,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total6,
@@ -457,8 +487,11 @@ export default function InstructorView() {
                 let new_total7 = (t_total) + (1.7);
                 var new_updated_total7 = (new_total7)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg7
+                GPA: avg7,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total7,
@@ -476,8 +509,11 @@ export default function InstructorView() {
                 let new_total8 = (t_total) + (1.3);
                 var new_updated_total8 = (new_total8)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg8
+                GPA: avg8,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total8,
@@ -495,8 +531,11 @@ export default function InstructorView() {
                 let new_total9 = (t_total) + (1.0);
                 var new_updated_total9 = (new_total9)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
+                ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
-                GPA: avg9
+                GPA: avg9,
+                numCoursesPassed: studentscoursespassed,
+                Graduate : studentgraduate
                 });
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total9,
