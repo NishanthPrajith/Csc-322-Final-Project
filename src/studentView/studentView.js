@@ -692,7 +692,6 @@ export default function StudentView() {
 
     return (
         <div className ='studentPage'>
-        <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
          
         <Container className = "Dropdown" maxWidth = "false">
                 <div> 
@@ -733,7 +732,7 @@ export default function StudentView() {
             </div> 
         </Container>
         <Container className= "Display" maxWidth = "false" >
-            <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
+            <div className= "Display-2" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
                 {OptionSelected.value === "schedule" && <table className = "student-schedule-table">
                                 <tr>
                                     <th>Class</th>

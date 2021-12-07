@@ -521,7 +521,6 @@ export default function InstructorView() {
 
       return (
         <div className = "InstructorPage">
-        <h1 className= "noselect" style = {{color: "White"}}>Welcome!</h1>
         <Container className = "Dropdown" maxWidth = "false">
                 <div> 
                     <div className='Card2'>
@@ -541,7 +540,7 @@ export default function InstructorView() {
         </Container>  
 
         <Container className= "Display" maxWidth = "false" >
-        <div className= "Display" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
+        <div className= "Display-2" style={{ backgroundColor: "white", height: '80vh' , width: '150vh'}}>
                 {OptionSelected.value === "schedule" && <table className = "instructor-schedule-table">
                                 <tr>
                                     <th>Class</th>

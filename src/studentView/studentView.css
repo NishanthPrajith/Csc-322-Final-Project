@@ -152,13 +152,6 @@ p {
   padding: 1.25%;
 }
 
-.Display {
-  position: absolute;
-  float: right;
-  top: 55px;
-  right: 50px;
-}
-
 .MyInfo {
   float: left;
 }
@@ -555,6 +548,16 @@ p {
 /*Display Container*/
 
 .Display {
+  border-radius: 10px;
+  box-shadow: 0px 1px 10px;
+}
+
+.Display-2 {
+  position: absolute;
+  float: right;
+  top: 55px;
+  right: 50px;
+  overflow: auto;
   border-radius: 10px;
   box-shadow: 0px 1px 10px;
 }
