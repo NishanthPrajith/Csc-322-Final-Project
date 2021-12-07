@@ -22,12 +22,7 @@ var InstructorTable;
 var complainUiid;
 var fetchedassignedclasses = [];
 var popupswitch = false;
-
-// var dummy;
-// function dumm() {
-//     clearTimeout(dummy);
-//     console.log("i am in dummy function");
-// }
+var onewarning = false;
 
 export default function StudentView() {
    const taboowords = ["shit","dang","damn"];
@@ -160,6 +155,7 @@ export default function StudentView() {
                         // remove a random warning
                         console.log(StudentsWarnings)
                         popupswitch = true;
+                        return
                     }, 3000);
                     break;
                   }
@@ -193,16 +189,27 @@ export default function StudentView() {
 
      async function getWarnings1(db){
         const getwarnCol = collection(db, 'Students',userData.getUd(),"Warnings");
+        const getwarnColid = collection(db, 'Students',userData.getUd(),"Warnings");
         setLoading(true);
-       onSnapshot(getwarnCol, (querySnapshot) => {
-          const getwarning = [];
-          querySnapshot.forEach((doc) => {
-              getwarning.push(doc.data());
-          });
-          setStudentsWarnings(getwarning);
+        onSnapshot(getwarnCol, (querySnapshot) => {
+        let complain = [];
+        querySnapshot.forEach((doc) => {
+            complain.push(doc.data())
         });
-        setLoading(false);
-     }
+        onSnapshot(getwarnColid, (querySnapshot) => { 
+        const complainid = [];
+        querySnapshot.forEach((doc) => {
+          complainid.push(doc.id)
+        });
+        for(let i=0; i<complainid.length; i++){
+          complain[i].Uid = complainid[i];
+        }
+        setStudentsWarnings(complain)
+        });
+    });
+    setLoading(false);
+    }
+
 
      // Get Student Courses Day Time
     async function getStudentCoursesDayTime(db) {
@@ -632,11 +639,18 @@ export default function StudentView() {
           await history.push('Studentview');  
     }
 
-    // async function gpacheck(){
-    //     if(parseInt(userData.getGPA())<4){
-    //         alert("Your GPA IS LESS THAN 4");
-    //     }
-    // } 
+    async function deleteWarning(a){
+        // a == warn id
+        console.log(" I am here!")
+        if(onewarning === false){      
+            await deleteDoc(doc(db, "Students", userData.getUd(), "Warnings", a));
+            alert("You have removed one warning!");
+            onewarning = true;
+        }
+        else{
+            alert("You have already removed one warning!");
+        }
+    } 
 
  useEffect(() => {
     setLoading(true);
@@ -714,7 +728,6 @@ export default function StudentView() {
                             <p>GPA: {userData.getGPA()}</p>
                             <p>EMPL: {userData.getEmpl()}</p>
                             <p>Email: {userData.getEmail()}</p>
-                            <p>Honor Roll Student: {userData.getEmail()}</p>
                     </div>
                 </div>
             </div> 
@@ -888,18 +901,19 @@ export default function StudentView() {
                                     <tr>
                                         <th>Amount</th>
                                         <th>Reason</th>
+                                        <th></th>
                                     </tr>
                                     { StudentsWarnings.map((warn) => (
                                         <tr>
                                             <td> { warn.numofWarn } </td>
                                             <td> { warn.Warn } </td>
-                                            <td>X</td>
+                                            <td><button onClick = {() => deleteWarning(warn.Uid)}>X</button></td>
                                         </tr>
                                     ))}
                                 </table>   
                         </div> 
                         } 
-                        {(OptionSelected.value === "warning") && <div className="warning-page">
+                        {(OptionSelected.value === "warning" && userData.getPeriod()!==4) && <div className="warning-page">
                             <h1>Total Warnings:</h1>
                             <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                                 <table className ="CourseStyler-warning">

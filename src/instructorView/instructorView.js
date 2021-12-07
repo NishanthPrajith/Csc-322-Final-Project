@@ -15,6 +15,7 @@ var studentComplainName;
 var studentassigncourse;
 var studentassigngrade;
 export default function InstructorView() {
+    const grades = ["A+","A+","A-","B+","B","B-","C+","C","C-","D+","D","F"]
     const gradeRef = useRef();
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [Warnings, setWarnings] = useState([]);
@@ -258,6 +259,11 @@ export default function InstructorView() {
         const washingtonRef2 = doc(db, "Instructor", userData.getUd(),"Courses",studentassigncourse);
         let t_total;
         let numberinstructorclassgpa;
+        // check to see if the grade enter is valid
+        if(!grades.includes(gradeRef.current.value.toUpperCase())){
+            alert("Invaid Student Grade");
+            return
+        } 
         // extract the teachers class GPA
         for(let i = 0; i<InstructorCourses.length; i++){
             if(InstructorCourses[i].Class === studentassigncourse){
@@ -275,7 +281,6 @@ export default function InstructorView() {
             querySnapshot.forEach((doc) => {
                 instComp.push(doc.data());
             });
-            console.log(instComp)
             for(let i = 0; i<instComp.length; i++){
                 if(instComp[i].useruiid === a){
                     studentGPA = instComp[i].GPA;
@@ -291,7 +296,6 @@ export default function InstructorView() {
             querySnapshot.forEach((doc) => {
                 instComp.push(doc.data());
             });
-            console.log(instComp);
             for(let i = 0; i<instComp.length; i++){
                 if(instComp[i].Class === studentassigncourse){
                     if(instComp[i].Grade === "F"){
@@ -555,8 +559,8 @@ export default function InstructorView() {
                             ))}
                         </table>    
                         }  
-                     
-                        {(OptionSelected.value === "grades") && <table className = "instructor-grades-table">
+                        {/* cannot assign grades becuase its not the right period  */}
+                        {(userData.getPeriod()===3 && OptionSelected.value === "grades") && <table className = "instructor-grades-table">
                                 <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -574,6 +578,12 @@ export default function InstructorView() {
                                 </tr>
                             ))}
                         </table>    
+                        }
+                        {(userData.getPeriod()!==3 &&OptionSelected.value === "grades") && 
+                        <div >
+                                <h1>You cannot grade during this period.</h1>
+                                <h2>Please try again next period!</h2>
+                        </div>  
                         }
                         
                         {(OptionSelected.value === "drop") && <table className = "instructor-drop-table">
