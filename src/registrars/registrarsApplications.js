@@ -244,6 +244,7 @@ export default function RegistrarsApplications() {
             Size: f,
             Instructor: firtname + " " + lastname,
             Instructoruiid: ud,
+            StudentsEnrolled:0,
             StudentsGraded:0
           });
           console.log("Hi")

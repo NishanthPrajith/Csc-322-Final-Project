@@ -70,40 +70,45 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                     test = true;
                   }
                   let warncount = Instructors[i].numWarn + 1;
-                  Instructors[i].numWarn = warncount;
-                  // add the doc to the warnings
-                  await updateDoc(instructorDocRef, {canceledCourses: true, Suspended: test, numCourses: Instructors[i].numCourses, numWarn: warncount});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
-                  await deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.                  
-                  await addDoc(collection(db, "Instructor",instructorID,"Warnings"), {Warn: "One of your courses has been canceled:" + courseName, numofWarn: warncount}); 
-
+                  Instructors[i].numWarn = warncount;; 
+                  
+                  //Checks all students to see if the cancelled course is in their Courses
+                  for(let i = 0; i< Students.length; i++){         
+                    let allCoursesStudent = collection(db,"Students",Students[i].useruiid, "Courses");
+                    onSnapshot(allCoursesStudent, async function(studentSnapshot) {
+                      studentSnapshot.forEach(async function(studentCourse){
+                        setTimeout(async function() { 
+                        let studentDocRef = doc(db,"Students", Students[i].useruiid);
+                        let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", studentCourse.data().Class);
+                        let studentDocSnap = await getDoc(studentCourseDocRef) 
+                        if(studentDocSnap.exists()){
+                        if(studentCourse.data().Class == courseName){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
+                          console.log("Student Course: " + courseName +"vs" + studentCourse.data().Class); 
+                          console.log(Students[i].firstname);
+                          let tempStd = Students[i].numCourses;
+                          //if(tempStd == 0)  //Work-Around.
+                          //  tempStd += 1;
+                          Students[i].numCourses = tempStd - 1;
+                          console.log(Students[i].numCourses);
+                          await updateDoc(studentDocRef, {canceledCourses: true, numCourses: Students[i].numCourses}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
+                          //common.push(studentCourseDocRef);
+                          await deleteDoc(studentCourseDocRef);
+                        }
+                        }
+                      }, 300);
+                      });
+                    });
+                  }
+                  // update the doc for the instructor, deletes the course, and add the doc to the warnings                  
+                   await updateDoc(instructorDocRef, {canceledCourses: true, Suspended: test, numCourses: Instructors[i].numCourses, numWarn: warncount});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
+                   await deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.                  
+                   await addDoc(collection(db, "Instructor",instructorID,"Warnings"), {Warn: "One of your courses has been canceled:" + courseName, numofWarn: warncount});                 
                 }
-              }
-          
-              for(let i = 0; i< Students.length; i++){        //Checks all students to see if the cancelled course is in their Courses  //Fix this
-                let allCoursesStudent = collection(db,"Students",Students[i].useruiid, "Courses");
-                onSnapshot(allCoursesStudent, async function (studentSnapshot) {
-                  studentSnapshot.forEach(async function(studentCourse){
-                    let studentDocRef = doc(db,"Students", Students[i].useruiid);
-                    let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", courseName);
-                    let studentDocSnap = await getDoc(studentCourseDocRef);
-                    if(studentCourse.data().Class == courseName && studentDocSnap.exists()){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
-                      //console.log("Student Course: " + courseName +"vs" + studentCourse.data().Class); 
-                      //console.log(Students[i].firstname);
-                      let tempStd = Students[i].numCourses;
-                      if(tempStd == 0)  //Work-Around.
-                        tempStd += 1;
-                      Students[i].numCourses = tempStd - 1;
-                      //console.log(Students[i].numCourses);
-                      await updateDoc(studentDocRef, {canceledCourses: true, numCourses: Students[i].numCourses}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
-                      await deleteDoc(studentCourseDocRef);
-                    }
-                  });
-                }); 
               }
               await deleteDoc(doc(db,"AssignedClasses", courseName)); //Delete the Assigned Course overall.
             }
           });  
-        }); 
+        });    
     }
 
     else if(docData === "3"){
