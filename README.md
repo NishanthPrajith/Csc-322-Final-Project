@@ -1,5 +1,6 @@
-# CCNY ZERO (CS 322 software engineering)
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet massa ante. Phasellus ornare massa efficitur tincidunt aliquet. Fusce congue tristique velit, pharetra lobortis ligula finibus id. Donec eleifend nulla vitae ultrices ultrices. Nulla rhoncus convallis mattis. Nullam ut ultrices orci. Nulla id lacinia sapien, et tincidunt urna. Etiam lacinia eros nec placerat finibus. 
+# CCNY ZERO (CSC 322 software engineering)
+Group project for ***CSC 322 @CCNY***
+This is CCNY Zero , a graduate program management system. 
 
 ## Live Website Link
 [CCNY Zero Live](https://link-url-here.org)
@@ -60,3 +61,4 @@ npm install react scripts --save
 ## Project Documentation
 1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/a050d190daded7f6b248075960b23d0b98ee545a/Phase1report.docx.pdf)
 2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/cc86ebd76973b3b0b5832b8b7972f3d7d5ea4c88/CSC32200_GES_Phase2.pdf)
+
