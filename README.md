@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# CCNY ZERO (CS 322 software engineering)
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sit amet massa ante. Phasellus ornare massa efficitur tincidunt aliquet. Fusce congue tristique velit, pharetra lobortis ligula finibus id. Donec eleifend nulla vitae ultrices ultrices. Nulla rhoncus convallis mattis. Nullam ut ultrices orci. Nulla id lacinia sapien, et tincidunt urna. Etiam lacinia eros nec placerat finibus. 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Live Website Link
+[CCNY Zero Live](https://link-url-here.org)
 
-## Available Scripts
+## Website Demo (Video)
+*Needs fixing*
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/vt5fpE0bzSY)
 
-In the project directory, you can run:
+## Group Members Team E
+- Haroon Syed
+- Christopher Lall
+- Andrew Persaud
+- Tufayel Ahmed
+- Josue Flores
 
-### `npm start`
+## Running Locally
+First clone the github repo and go into the project directory. Then,
+```bash
+npm install
+npm start dev # run the react.js project in development mode
+```
+Open http://localhost:3000 to view it in the browser.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+*If package error appears run these before running* `npm start`.
+```bash
+npm install react-icons
+npm install react-select --save
+npm install @material-ui/core
+npm install react scripts --save
+```
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Technologies Used
+ - Firebase Authentication
+ - Firebase Hosting
+ - Firebase Firestore Database
+ - React.js
 
-### `npm test`
+## Repository Structure
+- `src`
+  - `California_Fire_Incidents.csv`: Raw data from the kaggle for all fires in california from 2013 - 2019
+  - `California_Fire_Cleaned.csv`: Cleaned 'California_Fire_Cleaned.csv`
+  - `weather_data.csv`: Raw data weather data from the World Weather Online API
+  - `cleaned.csv` : Combined dataset for modeling
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Default Users
+ 1. test
+ 
+## Project Documentation
+1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/a050d190daded7f6b248075960b23d0b98ee545a/Phase1report.docx.pdf)
+2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/cc86ebd76973b3b0b5832b8b7972f3d7d5ea4c88/CSC32200_GES_Phase2.pdf)
