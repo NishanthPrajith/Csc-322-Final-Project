@@ -26,7 +26,7 @@
     padding: 2% 0%;
   }
 
-  .gradingReview-warn-button{
+  .registars-grading-review-table .warn-button-grading-review{
     padding: 8px 20px;
     border-radius: 4px;
     outline: none;
@@ -35,7 +35,7 @@
     color: purple;
   }
   
-  .gradingReview-warn-button:hover {
+  .registars-grading-review-table .warn-button-grading-review:hover {
     padding: 8px 20px;
     transition: all 0.3s ease-out;
     background: rgb(184, 42, 240);
@@ -43,7 +43,7 @@
     transition: 250ms;
   }
 
-  .gradingReview-terminate-button{
+  .registars-grading-review-table .terminate-button-grading-review{
     padding: 8px 20px;
     border-radius: 4px;
     outline: none;
@@ -52,10 +52,32 @@
     color: purple;
   }
   
-  .gradingReview-terminate-button:hover {
+  .registars-grading-review-table .terminate-button-grading-review:hover {
     padding: 8px 20px;
     transition: all 0.3s ease-out;
     background: rgb(184, 42, 240);
     color: rgb(255, 255, 255);
     transition: 250ms;
   }
+
+  .registars-grading-review-table .delete-button-grading-review{
+    padding: 8px 20px;
+    border-radius: 4px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    color: purple;
+  }
+  
+  .registars-grading-review-table .delete-button-grading-review:hover {
+    padding: 8px 20px;
+    transition: all 0.3s ease-out;
+    background: rgb(184, 42, 240);
+    color: rgb(255, 255, 255);
+    transition: 250ms;
+  }
+
+  .registars-grading-review-table .all-the-buttons{
+    padding-right: 42%;
+  }
+

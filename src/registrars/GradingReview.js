@@ -113,18 +113,15 @@ export default function GradingReview(){
                 <th>Instructor</th>
                 <th>Course</th>
                 <th> Class GPA</th>
-                <th></th>
-                <th></th>
-                <th></th>
             </tr>
             { CurrentClasses.map((Class) => (
                 <tr>
                     <td> { Class.Class } </td>
                     <td> { Class.Instructor } </td>
-                    <td> { Class.ClassGPA } </td>
-                    <td> <button onClick = {() => Warn_Instructor(Class.InstructorUIID)}>Warn</button> </td>
-                    <td> <button onClick = {() => Terminate_Instructor(Class.InstructorUIID)}>Terminate</button> </td>
-                    <td> <button onClick = {() => Delete_Investigation(Class.Class)}>X</button> </td>
+                    <td> { Class.ClassGPA.toFixed(2) } </td>
+                    <td className="all-the-buttons"> <button className="warn-button-grading-review" onClick = {() => Warn_Instructor(Class.InstructorUIID)}>Warn</button> 
+                         <button className="terminate-button-grading-review" onClick = {() => Terminate_Instructor(Class.InstructorUIID)}>Terminate</button> 
+                         <button className="delete-button-grading-review" onClick = {() => Delete_Investigation(Class.Class)}>X</button> </td>
                 </tr>
             ))}
         </table>
