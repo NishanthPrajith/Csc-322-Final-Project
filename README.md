@@ -39,10 +39,19 @@ npm install react scripts --save
 
 ## Repository Structure
 - `src`
-  - `California_Fire_Incidents.csv`: Raw data from the kaggle for all fires in california from 2013 - 2019
-  - `California_Fire_Cleaned.csv`: Cleaned 'California_Fire_Cleaned.csv`
-  - `weather_data.csv`: Raw data weather data from the World Weather Online API
-  - `cleaned.csv` : Combined dataset for modeling
+  - `signIn/` : A page that lets a user log into the website
+  - `signUp/` : A page which allows people to sign up as a student or an instructor
+  - `aboutUs/` : About us page js code
+  - `forgotPassword/` : Allows the user to change the password if needed
+  - `instructorView/` : The page for an instructor when logging in
+  - `error/` : 404 error page .js code
+  - `studentView/` : The page the student sees after logging in
+  - `registrars/` : The registrar/super user page when logging in
+  - `home/` : The main page for the logged in user 
+  - `navbar/` : The code for the navigation bar and its may states
+  - `reSubmitPass/` : The code that verifies the correct password when a user signs up
+  - `components/` : 
+  - `contexts/` : Has all the authorization & authentication implementation for creating an account, logging in and signing out.
 
 
 ## Default Users
