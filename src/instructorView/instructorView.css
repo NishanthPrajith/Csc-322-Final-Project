@@ -343,6 +343,94 @@ img{
   text-align: center;
 }
 
+.roster-for-schedule {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.roster-for-schedule:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+/*Roster pop up from schedule*/
+
+.roster-popup-table-instructor th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.roster-popup-table-instructor td {
+  padding: 2% 0%;
+}
+
+.roster-popup-table-instructor{
+  float: left;
+  width: 50%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.roster-popup-table-instructor tr {
+  width: 100%;
+  text-align: center;
+}
+
+.student-roster-individual-name {
+  padding: 8px 20px;
+  border-radius: 4px;
+  outline: none;
+  border: none;
+  cursor:pointer;
+  color: purple;
+}
+
+.student-roster-individual-name:hover{
+  padding: 8px 20px;
+  transition: all 0.3s ease-out;
+  background: rgb(184, 42, 240);
+  color: rgb(255, 255, 255);
+  transition: 250ms;
+}
+
+.roster-h2 h2{
+  padding-left: 5%;
+}
+
+.roster-2-popup-table-instructor th {
+  background-color: #7d5cc6;
+  color: white;
+  padding: 2% 0%;
+  width: 20%;
+}
+
+.roster-2-popup-table-instructor td {
+  padding: 2% 0%;
+}
+
+.roster-2-popup-table-instructor{
+  float: left;
+  width: 50%;
+  margin: 1% 0.5%;
+  border: none;
+  border-collapse: collapse;
+}
+
+.roster-2-popup-table-instructor tr {
+  width: 100%;
+  text-align: center;
+}
+
 /* Could be extra css*/
 .CourseStyle th {
   background-color: #7d5cc6;
