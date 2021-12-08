@@ -9,6 +9,7 @@ export default function RegistrarsComplain(){
   const [complains, setComplains] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
+  // const [Students, setInstructor2] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getComplaints(db) {
@@ -70,25 +71,25 @@ export default function RegistrarsComplain(){
     setLoading(false);
   }
 
-  async function getStudents(db) {
-    const stuCol = collection(db, 'Students');
-    setLoading(true);
-    onSnapshot(stuCol, (querySnapshot) => {
-      const stu = [];
-      querySnapshot.forEach((doc) => {
-        stu.push(doc.data());
-      });
-      setInstructor(stu);
-    });
-    setLoading(false);
-  }
+  // async function getStudents(db) {
+  //   const stuCol = collection(db, 'Students');
+  //   setLoading(true);
+  //   onSnapshot(stuCol, (querySnapshot) => {
+  //     const stu = [];
+  //     querySnapshot.forEach((doc) => {
+  //       stu.push(doc.data());
+  //     });
+  //     setInstructor2(stu);
+  //   });
+  //   setLoading(false);
+  // }
 
   useEffect(() => {
     setLoading(true);
     getComplaints(db);
     getReviews(db);
     getInstructors(db);
-    getStudents(db)
+    // getStudents(db)
   }, []);
 
   async function HandleComplaint(a){ 
@@ -98,9 +99,11 @@ export default function RegistrarsComplain(){
   }
 
   async function InstructorWarn(a,b){
-    if(b<3){
+    if(b<4){
       for(let i = 0; i<Instructor.length; i++){
+        console.log(a)
         if(Instructor[i].useruiid === a){
+          console.log("I am here")
           var count = Instructor[i].numWarn;
           count  = ++count;
           const washingtonRef = doc(db, "Instructor",a);
@@ -163,7 +166,7 @@ export default function RegistrarsComplain(){
                         Review: 0,
                         useruiid: a
                       }
-          setDoc(doc(db, "Instructor", a), update);
+          //setDoc(doc(db, "Instructor", a), update);
           for(let c = 0; c < complains.length; c++){
             if(complains[c].IssuedName === varpush.firstname + " " + varpush.lastname){
               deleteDoc(doc(db, "Complaints", complains[c].Uid));

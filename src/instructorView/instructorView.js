@@ -16,7 +16,7 @@ var studentComplainName;
 var studentassigncourse;
 var popupswitch = false;
 export default function InstructorView() {
-    const grades = ["A+","A+","A-","B+","B","B-","C+","C","C-","D+","D","F"]
+    const grades = ["A+","A","A-","B+","B","B-","C+","C","C-","D+","D","F"]
     const gradeRef = useRef();
     const [Warnings, setWarnings] = useState([]);
     const [waitlist, setWaitlist] = useState([]);

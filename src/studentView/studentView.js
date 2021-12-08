@@ -397,7 +397,10 @@ export default function StudentView() {
         let timeSegments = [];
         for (let i = 0; i < StudentRecord.length; i++) {
             if (StudentRecord[i].Class === classs) {
-                firsttimetakingcourse = false;
+                if(StudentRecord[i].Grade === "W"){
+                    break;
+                }
+                else firsttimetakingcourse = false;
                 if (StudentRecord[i].Grade === "F") {
                     failedcourseboolean = true;
                     break;
@@ -1105,7 +1108,7 @@ export default function StudentView() {
                         ))}
                     </table>
                     }
-                    {((userData.getPeriod() !== 3) && (OptionSelected.value === "rate")) &&
+                    {((userData.getPeriod() !== 4) && (OptionSelected.value === "rate")) &&
                         <table className="student-rate-table">
                             <tr>
                                 <th>Class</th>
@@ -1128,7 +1131,7 @@ export default function StudentView() {
                             ))}
                         </table>
                     }
-                    {((userData.getPeriod() === 3) && (OptionSelected.value === "rate")) &&
+                    {((userData.getPeriod() === 4) && (OptionSelected.value === "rate")) &&
                         <div className="student-rate-table-after-period">
                             <h1>You cannot rate during this period.</h1>
                             <h2>Please try again next semester!</h2>
