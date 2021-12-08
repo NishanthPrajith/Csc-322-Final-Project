@@ -8,6 +8,8 @@ import { useHistory } from 'react-router-dom';
 import Select from 'react-select';
 import InstructorComplainPopup from './InstructorComplainPopup';
 import InstructorComplainPopup1 from './InstructorComplainPopup1';
+import StudentRecordPopUp from './StudentRecordPopup';
+import StudentRecordPopUpone from './StudentsRecordPopup1';
 import InstructorRosterPopup from './InstructorRosterPopup';
 
 var studentComplainName;
@@ -20,10 +22,13 @@ export default function InstructorView() {
     const [waitlist, setWaitlist] = useState([]);
     const [InstructorCourses, setInstructorCourses] = useState([]);
     const [InstructorRoster, setInstructorRoster] = useState([]);
+    const [InstructorRoster1, setInstructorRoster1] = useState([]);
     const [Students, setStudents] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen1, setIsOpen1] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
+    const [isOpen3, setIsOpen3] = useState(false);
+    const [isOpen4, setIsOpen4] = useState(false);
     const [Loading, setLoading] = useState('false');
     const history = useHistory();
     const complaint = useRef();
@@ -60,6 +65,19 @@ export default function InstructorView() {
     }
     async function toggleRosterclosePopup () {
         setIsOpen2(!isOpen2);
+    }
+
+    const toggleRosterRecordPopup = () => {
+        setIsOpen3(!isOpen3);
+    }
+    async function toggleRosterRecordclosePopup () {
+        setIsOpen3(!isOpen3);
+    }
+    const toggleRosterRecordPopup1 = () => {
+        setIsOpen4(!isOpen4);
+    }
+    async function toggleRosterRecordclosePopup1 () {
+        setIsOpen4(!isOpen4);
     }
 
 
@@ -167,6 +185,45 @@ export default function InstructorView() {
         });
         setLoading(false);
         toggleComplainPopup();
+     }
+
+     async function studentRecordPopUp(a){
+        // a == class name to get the roster
+        // get instructor roster 
+       const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
+       setLoading(true);
+       await onSnapshot(instComplainStu, (querySnapshot) => {
+           const instComp = [];
+           querySnapshot.forEach((doc) => {
+               instComp.push(doc.data());
+           });
+           console.log(instComp)
+           for(let i = 0; i<Students.length; i++){
+               for(let j = 0; j<instComp.length; j++){
+                   if(Students[i].useruiid === instComp[j].Student){;
+                       instComp[j].StudentName = Students[i].firstname + " " + Students[i].lastname;
+                   }
+               }
+           }
+           setInstructorRoster(instComp);
+       });
+       setLoading(false);
+       toggleRosterRecordPopup();
+     }
+
+     async function StudentRecordPopUp1(a){
+        // a== studentuiid
+        const instComplainStu = collection(db, 'Students', a,"Record");
+       setLoading(true);
+       await onSnapshot(instComplainStu, (querySnapshot) => {
+           const instComp = [];
+           querySnapshot.forEach((doc) => {
+               instComp.push(doc.data());
+           });
+           setInstructorRoster1(instComp);
+       });
+       setLoading(false);
+       toggleRosterRecordPopup1();
      }
 
      async function Complain1(a){
@@ -596,6 +653,7 @@ export default function InstructorView() {
                                     <th>Time</th>
                                     <th>Room</th>
                                     <th>Section</th>
+                                    <th></th>
                                 </tr>
                             { InstructorCourses.map((Class) => (
                                 <tr>
@@ -603,6 +661,7 @@ export default function InstructorView() {
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
+                                    <td><button onClick = {() => studentRecordPopUp(Class.Class)}>Roster</button></td>
                                 </tr>
                             ))}
                         </table>    
@@ -800,6 +859,43 @@ export default function InstructorView() {
             </table>
             </>}
             handleClose={toggleRosterclosePopup}
+        />}
+        {isOpen3 && <StudentRecordPopUp
+            content={<>
+                <h2 className="complaint-h2">Students Roster</h2>
+                <table className="complain-popup-table-instructor">
+                
+                <tr>
+                    <th>Student</th>
+                </tr>
+                {InstructorRoster.map((course) => (
+                    <tr>
+                        <td> <button onClick = {() => StudentRecordPopUp1(course.Student)}>{course.StudentName}</button> </td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={toggleRosterRecordclosePopup}
+        />}  
+        {isOpen4 && <StudentRecordPopUpone
+            content={<>
+                <h2 className="complaint-h2">Students Roster</h2>
+                <table className="complain-popup-table-instructor">
+                <tr>
+                    <th>Class</th>
+                    <th>Instructor</th>
+                    <th>Grade</th>
+                </tr>
+                {InstructorRoster1.map((course) => (
+                    <tr>
+                       <td> {course.Class} </td>
+                       <td> {course.Instructor} </td>
+                       <td> {course.Grade} </td>
+                    </tr>
+                ))}
+            </table>
+            </>}
+            handleClose={toggleRosterRecordclosePopup1}
         />} 
     </div>
     );
