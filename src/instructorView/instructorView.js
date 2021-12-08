@@ -653,7 +653,6 @@ export default function InstructorView() {
                                     <th>Time</th>
                                     <th>Room</th>
                                     <th>Section</th>
-                                    <th></th>
                                 </tr>
                             { InstructorCourses.map((Class) => (
                                 <tr>
@@ -661,7 +660,7 @@ export default function InstructorView() {
                                     <td> { Class.DayTime } </td>
                                     <td> { Class.Room } </td>
                                     <td> { Class.Secion } </td>
-                                    <td><button onClick = {() => studentRecordPopUp(Class.Class)}>Roster</button></td>
+                                    <td><button className ="roster-for-schedule"onClick = {() => studentRecordPopUp(Class.Class)}>Roster</button></td>
                                 </tr>
                             ))}
                         </table>    
@@ -862,15 +861,15 @@ export default function InstructorView() {
         />}
         {isOpen3 && <StudentRecordPopUp
             content={<>
-                <h2 className="complaint-h2">Students Roster</h2>
-                <table className="complain-popup-table-instructor">
+                <h2 className="roster-h2">Students Roster</h2>
+                <table className="roster-popup-table-instructor">
                 
                 <tr>
                     <th>Student</th>
                 </tr>
                 {InstructorRoster.map((course) => (
                     <tr>
-                        <td> <button onClick = {() => StudentRecordPopUp1(course.Student)}>{course.StudentName}</button> </td>
+                        <td> <button className="student-roster-individual-name"onClick = {() => StudentRecordPopUp1(course.Student)}>{course.StudentName}</button> </td>
                     </tr>
                 ))}
             </table>
@@ -880,7 +879,7 @@ export default function InstructorView() {
         {isOpen4 && <StudentRecordPopUpone
             content={<>
                 <h2 className="complaint-h2">Students Roster</h2>
-                <table className="complain-popup-table-instructor">
+                <table className="roster-2-popup-table-instructor">
                 <tr>
                     <th>Class</th>
                     <th>Instructor</th>
