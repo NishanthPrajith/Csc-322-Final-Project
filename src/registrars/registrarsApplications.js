@@ -327,14 +327,27 @@ export default function RegistrarsApplications() {
             message: a + " "+ b + "Sorry to inform you, however, our program has already been filled.",
             };
         var templateParams2 = {
-            message: "Dear" + a + " "+ b + ", After careful review of your application, our team has decided to pursue other candidates whom we feel more closely align with our needs at this time. We hope your interest in CCNYZero will continue and encourage you to apply to future positions with us.",
+            message: "Dear " + a + " "+ b + ", After careful review of your application, our team has decided to pursue other candidates whom we feel more closely align with our needs at this time. We hope your interest in CCNYZero will continue and encourage you to apply to future positions with us.",
             };
-        if(parseInt(c) < 2){
+        var templateParams3 = {
+            message: "Dear " + a + " "+ b + ", Thank you for applying to our graduate program, however, we have decided to not accept you as a student, please try again at a later date!",
+            };
+            const docRef = doc(db, "Quota", "rnBTGZKiLSm6dBEseZcF");
+            var q ; 
+        for(let i =0; i < courseQ.length; i++){
+            q = courseQ[i].Quota;
+            break;
+        }    
+        if(parseFloat(c) < 2){
             await setDoc(doc(db, "Rejected",d), templateParams);
             await deleteDoc(doc(db, "Users",d));
         }
         else if (e ==="1"){
             await setDoc(doc(db, "Rejected", d), templateParams2);
+            await deleteDoc(doc(db, "Users",d));
+        }
+        else if (q < 11 && parseFloat(c) > 3){
+            await setDoc(doc(db, "Rejected", d), templateParams3);
             await deleteDoc(doc(db, "Users",d));
         }
         else{
