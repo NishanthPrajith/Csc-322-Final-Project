@@ -1,7 +1,10 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useRef } from 'react';
+import { db } from "../firebase.js";
+import {  doc, updateDoc } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
+import { userData } from "../contexts/userProfile";
 
 
 export default function ForgotPassword() {
@@ -13,7 +16,13 @@ export default function ForgotPassword() {
       event.preventDefault()
       try {
         await resetPassword(passwordRef.current.value);
-        await history.push('SignIn');    
+        const washingtonRef = doc(db, "Students", userData.getUd());
+        await updateDoc(washingtonRef, {
+          firsttimelogin: false,
+          password: passwordRef.current.value
+
+        });
+        await history.push('Studentview');    
       } catch {
         document.getElementById('error').style.display = "block";
       }

@@ -82,6 +82,10 @@ export default function SignIn() {
         userData.setRole(0);
         userData.setCoursespassed(parseInt(docSnap1.data().numCoursesPassed));
         userData.setPeriod(parseInt(docSnap4.data().classsetup));
+        if(docSnap1.data().firsttimelogin === true){
+          await history.push('ReSubmitpass');
+          return
+        }
         await history.push('Studentview');
       }
       if (docSnap2.exists()) {

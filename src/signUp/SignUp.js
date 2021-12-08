@@ -64,7 +64,7 @@ export default function SignUp() {
     }
     else if (role === '0') {
       history.push({
-        pathname: '/ReSubmitpass',
+        pathname: '/SignUp',
         state: data // your data array of objects
       });
     }

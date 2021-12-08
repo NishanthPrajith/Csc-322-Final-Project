@@ -226,7 +226,7 @@ export default function RegistrarsApplications() {
             }
             ++ q; 
             if(q < 11){
-            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false, numCoursesPassed:0}
+            const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false, numCoursesPassed:0,firsttimelogin:true}
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
             await updateDoc(docRef, {
