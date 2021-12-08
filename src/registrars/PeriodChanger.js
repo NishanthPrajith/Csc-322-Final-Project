@@ -28,7 +28,7 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
         alert("Class Registration Period");
         for(let i = 0; i < Students.length; i++){
             let studentID = Students[i].useruiid;
-            if(Students[i].registerAllow == false){
+            if(Students[i].registerAllow === false){
                 Students[i].registerAllow = true;
                 updateDoc(doc(db, "Students", studentID), {registerAllow: true});
             }
@@ -61,12 +61,12 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
               let instructorCourseDocRef = doc(db,"Instructor", instructorID,"Courses", courseName);
               const instructorDocSnap = await getDoc(instructorCourseDocRef);
               for(let i = 0; i<Instructors.length; i++){  //Change was made.
-                if((Instructors[i].useruiid == instructorID) && instructorDocSnap.exists()){
+                if((Instructors[i].useruiid === instructorID) && instructorDocSnap.exists()){
                   Instructors[i].canceledCourses = true;
                   let temp = Instructors[i].numCourses
                   Instructors[i].numCourses = temp - 1;
                   var test = false;
-                  if (Instructors[i].numCourses == 0) {
+                  if (Instructors[i].numCourses === 0) {
                     test = true;
                   }
                   let warncount = Instructors[i].numWarn + 1;
@@ -82,7 +82,7 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                         let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", studentCourse.data().Class);
                         let studentDocSnap = await getDoc(studentCourseDocRef) 
                         if(studentDocSnap.exists()){
-                        if(studentCourse.data().Class == courseName){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
+                        if(studentCourse.data().Class === courseName){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
                           console.log("Student Course: " + courseName +"vs" + studentCourse.data().Class); 
                           console.log(Students[i].firstname);
                           let tempStd = Students[i].numCourses;

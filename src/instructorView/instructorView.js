@@ -1,5 +1,4 @@
 import './instructorView.css'
-import { useAuth } from "../contexts/Authcontext";
 import { useState, useRef, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { userData } from '../contexts/userProfile';
@@ -13,32 +12,26 @@ import InstructorRosterPopup from './InstructorRosterPopup';
 
 var studentComplainName;
 var studentassigncourse;
-var studentassigngrade;
+var popupswitch = false;
 export default function InstructorView() {
     const grades = ["A+","A+","A-","B+","B","B-","C+","C","C-","D+","D","F"]
     const gradeRef = useRef();
-    const [CurrentClasses, setCurrentClasses] = useState([]);
     const [Warnings, setWarnings] = useState([]);
     const [waitlist, setWaitlist] = useState([]);
     const [InstructorCourses, setInstructorCourses] = useState([]);
     const [InstructorRoster, setInstructorRoster] = useState([]);
     const [Students, setStudents] = useState([]);
-    const [CurrentRoster, setCurrentRoster] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen1, setIsOpen1] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
     const [Loading, setLoading] = useState('false');
-    const [ScheduleSelected, setScheduleSelected] = useState('false');
-
     const history = useHistory();
     const complaint = useRef();
     const [InputValue, setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
-    const [CanceledCourses, setCanceledCourses] = useState(false);
     const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
                     {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];
-
-
+                    
     const handleInputChange = value => {
         setInputValue(value);
     }
@@ -123,6 +116,24 @@ export default function InstructorView() {
           querySnapshot.forEach((doc) => {
               course.push(doc.data());
           });
+          for(let i = 0; i<course.length; i++){
+              if(parseInt(course[i].Size)!==course[i].StudentsGraded){
+                if (userData.getPeriod() === 4 && popupswitch === false) {
+                    console.log(Warnings);
+                    setTimeout(async function () {
+                        alert("You have recieved a warning, because you have not graded all students")
+                        console.log(Warnings);
+                        await addDoc(collection(db, "Instructor", userData.getUd(),"Warnings"), {
+                            Warn: "You have recieved a warning, because you have not graded all students",
+                            numofWarn: 1
+                          });                          
+                        popupswitch = true;
+                        return
+                    }, 3000);
+                    break;
+                }
+              }
+          }
           setInstructorCourses(course);
         });
         setLoading(false);
@@ -227,7 +238,6 @@ export default function InstructorView() {
      }
     // function for terminating the student
      async function Terminate_Student(a){
-        const washingtonRef1 = doc(db, "Students", a);
         let studentdata; 
         // a == studentuiid
         const StuRecord = collection(db, "Students");

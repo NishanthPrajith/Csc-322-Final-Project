@@ -6,12 +6,10 @@ import React from 'react'
 import { useAuth } from "../contexts/Authcontext";
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
-import Tabs from '../components/Tabs';
 import { getDoc, collection, onSnapshot, setDoc, doc, addDoc, updateDoc, deleteDoc } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Select from 'react-select';
-import { FaRedditSquare, FaStar } from "react-icons/fa";
+import { FaStar } from "react-icons/fa";
 import ComplainPopup from './studentcomplainPopup';
 import ComplaintPopup from './complainPopup';
 import SecondChancePopup from './secondChancePopup';
@@ -21,7 +19,6 @@ var instUid;
 var course;
 var InstructorTable;
 var complainUiid;
-var fetchedassignedclasses = [];
 var popupswitch = false;
 var onewarning = false;
 var cc;
@@ -32,13 +29,9 @@ export default function StudentView() {
     const { logout } = useAuth();
     const history = useHistory();
     const [secondChances, setIsOpen3] = useState(false);
-    const instname = useRef();
-    const classname = useRef();
     const experience = useRef();
     const complaint = useRef();
-    const [Student, setStudent] = useState('');
     const [enrollcourses, setCourses] = useState([]);
-    const [student, setStudent1] = useState([]);
     const [CurrentClasses, setCurrentClasses] = useState([]);
     const [StudentRecord, setStudentRecord] = useState([]);
     const [Instructor, setInstructor] = useState([]);
@@ -50,11 +43,8 @@ export default function StudentView() {
     const [StudentsWarnings, setStudentsWarnings] = useState([]);
     const [ClassStudents, setClassStudents] = useState([]);
     const [Loading, setLoading] = useState(false);
-    const [InputValue, setInputValue] = useState('');
+    const [setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
-    const [CanceledCourses, setCanceledCourses] = useState(false);
-    const instructorRef = useRef();
-    const courseRef = useRef();
     const options = [{ label: "Schedule", value: "schedule" }, { label: "Grades", value: "grades" }, { label: "Enroll", value: "enroll" },
     { label: "Drop", value: "drop" }, { label: "Complaints", value: "complaints" },
     { label: "Rate", value: "rate" }, { label: "Warning", value: "warning" }, { label: "Graduate", value: "graduate" }];
@@ -160,10 +150,7 @@ export default function StudentView() {
                             await updateDoc(washingtonRef, {
                                 message: "You have been suspended due to achieving a gpa below 2"
                             });
-                            // delete the student from the student doc
-                            // await deleteDoc(doc(db, "Students", userData.getUd()));
                             logout();
-                            // await history.push('/');
                         }, 3000);
                         break;
                     }
@@ -266,7 +253,6 @@ export default function StudentView() {
         });
         setLoading(false);
     }
-    // clearTimeout(myGreeting_honor);
 
     // student drop course
     async function dropCourse(a, b) {
@@ -282,14 +268,6 @@ export default function StudentView() {
         }
         if (userData.getPeriod() === 2) {
             await deleteDoc(doc(db, "Students", userData.getUd(), "Courses", a));
-            // update the class size
-            //   const assignedCol = collection(db, 'AssignedClasses');
-            //     setLoading(true);
-            //    onSnapshot(assignedCol, (querySnapshot) => {
-            //       querySnapshot.forEach((doc) => {
-            //         fetchedassignedclasses.push(doc.data());
-            //       });
-            //     });
             console.log(enrollcourses);
             for (let i = 0; i < enrollcourses.length; i++) {
                 if (enrollcourses[i].Class === a) {
@@ -355,10 +333,6 @@ export default function StudentView() {
                 return
             }
         }
-        // Jouse wants, 
-        // to update the numofCourses in the student feild
-        // update the studentsenrolled feild in assigned classes
-
         // check if the student got an F in this course
         // get the data for the students in the course
         let failedcourseboolean = false;
@@ -512,10 +486,6 @@ export default function StudentView() {
                 alert("You have already enrolled this course!");
             }
         }
-        // Jouse wants, 
-        // to update the numofCourses in the student feild
-        // update the studentsenrolled feild in assigned classes
-
         // check if the student got an F in this course
         // get the data for the students in the course
         let failedcourseboolean = false;
@@ -751,7 +721,7 @@ export default function StudentView() {
             // author recieves one warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    var warncount = Warnings[i].numWarn;
+                    let warncount = Warnings[i].numWarn;
                     warncount += 1;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
@@ -782,7 +752,7 @@ export default function StudentView() {
             // author recieves two warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    var warncount = Warnings[i].numWarn;
+                    let warncount = Warnings[i].numWarn;
                     warncount += 2;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
@@ -1276,9 +1246,3 @@ const styles = {
         width: 100
     },
 };
-
-/*<div className="comment-for-graduate">
-                              <p>Comment: </p>
-                              <textarea className="comment-details-graduate" id="input-details"ref={experience} placeholder="Leave a comment if you have any" style={styles.textarea} />
-                          </div>*/
-

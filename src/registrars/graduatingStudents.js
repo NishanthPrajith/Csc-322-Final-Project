@@ -1,8 +1,7 @@
 import './graduatingStudents.css';
-import { collection, doc, deleteDoc, onSnapshot, setDoc, updateDoc, addDoc, query, where } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc, updateDoc, addDoc } from 'firebase/firestore';
 import { db } from "../firebase.js";
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 
 export default function GraduatingStudents() {
     const [Graduate, setGraduate] = useState([]);

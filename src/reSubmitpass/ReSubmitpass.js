@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/Authcontext"
 import { useRef } from 'react';
-import { auth } from '../firebase';
 import { useHistory } from 'react-router-dom';
 
 

@@ -28,8 +28,6 @@ export default function RegistrarsApplications() {
     const [complains, setComplains] = useState([]);
     const [Reviews, setReviews] = useState([]);
 
-    var temp = [];
-
     const togglecourseAssignPopup = (a) => {
         setIsOpen(!isOpen);
         ud = a;
@@ -214,7 +212,6 @@ export default function RegistrarsApplications() {
             }
             setCourses(courses);
             const payload = {firstname: a, lastname: b, DateofBirth: d, Email: e,Role: "Instructor", password: g, useruiid:useruiid, Review: 1, numReview: 1, numWarn: 0,numCourses:0,canceledCourses:false,Suspended:false, gradingTime: false}
-            const userid = useruiid;
             firtname = a;
             lastname = b;  
             togglecourseAssignPopup(useruiid);
@@ -254,7 +251,7 @@ export default function RegistrarsApplications() {
         
         var v = courses;
         for (let i = 0; i < courses.length; i++) {
-           if (v[i]['Class'] == classes) {
+           if (v[i]['Class'] === classes) {
                v[i]['check'] = false;
                break;
            }

@@ -1,6 +1,5 @@
 import './GradingReview.css'
-import { useState, useRef, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useState, useEffect } from 'react';
 import { db } from "../firebase.js";
 import { collection, addDoc,setDoc,doc,onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
 
