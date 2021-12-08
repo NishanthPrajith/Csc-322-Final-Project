@@ -43,7 +43,7 @@ export default function StudentView() {
     const [StudentsWarnings, setStudentsWarnings] = useState([]);
     const [ClassStudents, setClassStudents] = useState([]);
     const [Loading, setLoading] = useState(false);
-    const [setInputValue] = useState('');
+    const [InputValue,setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
     const options = [{ label: "Schedule", value: "schedule" }, { label: "Grades", value: "grades" }, { label: "Enroll", value: "enroll" },
     { label: "Drop", value: "drop" }, { label: "Complaints", value: "complaints" },
@@ -193,23 +193,19 @@ export default function StudentView() {
 
     async function getWarnings1(db) {
         const getwarnCol = collection(db, 'Students', userData.getUd(), "Warnings");
-        const getwarnColid = collection(db, 'Students', userData.getUd(), "Warnings");
+        // const getwarnColid = collection(db, 'Students', userData.getUd(), "Warnings");
+        var complain = [];
+        var complainid = [];
         setLoading(true);
         onSnapshot(getwarnCol, (querySnapshot) => {
-            let complain = [];
             querySnapshot.forEach((doc) => {
                 complain.push(doc.data())
+                complainid.push(doc.id)
             });
-            onSnapshot(getwarnColid, (querySnapshot) => {
-                const complainid = [];
-                querySnapshot.forEach((doc) => {
-                    complainid.push(doc.id)
-                });
-                for (let i = 0; i < complainid.length; i++) {
-                    complain[i].Uid = complainid[i];
-                }
-                setStudentsWarnings(complain)
-            });
+            for (let i = 0; i < complainid.length; i++) {
+                complain[i].Uid = complainid[i];
+            }
+            setStudentsWarnings(complain)
         });
         setLoading(false);
     }
@@ -717,6 +713,21 @@ export default function StudentView() {
             }
         }
         check = check.join(" ");
+        if(count==0){
+            await addDoc(collection(db, "Reviews"), {
+                SentByUIID: userData.getUd(),
+                SentBy: userData.getFirstname() + " " + userData.getLastname(),
+                Course: course,
+                InstructorName: fullname,
+                InstructorUiid: instUid,
+                InstructoravgReview: (new_updated_total).toFixed(2),
+                Rating: currentValue,
+                Review: check
+            });
+            alert("Review submitted, Thank you for your Feedback!");
+            closeratePopup();
+            return
+        }
         if (count < 3) {
             // author recieves one warning 
             for (let i = 0; i < Warnings.length; i++) {
@@ -822,7 +833,6 @@ export default function StudentView() {
     const stars = Array(5).fill(0)
 
     const handleClick = value => {
-        console.log(value)
         setCurrentValue(value)
     }
 

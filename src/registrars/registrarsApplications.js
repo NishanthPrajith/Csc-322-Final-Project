@@ -326,6 +326,7 @@ export default function RegistrarsApplications() {
             document.getElementById('error').style.display = "block";
         }
     }
+
     async function changePeriodcset(){
         toggleclassSetUpPeriodPopup();
     }
@@ -348,7 +349,7 @@ export default function RegistrarsApplications() {
                 {period.map((p) => (
                     <tr>
                         <td> {p.classsetup} </td>
-                        <td><input type="number" ref={periodNum} className="five" placeholder="0"autoComplete="off" required /></td>               
+                        <td><input type="number" ref={periodNum} className="five" placeholder="0"autoComplete="off" required max="4" /></td>               
                         <td> <button className="class-button-actually" onClick={changePeriod}>Change Period</button></td>
                         
                     </tr>
@@ -360,7 +361,7 @@ export default function RegistrarsApplications() {
             </>}
             handleClose={toggleclassSetUpPeriodclosePopup}
              />}
-            <p>Key: Role 1: Instructor, Role 0: Student, Role 3: Students applied for graduation</p>
+            <p>Key: Role 1: Instructor, Role 0: Student</p>
             <table className="xApplication">
                 <tr>
                     <th>First Name</th>
