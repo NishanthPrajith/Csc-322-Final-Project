@@ -381,7 +381,10 @@ export default function StudentView() {
         }
     }
     async function enrollCourse(classs, daytime, room, section, size, instructor, instructoruiid, StudentsEnrolled) {
-
+        if(CurrentClasses.length >= 4){
+            alert("You already have a maximum of 4 classes for this Semester");
+            return;
+        }
         // first check if student is already taking the course
         for (let i = 0; i < CurrentClasses.length; i++) {
             if (CurrentClasses[i].Class === classs) {
@@ -537,7 +540,7 @@ export default function StudentView() {
         }
     }
 
-    async function enrollCourse1(classs, daytime, room, section, size, instructor, instructoruiid, StudentsEnrolled) {
+    async function enrollCourse1(classs, daytime, room, section, size, instructor, instructoruiid, StudentsEnrolled) {      
 
         // first check if student is already taking the course
         for (let i = 0; i < CurrentClasses.length; i++) {
@@ -1043,10 +1046,10 @@ export default function StudentView() {
                         ))}
                     </table>
                     }
-                    {(((userData.getPeriod() === 0) || (userData.getPeriod() === 3)) && (OptionSelected.value === "enroll")) &&
+                    {(((userData.getPeriod() === 0) || (userData.getPeriod() === 3) || (userData.getPeriod() === 4) || (userData.getPeriod() === 2)) && (OptionSelected.value === "enroll")) &&
                         <div className="student-rate-table-after-period">
                             <h1>You cannot enroll for classes during this period.</h1>
-                            <h2>Please try again next period</h2>
+                            <h2>Please try again next period!</h2>
                         </div>
                     }
                     {/* {((userData.getPeriod() === 2) && (OptionSelected.value === "enroll") && cc===false) &&
@@ -1055,7 +1058,7 @@ export default function StudentView() {
                             <h2>Please try again next semester</h2>
                         </div>
                     } */}
-                    {((userData.getPeriod() === 1 || userData.getPeriod() === 2) && OptionSelected.value === "enroll") &&
+                    {(userData.getPeriod() === 1  && OptionSelected.value === "enroll") &&
                         <table className="enroll-student-table">
                             <tr>
                                 <th>Class</th>

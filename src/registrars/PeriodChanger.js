@@ -11,48 +11,42 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
     if(docData === "0"){
         alert("Class Set-Up Period");
         for(let i = 0; i < Students.length; i++){
-            let studentID = Students[i].useruiid;
-            Students[i].registerAllow = false;
-            //Students[i].lessThan2CoursesWarning = false;
-            Students[i].canceledCourses = false;
-            updateDoc(doc(db, "Students", studentID), {registerAllow: false, canceledCourses: false}); //lessThan2CoursesWarning: false
+          let studentID = Students[i].useruiid;
+          Students[i].registerAllow = false;
+          Students[i].canceledCourses = false;
+          updateDoc(doc(db, "Students", studentID), {registerAllow: false, canceledCourses: false}); //lessThan2CoursesWarning: false
         }
-
         for(let i = 0; i < Instructors.length; i++){
-            let instructorID = Instructors[i].useruiid;
-            Instructors[i].canceledCourses = false;
-            updateDoc(doc(db, "Instructor", instructorID), {canceledCourses: false});
+          let instructorID = Instructors[i].useruiid;
+          Instructors[i].canceledCourses = false;
+          updateDoc(doc(db, "Instructor", instructorID), {canceledCourses: false});
         }        
     }
     else if(docData === "1"){
-        alert("Class Registration Period");
-        for(let i = 0; i < Students.length; i++){
-            let studentID = Students[i].useruiid;
-            if(Students[i].registerAllow === false){
-                Students[i].registerAllow = true;
-                updateDoc(doc(db, "Students", studentID), {registerAllow: true});
-            }
+      alert("Class Registration Period");
+      for(let i = 0; i < Students.length; i++){
+        let studentID = Students[i].useruiid;
+        if(Students[i].registerAllow === false){
+          Students[i].registerAllow = true;
+          updateDoc(doc(db, "Students", studentID), {registerAllow: true});
         }
+      }
     }
     else if(docData === "2"){ //This is Req 4
        alert("Class Running Period");
         for(let i = 0; i < Students.length; i++){
-            let studentID = Students[i].useruiid;
-            Students[i].registerAllow = false;
-            if(Students[i].numCourses < 2 && !(Students[i].lessThan2CoursesWarning)){
-              alert("a");
-              console.log(Students[i]);
-              StudentWarn2(studentID,"You have received a warning for enrolling in less than 2 classes", Students, waitlist, complains, Reviews);
-              Students[i].lessThan2CoursesWarning = true;
-            }
-            updateDoc(doc(db, "Students", studentID), {registerAllow: false, lessThan2CoursesWarning: Students[i].lessThan2CoursesWarning});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
+          let studentID = Students[i].useruiid;
+          Students[i].registerAllow = false;
+          if(Students[i].numCourses < 2 && !(Students[i].lessThan2CoursesWarning)){
+            StudentWarn2(studentID,"You have received a warning for enrolling in less than 2 classes", Students, waitlist, complains, Reviews);
+            Students[i].lessThan2CoursesWarning = true;
+          }
+          updateDoc(doc(db, "Students", studentID), {registerAllow: false, lessThan2CoursesWarning: Students[i].lessThan2CoursesWarning});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
         }
         
-
         //CancelCourses();           
         const coursesCol = query(collection(db,'AssignedClasses'), where("StudentsEnrolled" , "<", 2)); 
-        onSnapshot(coursesCol, async function(courseSnapshot) { 
-        //SetCanceledCourses = True for instructors and warn each one affected.
+        onSnapshot(coursesCol, async function(courseSnapshot) {   //canceledCourses = True for instructors and warn each one affected.
           courseSnapshot.forEach(async function(classes){
             if(classes.exists){
               let instructorID = classes.data().Instructoruiid;  //InstructorUiid and courseName is assigned for each instance of a class of StudentsEnrolled < 5
@@ -78,30 +72,24 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
                     onSnapshot(allCoursesStudent, async function(studentSnapshot) {
                       studentSnapshot.forEach(async function(studentCourse){
                         setTimeout(async function() { 
-                        let studentDocRef = doc(db,"Students", Students[i].useruiid);
-                        let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", studentCourse.data().Class);
-                        let studentDocSnap = await getDoc(studentCourseDocRef) 
-                        if(studentDocSnap.exists()){
-                        if(studentCourse.data().Class === courseName){  //StudentDocSnap.exists() does not help. In the case of 2 courses, it is shown 5 times(1 555 and 4 667).
-                          console.log("Student Course: " + courseName +"vs" + studentCourse.data().Class); 
-                          console.log(Students[i].firstname);
-                          let tempStd = Students[i].numCourses;
-                          //if(tempStd == 0)  //Work-Around.
-                          //  tempStd += 1;
-                          Students[i].numCourses = tempStd - 1;
-                          console.log(Students[i].numCourses);
-                          await updateDoc(studentDocRef, {canceledCourses: true, numCourses: Students[i].numCourses}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
-                          //common.push(studentCourseDocRef);
-                          await deleteDoc(studentCourseDocRef);
-                        }
-                        }
-                      }, 300);
+                          let studentDocRef = doc(db,"Students", Students[i].useruiid);
+                          let studentCourseDocRef = doc(db,"Students", Students[i].useruiid,"Courses", studentCourse.data().Class);
+                          let studentDocSnap = await getDoc(studentCourseDocRef) 
+                          if(studentDocSnap.exists()){
+                            if(studentCourse.data().Class === courseName){  
+                              let tempStd = Students[i].numCourses;
+                              Students[i].numCourses = tempStd - 1;
+                              await updateDoc(studentDocRef, {canceledCourses: true, numCourses: Students[i].numCourses}); //Or setDoc with ,{merge: true} // , numCourses: increment(-1)
+                              await deleteDoc(studentCourseDocRef);
+                            }
+                          }
+                        }, 300);
                       });
                     });
                   }
                   // update the doc for the instructor, deletes the course, and add the doc to the warnings                  
-                   await updateDoc(instructorDocRef, {canceledCourses: true, Suspended: test, numCourses: Instructors[i].numCourses, numWarn: warncount});     //Instructors of these courses are given a CanceledCourse: true, , numCourses: increment(-1)
-                   await deleteDoc(instructorCourseDocRef);     //Class is deleted from their list of courses.                  
+                   await updateDoc(instructorDocRef, {canceledCourses: true, Suspended: test, numCourses: Instructors[i].numCourses, numWarn: warncount});     
+                   await deleteDoc(instructorCourseDocRef);                
                    await addDoc(collection(db, "Instructor",instructorID,"Warnings"), {Warn: "One of your courses has been canceled:" + courseName, numofWarn: warncount});                 
                 }
               }
@@ -198,6 +186,12 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
         //         updateDoc(doc(db,"Students", studentID), {numWarn: increment(-1)});
         //     } 
         // }
+        for(let k = 0; k < Instructors.length; k++){
+          if(Instructors[k].Suspended === true){
+            await setDoc(doc(db, "Suspended", Instructors[k].useruiid), Instructors[k]);
+            await deleteDoc(doc(db,"Instructor", Instructors[k].useruiid));
+          }
+        }
     }
     else{
         return;
