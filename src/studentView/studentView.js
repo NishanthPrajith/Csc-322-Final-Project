@@ -251,23 +251,45 @@ export default function StudentView() {
     }
 
     // student drop course
-    async function dropCourse(a, b) {
+    async function dropCourse(a, b, c) {
         // a== classname
         // b == instructor
+        // c == instuiid
         let amount_of_student_courses = 0;
         let classsize = 0;
         let sutdentsenrolled = 0;
+        let course = [];
+        let courseid = [];
+        const assignedclassCol = collection(db, 'Instructor', c,"Courses",a, "Roster");
+        setLoading(true);
+        await onSnapshot(assignedclassCol, (querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                course.push(doc.data());
+                courseid.push(doc.id);
+            });
+            for(let i = 0; i<courseid.length; i++){
+                course[i].Docid = courseid[i];
+            }
+        });
+        setLoading(false);
         for (let i = 0; i < Warnings.length; i++) {
             if (Warnings[i].useruiid === userData.getUd()) {
                 amount_of_student_courses = Warnings[i].numCourses;
             }
         }
-        if (userData.getPeriod() === 2) {
+        console.log(course);
+        // // delete the student from the instructors roster
+        // for(let i = 0; i<course.length; i++){
+        //     console.log("I am here!")
+        //     if(course[i].Student===userData.getUd()){
+        //         console.log("I am here!")
+        //         await deleteDoc(doc(db, 'Instructor',c,"Courses",a,"Roster",course[i].Docid));
+        //     }
+        // }
+        if (userData.getPeriod() === 1){
             await deleteDoc(doc(db, "Students", userData.getUd(), "Courses", a));
-            console.log(enrollcourses);
             for (let i = 0; i < enrollcourses.length; i++) {
                 if (enrollcourses[i].Class === a) {
-                    console.log("Hello!");
                     classsize = enrollcourses[i].Size;
                     sutdentsenrolled = enrollcourses[i].StudentsEnrolled;
                     break;
@@ -287,6 +309,39 @@ export default function StudentView() {
             await updateDoc(StudentsRef, {
                 numCourses: amount_of_student_courses
             });
+            // done updating the class size
+            // delete the student from the instructors roster
+            for(let i = 0; i<course.length; i++){
+            if(course[i].Student===userData.getUd()){
+                await deleteDoc(doc(db, 'Instructor',c,"Courses",a,"Roster",course[i].Docid));
+                }
+            }
+            alert("Course has been dropped sucessfully!");
+        }
+        else if (userData.getPeriod() === 2) {
+            await deleteDoc(doc(db, "Students", userData.getUd(), "Courses", a));
+            for (let i = 0; i < enrollcourses.length; i++) {
+                if (enrollcourses[i].Class === a) {
+                    classsize = enrollcourses[i].Size;
+                    sutdentsenrolled = enrollcourses[i].StudentsEnrolled;
+                    break;
+                }
+            }
+            classsize += 1;
+            sutdentsenrolled -= 1;
+            // start updating the class size
+            const washingtonRef = doc(db, "AssignedClasses", a);
+            await updateDoc(washingtonRef, {
+                Size: classsize,
+                StudentsEnrolled: sutdentsenrolled
+            });
+            // done updating the class size
+            // start updating the num of student courses
+            --amount_of_student_courses;
+            const StudentsRef = doc(db, "Students", userData.getUd());
+            await updateDoc(StudentsRef, {
+                numCourses: amount_of_student_courses
+            });
             // setdoc to student record and add a grade W
             await setDoc(doc(db, "Students", userData.getUd(), "Record", a), {
                 Class: a,
@@ -294,7 +349,12 @@ export default function StudentView() {
                 Grade: "W"
             });
             // done updating student record with a W
-            // done updating the class size
+            // delete the student from the instructors roster
+            for(let i = 0; i<course.length; i++){
+                if(course[i].Student===userData.getUd()){
+                    await deleteDoc(doc(db, 'Instructor',c,"Courses",a,"Roster",course[i].Docid));
+                    }
+                }
             alert("Course has been dropped sucessfully!");
             if (CurrentClasses.length === 1) {
                 // add the student to the suspended student doc
@@ -305,7 +365,6 @@ export default function StudentView() {
                         break;
                     }
                 }
-                // Add a new document in collection "cities"
                 await setDoc(doc(db, "SuspendedStudents", userData.getUd()), studentdata);
                 alert("You have dropped all courses, therefore you have been suspended!");
                 userData.setRole(-1);
@@ -318,6 +377,7 @@ export default function StudentView() {
         }
         else {
             alert("Cannot Drop classes, due to current grading period!");
+            return
         }
     }
     async function enrollCourse(classs, daytime, room, section, size, instructor, instructoruiid, StudentsEnrolled) {
@@ -956,21 +1016,6 @@ export default function StudentView() {
 
                     </div>
                     }
-                    {(OptionSelected.value === "haha") && <table className="student-grades-table">
-                        <tr>
-                            <th>Class</th>
-                            <th>Instructor</th>
-                            <th>Grades</th>
-                        </tr>
-                        {StudentRecord.map((Class) => (
-                            <tr>
-                                <td> {Class.Class} </td>
-                                <td> {Class.Instructor} </td>
-                                <td> {Class.Grade} </td>
-                            </tr>
-                        ))}
-                    </table>
-                    }
 
                     {(OptionSelected.value === "drop") && <table className="student-drop-table">
                         <tr>
@@ -988,14 +1033,26 @@ export default function StudentView() {
                                 <td> {Class.Secion} </td>
                                 <td> {Class.Instructor} </td>
                                 <td> <button className="student-drop-button" onClick={() => dropCourse(Class.Class,
-                                    Class.Instructor
+                                                                                                        Class.Instructor,
+                                                                                                        Class.Instructoruiid
                                 )}>Drop</button> </td>
                             </tr>
                         ))}
                     </table>
                     }
-
-                    {(OptionSelected.value === "enroll") &&
+                    {(((userData.getPeriod() === 0) || (userData.getPeriod() === 3)) && (OptionSelected.value === "enroll")) &&
+                        <div className="student-rate-table-after-period">
+                            <h1>You cannot enroll for classes during this period.</h1>
+                            <h2>Please try again next period</h2>
+                        </div>
+                    }
+                    {/* {((userData.getPeriod() === 2) && (OptionSelected.value === "enroll") && cc===false) &&
+                        <div className="student-rate-table-after-period">
+                            <h1>You cannot enroll for classes during this period. This is only for the special registration period</h1>
+                            <h2>Please try again next semester</h2>
+                        </div>
+                    } */}
+                    {((userData.getPeriod() === 1 || userData.getPeriod() === 2) && OptionSelected.value === "enroll") &&
                         <table className="enroll-student-table">
                             <tr>
                                 <th>Class</th>
