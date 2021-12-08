@@ -11,6 +11,14 @@ class Profile {
     this.period = 0;
     this.email = "";
     this.gpa = "";
+    this.coursepassed = 0;
+  }
+  // GPA
+  getCoursespassed() {
+    return this.coursepassed;
+  }
+  setCoursespassed(v){
+    this.coursepassed=v;
   }
   // GPA
   getGPA() {

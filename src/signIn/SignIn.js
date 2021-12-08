@@ -9,7 +9,7 @@ import { userData } from '../contexts/userProfile';
 
 export default function SignIn() {
   const history = useHistory();
-  const { login} = useAuth();
+  const { login } = useAuth();
   const emailRef = useRef();
   const [revealpassword, setRevealpassword] = useState("password");
   const passwordRef = useRef();
@@ -23,9 +23,10 @@ export default function SignIn() {
       const docRef2 = doc(db, "Instructor", useruiid); // Instructor
       const docRef3 = doc(db, "Users", useruiid); // Users
       const docRef5 = doc(db, "Suspended", useruiid); // Suspended instructors
+      const docRef8 = doc(db, "GraduatedStudents", useruiid); // Graduated Students
       const docRef6 = doc(db, "SuspendedStudents", useruiid); // Suspended students and instructors
       const docRef7 = doc(db, "Rejected", useruiid); // Rejected students and instructors
-      var docRef4 = doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4" ); // grading period
+      var docRef4 = doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"); // grading period
       const docSnap = await getDoc(docRef); // admin
       const docSnap1 = await getDoc(docRef1); //student
       const docSnap2 = await getDoc(docRef2); // Instructor
@@ -33,23 +34,29 @@ export default function SignIn() {
       const docSnap5 = await getDoc(docRef5); // Suspended Instructors
       const docSnap6 = await getDoc(docRef6); // Suspended Students
       const docSnap7 = await getDoc(docRef7); // Rejected Students
+      const docSnap8 = await getDoc(docRef8); // Rejected Students
       var docSnap4 = await getDoc(docRef4); // grading period
-      if(docSnap7.exists()){ // Checking instructors that are suspended
+      if (docSnap8.exists()) { // Checking if student graduated
+        alert(docSnap8.data().message);
+        await history.push('SignIn');
+        return
+      }
+      if (docSnap7.exists()) { // Checking instructors that are suspended
         alert(docSnap7.data().message);
         await history.push('SignIn');
         return
       }
-      if(docSnap5.exists()){ // Checking instructors that are suspended
+      if (docSnap5.exists()) { // Checking instructors that are suspended
         alert("Error: Account suspended by the Registrars!");
         await history.push('SignIn');
         return
       }
-      if(docSnap6.exists()){ // Checking students that are suspended
+      if (docSnap6.exists()) { // Checking students that are suspended
         alert(docSnap6.data().message);
         await history.push('SignIn');
         return
       }
-      if(docSnap3.exists()){
+      if (docSnap3.exists()) {
         alert("Error: Account does not exist OR account still pending approval by Registrars");
         await history.push('SignIn');
         return
@@ -73,6 +80,7 @@ export default function SignIn() {
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);
+        userData.setCoursespassed(parseInt(docSnap1.data().numCoursesPassed));
         userData.setPeriod(parseInt(docSnap4.data().classsetup));
         await history.push('Studentview');
       }

@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/Authcontext";
 import React from 'react';
 
 
-export default function NavBar(){
+export default function NavBar() {
   const { logout } = useAuth();
 
   function closeNavLink() {
@@ -14,17 +14,19 @@ export default function NavBar(){
 
   return (
     <div>
-      <nav className = "Navbar">
+      <nav className="Navbar">
         <div className="firstNav">
-          { !userData.getStatus() &&
-          <Link to='/' onClick={closeNavLink}>
-            <h1 className="navbar-logo">CCNYZero<i className="fab fa-react"></i><Link to ='/'></Link></h1>
-          </Link>
+          {!userData.getStatus() &&
+            <Link to='/' onClick={closeNavLink}>
+              <h1 className="navbar-logo">CCNYZero<i className="fab fa-react"></i><Link to='/'></Link></h1>
+            </Link>
           }
           <div className="nav-menu">
-            <Link to='/AboutUs' onClick={closeNavLink}>
-              <p className="nav-links">About Us</p>
-            </Link>
+            {(userData.getRole() === 0 || userData.getRole() === 1) &&
+              <Link to='/AboutUs' onClick={closeNavLink}>
+                <p className="nav-links">About Us</p>
+              </Link>
+            }
             {(userData.getRole() === 1) &&
               <Link to='/instructorView' onClick={closeNavLink}>
                 <p className="nav-links">Instructor Center</p>
@@ -33,7 +35,7 @@ export default function NavBar(){
             {
               userData.getStatus() && <p className="username"> {userData.getName()} </p>
             }
-             {
+            {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
             }
             {(userData.getRole() === 0) &&
@@ -56,7 +58,7 @@ export default function NavBar(){
                 <p className="nav-links">Grad Members</p>
               </Link>
             }
-             {(userData.getRole() === 2) &&
+            {(userData.getRole() === 2) &&
               <Link to='/SuspendedStudents' onClick={closeNavLink}>
                 <p className="nav-links">Suspended Students</p>
               </Link>
@@ -69,6 +71,11 @@ export default function NavBar(){
             {((userData.getRole() === 2) && (userData.getPeriod() === 3)) &&
               <Link to='/GradingReview' onClick={closeNavLink}>
                 <p className="nav-links">Grading Review</p>
+              </Link>
+            }
+            {((userData.getRole() === 2))  &&
+              <Link to='/GraduatingStudents' onClick={closeNavLink}>
+                <p className="nav-links">Graduating Students</p>
               </Link>
             }
 

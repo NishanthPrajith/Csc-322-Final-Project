@@ -17,6 +17,7 @@ import { AuthProvider } from "./contexts/Authcontext"
 import InstructorView from './instructorView/instructorView.js'
 import GradingReview from './registrars/GradingReview.js'
 import SuspendedStudents from './registrars/suspendedStudents'
+import GraduatingStudents from './registrars/graduatingStudents'
 
 
 import {
@@ -59,7 +60,7 @@ function App() {
             <ForgotPassword />
           </Route>
           <Route exact path="/ReSubmitpass">
-            <ReSubmitPass/>
+            <ReSubmitPass />
           </Route>
           {(userData.getRole() === 2) &&
             <Route exact path="/RegistrarsApplication">
@@ -68,27 +69,32 @@ function App() {
           }
           {(userData.getRole() === 2) &&
             <Route exact path="/Regclasssetup">
-              <Regclasssetup/>
+              <Regclasssetup />
             </Route>
           }
           {(userData.getRole() === 2) &&
             <Route exact path="/GradMembers">
-              <GradMembers/>
+              <GradMembers />
             </Route>
           }
           {(userData.getRole() === 2) &&
             <Route exact path="/RegistrarsComplains">
-              <Registrarscomplain/>
+              <Registrarscomplain />
             </Route>
           }
           {(userData.getRole() === 2) &&
             <Route exact path="/SuspendedStudents">
-              <SuspendedStudents/>
+              <SuspendedStudents />
             </Route>
           }
           {(userData.getRole() === 2) &&
             <Route exact path="/GradingReview">
-              <GradingReview/>
+              <GradingReview />
+            </Route>
+          }
+          {(userData.getRole() === 2) &&
+            <Route exact path="/GraduatingStudents">
+              <GraduatingStudents />
             </Route>
           }
           {(userData.getRole() === 0) &&
