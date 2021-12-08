@@ -6,8 +6,7 @@ This is CCNY Zero , a graduate program management system.
 [CCNY Zero Live](https://link-url-here.org)
 
 ## Website Demo (Video)
-*Needs fixing*
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://youtu.be/vt5fpE0bzSY)
+[![Watch the video](https://i.imgur.com/3XP8mBC.png)](https://www.youtube.com/watch?v=FFdOIdtwPKg)
 
 ## Group Members Team E
 - Haroon Syed
@@ -61,4 +60,3 @@ npm install react scripts --save
 ## Project Documentation
 1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/a050d190daded7f6b248075960b23d0b98ee545a/Phase1report.docx.pdf)
 2. [Phase 2 Report : Design report](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/cc86ebd76973b3b0b5832b8b7972f3d7d5ea4c88/CSC32200_GES_Phase2.pdf)
-
