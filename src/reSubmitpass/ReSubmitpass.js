@@ -34,8 +34,8 @@ export default function ForgotPassword() {
             <iframe
               title='video'
               width="560"
-              height="315"
-              src="https://www.youtube.com/embed/mRrNmPS6yRo"
+              height="345"
+              src="https://www.youtube.com/embed/9xd_ERJt4W4"
               frameborder="0"
               allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
           </div>
