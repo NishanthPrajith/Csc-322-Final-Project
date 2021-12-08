@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 export default function GraduatingStudents() {
     const [Graduate, setGraduate] = useState([]);
     const [Students, setStudents] = useState([]);
+    const [courseQ, setQuota] = useState([]);
     const [loading, setLoading] = useState(false);
 
     async function getGraduatingApplications(db) {
@@ -17,6 +18,19 @@ export default function GraduatingStudents() {
                 gsc.push(doc.data());
             });
             setGraduate(gsc);
+        });
+        setLoading(false);
+    }
+
+    async function getQuota(db) {
+        const max = collection(db, 'Quota');
+        setLoading(true);
+        onSnapshot(max, (querySnapshot) => {
+            const courseQ = [];
+            querySnapshot.forEach((doc) => {
+                courseQ.push(doc.data());
+            });
+            setQuota(courseQ);
         });
         setLoading(false);
     }
@@ -37,7 +51,8 @@ export default function GraduatingStudents() {
     useEffect(() => {
         setLoading(true);
         getGraduatingApplications(db);
-        getStudents(db)
+        getQuota(db);
+        getStudents(db);
     }, []);
 
     if (loading) {
@@ -52,7 +67,17 @@ export default function GraduatingStudents() {
         });
         await deleteDoc(doc(db, "AppliedGraduation", a));
         await deleteDoc(doc(db, "Students", a));
-        alert("Student successfully appected for graduation!");
+        const docRef = doc(db, "Quota", "rnBTGZKiLSm6dBEseZcF");
+        var q ; 
+        for(let i =0; i < courseQ.length; i++){
+            q = courseQ[i].Quota;
+            break;
+        }
+        -- q; 
+        await updateDoc(docRef, {
+            Quota: q,
+        });
+        alert("Student successfully accepted for graduation!");
     }
 
     async function Reject(a) {

@@ -16,6 +16,7 @@ export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
     const [Students, setStudents] = useState([]);
+    const [courseQ, setQuota] = useState([]);
     const [Instructors, setInstructors] = useState([]);
     const [period, setPeriod] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
@@ -86,6 +87,19 @@ export default function RegistrarsApplications() {
         setLoading(false);
     }
 
+    async function getQuota(db) {
+        const max = collection(db, 'Quota');
+        setLoading(true);
+        onSnapshot(max, (querySnapshot) => {
+            const courseQ = [];
+            querySnapshot.forEach((doc) => {
+                courseQ.push(doc.data());
+            });
+            setQuota(courseQ);
+        });
+        setLoading(false);
+    }
+
     async function getInstructor(db) {
         const wash2 = collection(db, "Instructor");
         setLoading(true);
@@ -124,6 +138,7 @@ export default function RegistrarsApplications() {
         });
         setLoading(false);
     }
+
     async function getWaitlist(db) {
         const waitlistCol = collection(db, 'Waitlist');
         setLoading(true);
@@ -185,7 +200,8 @@ export default function RegistrarsApplications() {
 
     useEffect(() => {
         setLoading(true);
-        getInstructor(db)
+        getInstructor(db);
+        getQuota(db);
         getPeriod(db);
         getCourses(db);
         getUser(db);
@@ -201,10 +217,25 @@ export default function RegistrarsApplications() {
     }
 
     async function Accept(a, b, c, d, e, f, g ,useruiid, h){
-        if(f === "0"){         
+        if(f === "0"){
+            const docRef = doc(db, "Quota", "rnBTGZKiLSm6dBEseZcF");
+            var q ; 
+            for(let i =0; i < courseQ.length; i++){
+                q = courseQ[i].Quota;
+                break;
+            }
+            ++ q; 
+            if(q < 11){
             const payload = {firstname: a, lastname: b, GPA: c, DateofBirth: d, Email: e, Role: "Student", password: g, useruiid:useruiid, empl: h, numWarn: 0, numCourses:0, registerAllow:false,canceledCourses:false,lessThan2CoursesWarning:false,Graduate:false, numCoursesPassed:0}
             await setDoc(doc(db, "Students", useruiid), payload);
             await deleteDoc(doc(db, "Users",useruiid ));
+            await updateDoc(docRef, {
+                Quota: q,
+            });
+            }else{
+                alert("Quota has already been met, student will be requested");
+            }
+
         }else{
             var v = courses;
             for (var i = 0; i < courses.length; i++) {
@@ -232,7 +263,6 @@ export default function RegistrarsApplications() {
             ClassGPA: 0,
             StudentsGraded: 0
           });
-          console.log("Hi")
           await setDoc(doc(db, "AssignedClasses", a), {
             Class: classes,
             DayTime: b,
@@ -244,7 +274,6 @@ export default function RegistrarsApplications() {
             StudentsEnrolled:0,
             StudentsGraded:0
           });
-          console.log("Hi")
         }catch{
             alert("Error");
         }
@@ -257,7 +286,6 @@ export default function RegistrarsApplications() {
            }
         }
         setCourses(v);
-        console.log(courses);
         
 
         const washingtonRef = collection(db, "Instructor", ud, "Courses");
@@ -317,7 +345,8 @@ export default function RegistrarsApplications() {
 
     async function changePeriod(event) {
         event.preventDefault();
-        var period = {  classsetup: periodNum.current.value}
+        var period = {  classsetup: periodNum.current.value,
+                                                            }
         try{
             await setDoc(doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"), period);
             alert("Class Period Updated Sucessfully");
