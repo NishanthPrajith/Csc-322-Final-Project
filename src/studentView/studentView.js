@@ -25,7 +25,7 @@ var cc;
 export default function StudentView() {
     const totalcreds = userData.getCoursespassed() * 3;
     const totalcredsleft = 24 - totalcreds;
-    const taboowords = ["shit", "dang", "damn"];
+    const taboowords = ["shit", "dang", "damn","fuck","asshole","ass","bitch","cunt"];
     const { logout } = useAuth();
     const history = useHistory();
     const [secondChances, setIsOpen3] = useState(false);
@@ -545,11 +545,15 @@ export default function StudentView() {
     }
 
     async function enrollCourse1(classs, daytime, room, section, size, instructor, instructoruiid, StudentsEnrolled) {      
-
+        if(CurrentClasses.length >= 4){
+            alert("You already have a maximum of 4 classes for this Semester");
+            return;
+        }
         // first check if student is already taking the course
         for (let i = 0; i < CurrentClasses.length; i++) {
             if (CurrentClasses[i].Class === classs) {
                 alert("You have already enrolled this course!");
+                return
             }
         }
         // check if the student got an F in this course
@@ -802,13 +806,15 @@ export default function StudentView() {
             // author recieves one warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    let warncount = Warnings[i].numWarn;
+                    var warncount = Warnings[i].numWarn;
+                    var data = Warnings[i];
                     warncount += 1;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
                     await updateDoc(washingtonRef, {
                         numWarn: warncount
                     });
+                    break;
                 }
             }
             // add the doc to the warnings
@@ -833,13 +839,15 @@ export default function StudentView() {
             // author recieves two warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    let warncount = Warnings[i].numWarn;
+                    var warncount = Warnings[i].numWarn;
+                    var data = Warnings[i];
                     warncount += 2;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
                     await updateDoc(washingtonRef, {
                         numWarn: warncount
                     });
+                    break;
                 }
             }
             // add the doc to the warnings
@@ -847,8 +855,12 @@ export default function StudentView() {
                 Warn: "You have been given two warnings for taboo words",
                 numofWarn: 2
             });
-            alert("You have too many taboo words, review failed to submit unsuccessfully");
+            alert("You have too many taboo words, review failed to submit successfully");
             await history.push('Studentview');
+        }
+        if(warncount>=3){
+            alert("Student suspended due to 3 warnings!");
+            await setDoc(doc(db, "SuspendedStudents", userData.getUd()), data);
         }
     }
 
@@ -883,7 +895,7 @@ export default function StudentView() {
             Totalcredsleft: totalcredsleft,
             StudentUiid: userData.getUd()
         });
-        alert("Sucessfully applied for graduation!")
+        alert("Successfully applied for graduation!")
     }
 
     useEffect(() => {
@@ -1164,24 +1176,7 @@ export default function StudentView() {
                         </table>
                     </div>
                     }
-                    {/* {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) >= 2) && (parseFloat(userData.getGPA()) <=2.25) && userData.getPeriod() === 4) && <div className="warning-page">
-                        <h1>Total Warnings:</h1>
-                        <p>Reminder: Getting 3 warnings will result in a suspension!</p>
-                        <table className="CourseStyler-warning">
-                            <tr>
-                                <th>Amount</th>
-                                <th>Reason</th>
-                            </tr>
-                            {StudentsWarnings.map((warn) => (
-                                <tr>
-                                    <td> {warn.numofWarn} </td>
-                                    <td> {warn.Warn} </td>
-                                </tr>
-                            ))}
-                        </table>
-                    </div>
-                        
-                    } */}
+        
                     {(OptionSelected.value === "warning") && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>

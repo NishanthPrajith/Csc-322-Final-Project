@@ -11,7 +11,9 @@ import InstructorComplainPopup1 from './InstructorComplainPopup1';
 import StudentRecordPopUp from './StudentRecordPopup';
 import StudentRecordPopUpone from './StudentsRecordPopup1';
 import InstructorRosterPopup from './InstructorRosterPopup';
+import InstructorRosterPopup2 from './InstructorRosterPopup2';
 
+var cou;
 var studentComplainName;
 var studentassigncourse;
 var popupswitch = false;
@@ -29,6 +31,7 @@ export default function InstructorView() {
     const [isOpen2, setIsOpen2] = useState(false);
     const [isOpen3, setIsOpen3] = useState(false);
     const [isOpen4, setIsOpen4] = useState(false);
+    const [isOpen5, setIsOpen5] = useState(false);
     const [Loading, setLoading] = useState('false');
     const history = useHistory();
     const complaint = useRef();
@@ -80,8 +83,13 @@ export default function InstructorView() {
         setIsOpen4(!isOpen4);
     }
 
-
-
+    const toggleRosterPopup2 = (a) => {
+        setIsOpen5(!isOpen5);
+    }
+    async function toggleRosterclosePopup2 () {
+        setIsOpen5(!isOpen5);
+    }
+    
     // get the students on the waitlist 
     // GET WAITLIST
     async function getWaitlist(db) {
@@ -226,11 +234,14 @@ export default function InstructorView() {
        toggleRosterRecordPopup1();
      }
 
+     
      async function Complain1(a){
          studentComplainName = a;
         // a == student uiid 
         toggleComplainPopup1();
      }
+
+
      async function submitComplaint(){
         await addDoc(collection(db, "Complaints"), {
             SentBy: userData.getFirstname()+ " "+ userData.getLastname(),
@@ -248,6 +259,23 @@ export default function InstructorView() {
         // c == Room 
         // d == Section 
         // e == studnetuiid
+        let classsize;
+        const instcourse = collection(db, "Instructor", userData.getUd(),"Courses");
+        setLoading(true);
+        await onSnapshot(instcourse, (querySnapshot) => {
+          const uidtoName = [];
+          querySnapshot.forEach((doc) => {
+            uidtoName.push(doc.data());
+          });
+          for(let i = 0; i<uidtoName.length; i++){
+              if(uidtoName[i].Class === a){
+                classsize = uidtoName[i].Size;
+                console.log(classsize)
+                break;
+              }
+          }
+        });
+        setLoading(false);
         let data={
             Class:a,
             DayTime:b,
@@ -260,6 +288,12 @@ export default function InstructorView() {
         await addDoc(collection(db, "Instructor", userData.getUd(),"Courses",a,"Roster"), {
             Student: e
           });
+        // update assigned class size
+        const washingtonRef1 = doc(db, "Instructor",userData.getUd(),"Courses",a);
+        // update instructor class size
+        await updateDoc(washingtonRef1, {
+            Size: classsize+1
+        });
         // add the accepted student to their courses
         await setDoc(doc(db, "Students", e,"Courses",a), data);
         // delete the doc with instrcutor userdata
@@ -273,6 +307,7 @@ export default function InstructorView() {
 
     // Roster Function for Grades
     async function Roster(a){
+        // a == course name
         // get instructor roster 
        const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
         setLoading(true);
@@ -320,9 +355,9 @@ export default function InstructorView() {
     }
 
     // function for instructor to enter grades
-    async function Instructor_Grade(a){
+    async function Instructor_Grade(){
         // a == instructoruiid
-        const washingtonRef1 = doc(db, "Students", a);
+        const washingtonRef1 = doc(db, "Students", cou);
         const washingtonRef2 = doc(db, "Instructor", userData.getUd(),"Courses",studentassigncourse);
         let t_total;
         let numberinstructorclassgpa;
@@ -353,7 +388,7 @@ export default function InstructorView() {
                 instComp.push(doc.data());
             });
             for(let i = 0; i<instComp.length; i++){
-                if(instComp[i].useruiid === a){
+                if(instComp[i].useruiid === cou){
                     studentGPA = instComp[i].GPA;
                     studentSemesterGPA = instComp[i].semesterGPA;
                     studentscoursespassed = instComp[i].numCoursesPassed;
@@ -363,7 +398,7 @@ export default function InstructorView() {
             }
         });
         // check if the student is getting their second "F"
-        const StuRecord = collection(db, "Students",a, "Record");
+        const StuRecord = collection(db, "Students",cou, "Record");
         setLoading(true);
         onSnapshot(StuRecord, (querySnapshot) => {
             const instComp = [];
@@ -375,7 +410,7 @@ export default function InstructorView() {
                     if(instComp[i].Grade === "F"){
                         if(gradeRef.current.value === "F"){
                             // terminate the student
-                            Terminate_Student(a)
+                            Terminate_Student(cou)
                         }
                     }
                     else{
@@ -389,7 +424,7 @@ export default function InstructorView() {
             studentgraduate = true;
         }
         // setting the grade for the particular student
-        await setDoc(doc(db, "Students", a,"Record",studentassigncourse), {
+        await setDoc(doc(db, "Students", cou,"Record",studentassigncourse), {
             Class: studentassigncourse,
             Grade: gradeRef.current.value.toUpperCase(),
             Instructor: userData.getFirstname() + " " + userData.getLastname()
@@ -415,6 +450,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total,
                 StudentsGraded: numberinstructorclassgpa
@@ -444,6 +480,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total1,
                 StudentsGraded: numberinstructorclassgpa
@@ -471,6 +508,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total2,
                 StudentsGraded: numberinstructorclassgpa
@@ -498,6 +536,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total3,
                 StudentsGraded: numberinstructorclassgpa
@@ -525,6 +564,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total4,
                 StudentsGraded: numberinstructorclassgpa
@@ -552,6 +592,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total5,
                 StudentsGraded: numberinstructorclassgpa
@@ -579,6 +620,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total6,
                 StudentsGraded: numberinstructorclassgpa
@@ -606,6 +648,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total7,
                 StudentsGraded: numberinstructorclassgpa
@@ -633,6 +676,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total8,
                 StudentsGraded: numberinstructorclassgpa
@@ -660,6 +704,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total9,
                 StudentsGraded: numberinstructorclassgpa
@@ -674,12 +719,19 @@ export default function InstructorView() {
             default:
           }
         // since the student got the grade and the GPA was updated sucesfully, now we can delte the current course from his schedule
-        await deleteDoc(doc(db, "Students",a,"Courses",studentassigncourse));
+        await deleteDoc(doc(db, "Students",cou,"Courses",studentassigncourse));
         alert("Sucessfully graded student!");
         // now we also need to update the class GPA average
 
-        toggleRosterclosePopup()
+        toggleRosterclosePopup2()
     }
+
+    async function Grade1(a){
+       cou = a;
+       // a == student uiid 
+       toggleRosterPopup2();
+    }
+
 
       return (
         <div className = "InstructorPage">
@@ -896,25 +948,44 @@ export default function InstructorView() {
 
         {isOpen2 && <InstructorRosterPopup
             content={<>
-                <h2 className="roster-h2">Assign a grade</h2>
+                <h2 className="roster-h2">Select a Student</h2>
+                <p>Choose a student to grade:</p>
                 <table className="roster-popup-table-instructor">
-                
                 <tr>
                     <th>Student</th>
-                    <th>Grade</th>
+                    <th></th>
                 </tr>
                 {InstructorRoster.map((course) => (
                     <tr>
                         <td> {course.StudentName} </td>
-                        <td> <input type="text" ref={gradeRef} id="studentgrade" name="fname" /></td>
-                        <td><button className="assign-grades-popup-button" onClick = {() => Instructor_Grade(course.Student,
-                                                                                                            )}>Assign</button></td>
+                        <td><button className="assign-grades-popup-button" onClick = {() => Grade1(course.Student)}>Select</button></td>
                     </tr>
                 ))}
             </table>
             </>}
             handleClose={toggleRosterclosePopup}
         />}
+
+        {isOpen5 && <InstructorRosterPopup2
+            content={<>
+                <h2 className="roster-h2">Assign a Grade</h2>
+                <p>Enter a grade for the selected student below:</p>
+                <table className="roster-popup-table-instructor">
+                <tr>
+                    <th>Grade</th>
+                    <th></th>
+                </tr>
+               
+                    <tr>
+                        <td> <input type="text" ref={gradeRef} id="studentgrade" name="fname" /></td>
+                        <td><button className="assign-grades-popup-button" onClick = {() => Instructor_Grade()}>Assign</button></td>
+                    </tr>
+       
+            </table>
+            </>}
+            handleClose={toggleRosterclosePopup2}
+        />}
+
         {isOpen3 && <StudentRecordPopUp
             content={<>
                 <h2 className="roster-h2">Students Roster</h2>

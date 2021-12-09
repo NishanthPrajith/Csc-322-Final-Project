@@ -25,6 +25,7 @@ export default function GradingReview(){
 
     // gets the graded students data
     async function getGradedClasses(db){
+        let sort = [];
         const GradedClasses = collection(db, 'GradedClasses');
         setLoading(true);
        onSnapshot(GradedClasses, (querySnapshot) => {
@@ -32,7 +33,12 @@ export default function GradingReview(){
           querySnapshot.forEach((doc) => {
             classs.push(doc.data());
           });
-          setGradedClasses(classs);
+          for(let i = 0; i<classs.length; i++){
+              if(classs[i].ClassGPA>3.5 || classs[i].ClassGPA<2.5){
+                sort.push(classs[i])
+              }
+          }
+          setGradedClasses(sort);
         });
         setLoading(false);
     }
