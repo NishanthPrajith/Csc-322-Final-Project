@@ -3,7 +3,8 @@ Group project for ***CSC 322 @CCNY***
 This is CCNY Zero , a graduate program management system. 
 
 ## Live Website Link
-[CCNY Zero Live](https://link-url-here.org)
+[CCNY Zero Live](https://csc-322-project.web.app/)
+
 
 ## Website Demo (Video)
 [![Watch the video](https://i.imgur.com/3XP8mBC.png)](https://www.youtube.com/watch?v=FFdOIdtwPKg)
