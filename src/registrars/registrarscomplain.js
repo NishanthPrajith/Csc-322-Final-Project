@@ -197,7 +197,7 @@ export default function RegistrarsComplain(){
           <tr>
             <th>From</th>
             <th>To</th>
-            <th>Complaint</th>
+            <th className="complain-table-th-for-complaint">Complaint</th>
           </tr>
           { complains.map((complain) => (
           <tr>
@@ -213,10 +213,10 @@ export default function RegistrarsComplain(){
         <h2>Reviews</h2>
           <tr>
             <th>Name</th>
-            <th>Course</th>
-            <th>Instructor</th>
-            <th>Rating</th>
-            <th>Review</th>
+            <th className="review-table-th-for-course">Course</th>
+            <th className="review-table-th-for-instructor">Instructor</th>
+            <th className="review-table-th-for-rating">Rating</th>
+            <th className="review-table-th-for-review">Review</th>
           </tr>
           { Reviews.map((review) => (
           <tr>
