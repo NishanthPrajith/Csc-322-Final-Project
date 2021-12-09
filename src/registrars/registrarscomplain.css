@@ -37,6 +37,11 @@
   margin-left: 30px;
 }
 
+.complain-table .complain-table-th-for-complaint{
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
 .handle-button {
   padding: 8px 20px;
   border-radius: 4px;
@@ -115,3 +120,22 @@
   padding-right: 25px;
 }
 
+.review-table .review-table-th-for-course{
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+.review-table .review-table-th-for-instructor{
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+.review-table .review-table-th-for-rating{
+  padding-left: 15px;
+  padding-right: 5px;
+}
+
+.review-table .review-table-th-for-review{
+  padding-left: 15px;
+  padding-right: 5px;
+}
