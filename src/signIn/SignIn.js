@@ -77,6 +77,7 @@ export default function SignIn() {
         userData.setDob(docSnap1.data().DateofBirth);
         userData.setEmail(docSnap1.data().Email);
         userData.setGPA(docSnap1.data().GPA);
+        userData.setSemesterGPA(docSnap1.data().semesterGPA)
         userData.setStatus(true);
         userData.setEmpl(docSnap1.data().empl);
         userData.setRole(0);

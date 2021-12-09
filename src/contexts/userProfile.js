@@ -11,15 +11,25 @@ class Profile {
     this.period = 0;
     this.email = "";
     this.gpa = "";
+    this.semesterGPA = ""
     this.coursepassed = 0;
   }
-  // GPA
+  // coursesPassed
   getCoursespassed() {
     return this.coursepassed;
   }
   setCoursespassed(v){
     this.coursepassed=v;
   }
+
+  //SemesterGPA
+  getSemesterGPA() {
+    return this.semesterGPA;
+  }
+  setSemesterGPA(v){
+    this.semesterGPA=v;
+  }
+
   // GPA
   getGPA() {
     return this.gpa;

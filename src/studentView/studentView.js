@@ -6,7 +6,7 @@ import React from 'react'
 import { useAuth } from "../contexts/Authcontext";
 import { db } from "../firebase.js";
 import { useHistory } from 'react-router-dom';
-import { getDoc, collection, onSnapshot, setDoc, doc, addDoc, updateDoc, deleteDoc } from '@firebase/firestore';
+import { getDoc, collection, onSnapshot, setDoc, doc, addDoc, updateDoc, deleteDoc, increment } from '@firebase/firestore';
 import Container from '@material-ui/core/Container';
 import Select from 'react-select';
 import { FaStar } from "react-icons/fa";
@@ -159,7 +159,7 @@ export default function StudentView() {
                             if(parseFloat(warning[i].GPA) > parseFloat(warning[i].semesterGPA))
                                 alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciation, we have decided to remove a warning from your record.");
                             if(parseFloat(warning[i].GPA) <= parseFloat(warning[i].semesterGPA))
-                                alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + parseFloat(warning[i].SemesterGPA)  + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciation, we have decided to remove a warning from your record.");    
+                                alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + warning[i].semesterGPA.toString()  + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciation, we have decided to remove a warning from your record.");    
                             // remove a random warning
                             popupswitch = true;
                             return
@@ -878,8 +878,17 @@ export default function StudentView() {
         // a == warn id
         console.log(" I am here!")
         if (onewarning === false) {
+            let data = await getDoc(doc(db, "Students", userData.getUd(), "Warnings", a));
+            if(data.data().numofWarn === 2){
+                await deleteDoc(doc(db, "Students", userData.getUd(), "Warnings", a));
+                alert("You have removed a warning that counts as two!");
+                await updateDoc(doc(db,"Students", userData.getUd()), {numWarn: increment(-2)})
+                onewarning= true;
+                return;
+            }
             await deleteDoc(doc(db, "Students", userData.getUd(), "Warnings", a));
             alert("You have removed one warning!");
+            await updateDoc(doc(db,"Students", userData.getUd()), {numWarn: increment(-1)})
             onewarning = true;
         }
         else {
@@ -970,6 +979,7 @@ export default function StudentView() {
                             <p>Last Name: {userData.getLastname()}</p>
                             <p>Date of Birth: {userData.getDob()}</p>
                             <p>GPA: {userData.getGPA()}</p>
+                            <p>SemesterGPA: {userData.getSemesterGPA()}</p>
                             <p>EMPL: {userData.getEmpl()}</p>
                             <p>Email: {userData.getEmail()}</p>
                         </div>
@@ -1068,12 +1078,7 @@ export default function StudentView() {
                             <h2>Please try again next period!</h2>
                         </div>
                     }
-                    {/* {((userData.getPeriod() === 2) && (OptionSelected.value === "enroll") && cc===false) &&
-                        <div className="student-rate-table-after-period">
-                            <h1>You cannot enroll for classes during this period. This is only for the special registration period</h1>
-                            <h2>Please try again next semester</h2>
-                        </div>
-                    } */}
+
                     {(userData.getPeriod() === 1  && OptionSelected.value === "enroll") &&
                         <table className="enroll-student-table">
                             <tr>
@@ -1105,7 +1110,14 @@ export default function StudentView() {
                             ))}
                         </table>
                     }
-                    {(OptionSelected.value === "complaints") && <table className="student-complaint-table">
+
+                {(((userData.getPeriod() === 0) || (userData.getPeriod() === 4) ) && (OptionSelected.value === "complaints")) &&
+                        <div className="student-rate-table-after-period">
+                            <h1>You cannot complain during this period.</h1>
+                            <h2>Please try again next period!</h2>
+                        </div>
+                    }                    
+                    {((userData.getPeriod() === 2 || userData.getPeriod() === 3 || userData.getPeriod() === 1) && OptionSelected.value === "complaints") && <table className="student-complaint-table">
                         <tr>
                             <th>Name</th>
                             <th>Time</th>
@@ -1127,7 +1139,7 @@ export default function StudentView() {
                         ))}
                     </table>
                     }
-                    {((userData.getPeriod() !== 4) && (OptionSelected.value === "rate")) &&
+                    {((userData.getPeriod() !== 4 && userData.getPeriod() !== 0 && userData.getPeriod() !== 1) && (OptionSelected.value === "rate")) &&
                         <table className="student-rate-table">
                             <tr>
                                 <th>Class</th>
@@ -1150,14 +1162,14 @@ export default function StudentView() {
                             ))}
                         </table>
                     }
-                    {((userData.getPeriod() === 4) && (OptionSelected.value === "rate")) &&
+                    {((userData.getPeriod() === 4 || userData.getPeriod() === 0 || userData.getPeriod() === 1) && (OptionSelected.value === "rate")) &&
                         <div className="student-rate-table-after-period">
                             <h1>You cannot rate during this period.</h1>
                             <h2>Please try again next semester!</h2>
                         </div>
                     }
 
-                    {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) >= 3.5) && userData.getPeriod() === 4) && <div className="warning-page">
+                    {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) > 3.5 || parseFloat(userData.getSemesterGPA()) > 3.75) && userData.getPeriod() === 4) && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">
@@ -1177,7 +1189,7 @@ export default function StudentView() {
                     </div>
                     }
         
-                    {(OptionSelected.value === "warning") && <div className="warning-page">
+                    {(OptionSelected.value === "warning" && ((parseFloat(userData.getGPA()) <= 3.5) && parseFloat(userData.getSemesterGPA()) <= 3.75) && userData.getPeriod() === 4) && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">

@@ -793,7 +793,7 @@ export default function InstructorView() {
                             ))}
                         </table>    
                         }
-                        {(userData.getPeriod()!==3 &&OptionSelected.value === "grades") && 
+                        {(userData.getPeriod()!==3 && OptionSelected.value === "grades") && 
                         <div >
                                 <h1>You cannot grade during this period.</h1>
                                 <h2>Please try again next period!</h2>
@@ -819,7 +819,15 @@ export default function InstructorView() {
                         </table>    */
                         }
                         
-                        {(OptionSelected.value === "complaints") && 
+
+                        {((userData.getPeriod() === 0 || userData.getPeriod() === 4) && OptionSelected.value === "complaints") && 
+                        <div >
+                                <h1>You cannot complain during this period.</h1>
+                                <h2>Please try again next period!</h2>
+                        </div>  
+                        }
+
+                        {((userData.getPeriod() === 1 ||userData.getPeriod() === 2 ||userData.getPeriod() === 3 ||userData.getPeriod() === 4) && (OptionSelected.value === "complaints")) && 
                         <div className="instructor-complaint-page"style={styles.container}>
                         <table className = "CourseStyler-complaint-instructor">
                             <tr>
