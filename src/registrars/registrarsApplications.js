@@ -16,6 +16,7 @@ export default function RegistrarsApplications() {
     const [User, setUser] = useState([]);
     const [courses, setCourses] = useState([]);
     const [Students, setStudents] = useState([]);
+    const [complainings, setComplainings] = useState([]);
     const [courseQ, setQuota] = useState([]);
     const [Instructors, setInstructors] = useState([]);
     const [period, setPeriod] = useState([]);
@@ -153,6 +154,19 @@ export default function RegistrarsApplications() {
         setLoading(false);
     }
 
+    async function getSuspended(db) {
+        const complainsCol = collection(db, 'Suspended');
+        setLoading(true);
+        onSnapshot(complainsCol, (querySnapshot) => {
+          const complainings = [];
+          querySnapshot.forEach((doc) => {
+            complainings.push(doc.data());
+          });
+          setComplainings(complainings);
+        });
+        setLoading(false);
+      }
+
     async function getWaitlist(db) {
         const waitlistCol = collection(db, 'Waitlist');
         setLoading(true);
@@ -220,7 +234,8 @@ export default function RegistrarsApplications() {
         getCourses(db);
         getUser(db);
         getInstructors(db);
-        getStudents(db)
+        getStudents(db);
+        getSuspended(db);
         getReviews(db);
         getComplaint(db);
         getWaitlist(db);
@@ -384,7 +399,7 @@ export default function RegistrarsApplications() {
         try{
             await setDoc(doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"), period);
             alert("Class Period Updated Sucessfully");
-            PeriodChanger(Students,Instructors,waitlist,complains,Reviews);
+            PeriodChanger(Students,Instructors,waitlist,complains,Reviews,complainings);
           }catch{
             document.getElementById('error').style.display = "block";
         }

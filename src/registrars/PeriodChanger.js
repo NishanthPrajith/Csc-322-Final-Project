@@ -1,11 +1,8 @@
-import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc,getDoc, query, where, increment, orderBy, limit } from 'firebase/firestore';
+import { collection, doc, deleteDoc, onSnapshot, setDoc,updateDoc, addDoc,getDoc, query, where } from 'firebase/firestore';
 import { db } from "../firebase.js";
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
-import StudentcourseAssignPopup from './StudentDeregister';
 
+export default async function PeriodChanger(Students, Instructors, waitlist,complains,Reviews,complainings) {
 
-export default async function PeriodChanger(Students, Instructors, waitlist,complains,Reviews) {
     let docRef = await getDoc(doc(db,"gradingperiod","0t678Obx9SKShD3NR3I4"));
     let docData = docRef.data().classsetup;
     if(docData === "0"){
@@ -186,6 +183,19 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
         //         updateDoc(doc(db,"Students", studentID), {numWarn: increment(-1)});
         //     } 
         // }
+            for(let p = 0; p < complainings.length; p++){
+              console.log(complainings[p]);
+              console.log("10");
+              var varpush = complainings[p];
+              varpush.numCourses = 0;
+              varpush.Suspended = false;
+              varpush.numWarn = 0;
+              varpush.canceledCourses =  false;
+              await updateDoc(doc(db, "Suspended", varpush.useruiid), varpush);
+              await setDoc(doc(db, "Instructor", varpush.useruiid), varpush);
+              await deleteDoc(doc(db, "Suspended", varpush.useruiid));
+            }
+
         for(let k = 0; k < Instructors.length; k++){
           if(Instructors[k].Suspended === true){
             await setDoc(doc(db, "Suspended", Instructors[k].useruiid), Instructors[k]);
