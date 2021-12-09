@@ -49,7 +49,7 @@ export default function NavBar() {
               </Link>
             }
             {
-              userData.getStatus() && <p className="username"> {userData.getName() + ": " +period } </p>
+              userData.getStatus() && <p className="username"> {period } </p>
             }
             {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>

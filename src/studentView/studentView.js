@@ -1055,7 +1055,7 @@ export default function StudentView() {
                     }
                     {(OptionSelected.value === "drop" && (userData.getPeriod() === 3)) && 
                          <div className="student-rate-table-after-period">
-                         <h1>You cannot enroll for classes during this period.</h1>
+                         <h1>You cannot drop classes during this period.</h1>
                          <h2>Please try again next period!</h2>
                         </div>
                     }
