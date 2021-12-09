@@ -436,7 +436,7 @@ export default function InstructorView() {
             case 'A':
             case 'A+':
                 let avg = ((parseFloat(studentGPA) + 4.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0){
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0"){
                     var avgSemester = (parseFloat(studentSemesterGPA) + 4.0).toFixed(2).toString();
                 }
                 else{
@@ -469,7 +469,7 @@ export default function InstructorView() {
                 break;
             case 'A-':
                 let avg1 = ((parseFloat(studentGPA) + 3.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0){
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0"){
                     var avgSemester1 = (parseFloat(studentSemesterGPA) + 3.7).toFixed(2).toString();
                 }
                 else{
@@ -501,7 +501,7 @@ export default function InstructorView() {
                 break;
             case 'B+':
                 let avg2 = ((parseFloat(studentGPA) + 3.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester2 = (parseFloat(studentSemesterGPA) + 3.3).toFixed(2).toString();
                 else
                     var avgSemester2 = ((parseFloat(studentSemesterGPA) + 3.3) /2).toFixed(2).toString();                
@@ -531,7 +531,7 @@ export default function InstructorView() {
                 break;
             case 'B':
                 let avg3 = ((parseFloat(studentGPA) + 3.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester3 = (parseFloat(studentSemesterGPA) + 3.0).toFixed(2).toString();
                 else
                     var avgSemester3 = ((parseFloat(studentSemesterGPA) + 3.0) /2).toFixed(2).toString();                     
@@ -561,7 +561,7 @@ export default function InstructorView() {
                 break;
             case 'B-':
                 let avg4 = ((parseFloat(studentGPA) + 2.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester4 = (parseFloat(studentSemesterGPA) + 2.7).toFixed(2).toString();
                 else
                     var avgSemester4 = ((parseFloat(studentSemesterGPA) + 2.7) /2).toFixed(2).toString();                   
@@ -591,7 +591,7 @@ export default function InstructorView() {
                 break;
             case 'C+':
                 let avg5 = ((parseFloat(studentGPA) + 2.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester5 = (parseFloat(studentSemesterGPA) + 2.3).toFixed(2).toString();
                 else
                     var avgSemester5 = ((parseFloat(studentSemesterGPA) + 2.3) /2).toFixed(2).toString();                   
@@ -622,7 +622,7 @@ export default function InstructorView() {
                 break;
             case 'C':
                 let avg6 = ((parseFloat(studentGPA) + 2.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester6 = (parseFloat(studentSemesterGPA) + 2.0).toFixed(2).toString();
                 else
                     var avgSemester6 = ((parseFloat(studentSemesterGPA) + 2.0) /2).toFixed(2).toString();                   
@@ -653,7 +653,7 @@ export default function InstructorView() {
                 break;
             case 'C-':
                 let avg7 = ((parseFloat(studentGPA) + 1.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester7 = (parseFloat(studentSemesterGPA) + 1.7).toFixed(2).toString();
                 else
                     var avgSemester7 = ((parseFloat(studentSemesterGPA) + 1.7) /2).toFixed(2).toString();                   
@@ -683,7 +683,7 @@ export default function InstructorView() {
                 break;
             case 'D+':
                 let avg8 = ((parseFloat(studentGPA) + 1.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester8 = (parseFloat(studentSemesterGPA) + 1.3).toFixed(2).toString();
                 else
                     var avgSemester8 = ((parseFloat(studentSemesterGPA) + 1.3) /2).toFixed(2).toString();                   
@@ -713,7 +713,7 @@ export default function InstructorView() {
                 break;
             case 'D':
                 let avg9 = ((parseFloat(studentGPA) + 1.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
                     var avgSemester9 = (parseFloat(studentSemesterGPA) + 1.0).toFixed(2).toString();
                 else
                     var avgSemester9 = ((parseFloat(studentSemesterGPA) + 1.0) /2).toFixed(2).toString();                   
