@@ -2,8 +2,9 @@ import './Regclasssetup.css'
 import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
-import { setDoc,doc } from 'firebase/firestore';
 import validator from 'validator';
+import { collection, doc, onSnapshot,deleteDoc, addDoc, setDoc, updateDoc} from 'firebase/firestore';
+import React, { useState, useEffect } from 'react';
 
 export default function Regclasssetup(){
     const classRef = useRef();
@@ -12,6 +13,22 @@ export default function Regclasssetup(){
     const roomRef = useRef();
     const sizeRef = useRef();
     const history = useHistory();
+    const [Courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState('false');
+
+    async function getCreatedCourses(db) {
+      const assignedC = collection(db, 'AssignedClasses');
+      setLoading(true);
+      onSnapshot(assignedC, (querySnapshot) => {
+      const Courses = [];
+      querySnapshot.forEach((doc) => {
+          Courses.push(doc.data());
+      });
+      setCourses(Courses);
+      });
+      setLoading(false);
+  }
+  
 
     async function createClass(event) {
         event.preventDefault();
@@ -23,6 +40,13 @@ export default function Regclasssetup(){
           Size: sizeRef.current.value
         }
         
+        for(let k = 0; k < Courses.length; k++){
+          if(Courses[k].Class == classRef.current.value){
+            alert("Course already created");
+            return;
+          }
+        }
+
         // check the date format using validor, check the day and time 
         // checks to see if the value is null or not
         if((classRef.current.value === "") || (secRef.current.value === "") || (dayRef.current.value === "") || (roomRef.current.value === "") || (sizeRef.current.value === "")){
@@ -72,6 +96,16 @@ export default function Regclasssetup(){
       }
     }
 
+
+    useEffect(() => {
+      setLoading(true);
+      getCreatedCourses(db);
+    }, []);
+
+    if (loading) {
+      return <h1> Loading .. </h1>
+  }
+
     return(
         <div className="create-page">
             <h1>Create A Class</h1>
@@ -81,7 +115,7 @@ export default function Regclasssetup(){
             <br></br>
             <div className="create-class">
             <form className="createclass-form" id="cc1">
-              <input type="number" ref={classRef} className="five" placeholder="Class" autoComplete="off" required />
+              <input type="text" ref={classRef} className="five" placeholder="Class" autoComplete="off" required />
               <input type="text" ref={secRef} placeholder="Section" autoComplete="off" required />
               <input type="text" ref={dayRef} className="five" placeholder="Days & Time" autoComplete="off" required />
               <input type="number" ref={roomRef} className="five" placeholder="Room" autoComplete="off" required />
