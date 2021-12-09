@@ -864,6 +864,7 @@ export default function InstructorView() {
                 <table className="roster-popup-table-instructor">
                 <tr>
                     <th>Student</th>
+                    <th></th>
                 </tr>
                 {InstructorRoster.map((course) => (
                     <tr>
@@ -883,6 +884,7 @@ export default function InstructorView() {
                 <table className="roster-popup-table-instructor">
                 <tr>
                     <th>Grade</th>
+                    <th></th>
                 </tr>
                
                     <tr>
