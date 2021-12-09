@@ -1179,7 +1179,7 @@ export default function StudentView() {
                         </div>
                     }
 
-                    {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) > 3.5 || parseFloat(userData.getSemesterGPA()) > 3.75) && userData.getPeriod() === 4) && <div className="warning-page">
+                    {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) > 3.5 || parseFloat(userData.getSemesterGPA()) > 3.75) && userData.getPeriod() === 4 ) && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">
@@ -1216,6 +1216,23 @@ export default function StudentView() {
                         </table>
                     </div>
                     }
+                    {(OptionSelected.value === "warning" && (userData.getPeriod() === 3 || userData.getPeriod() === 2|| userData.getPeriod() === 1)|| userData.getPeriod() === 0) && <div className="warning-page">
+                        <h1>Total Warnings:</h1>
+                        <p>Reminder: Getting 3 warnings will result in a suspension!</p>
+                        <table className="CourseStyler-warning">
+                            <tr>
+                                <th>Amount</th>
+                                <th>Reason</th>
+                            </tr>
+                            {StudentsWarnings.map((warn) => (
+                                <tr>
+                                    <td> {warn.numofWarn} </td>
+                                    <td> {warn.Warn} </td>
+                                </tr>
+                            ))}
+                        </table>
+                    </div>
+                    }                    
                 </div>
             </Container>
 
