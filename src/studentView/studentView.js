@@ -844,7 +844,7 @@ export default function StudentView() {
                 Warn: "You have been given two warnings for taboo words",
                 numofWarn: 2
             });
-            alert("You have too many taboo words, review failed to submit unsuccessfully");
+            alert("You have too many taboo words, review failed to submit successfully");
             await history.push('Studentview');
         }
     }
@@ -880,7 +880,7 @@ export default function StudentView() {
             Totalcredsleft: totalcredsleft,
             StudentUiid: userData.getUd()
         });
-        alert("Sucessfully applied for graduation!")
+        alert("Successfully applied for graduation!")
     }
 
     useEffect(() => {
@@ -1161,24 +1161,7 @@ export default function StudentView() {
                         </table>
                     </div>
                     }
-                    {/* {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) >= 2) && (parseFloat(userData.getGPA()) <=2.25) && userData.getPeriod() === 4) && <div className="warning-page">
-                        <h1>Total Warnings:</h1>
-                        <p>Reminder: Getting 3 warnings will result in a suspension!</p>
-                        <table className="CourseStyler-warning">
-                            <tr>
-                                <th>Amount</th>
-                                <th>Reason</th>
-                            </tr>
-                            {StudentsWarnings.map((warn) => (
-                                <tr>
-                                    <td> {warn.numofWarn} </td>
-                                    <td> {warn.Warn} </td>
-                                </tr>
-                            ))}
-                        </table>
-                    </div>
-                        
-                    } */}
+        
                     {(OptionSelected.value === "warning") && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>

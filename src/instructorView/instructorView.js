@@ -248,6 +248,23 @@ export default function InstructorView() {
         // c == Room 
         // d == Section 
         // e == studnetuiid
+        let classsize;
+        const instcourse = collection(db, "Instructor", userData.getUd(),"Courses");
+        setLoading(true);
+        await onSnapshot(instcourse, (querySnapshot) => {
+          const uidtoName = [];
+          querySnapshot.forEach((doc) => {
+            uidtoName.push(doc.data());
+          });
+          for(let i = 0; i<uidtoName.length; i++){
+              if(uidtoName[i].Class === a){
+                classsize = uidtoName[i].Size;
+                console.log(classsize)
+                break;
+              }
+          }
+        });
+        setLoading(false);
         let data={
             Class:a,
             DayTime:b,
@@ -260,6 +277,12 @@ export default function InstructorView() {
         await addDoc(collection(db, "Instructor", userData.getUd(),"Courses",a,"Roster"), {
             Student: e
           });
+        // update assigned class size
+        const washingtonRef1 = doc(db, "Instructor",userData.getUd(),"Courses",a);
+        // update instructor class size
+        await updateDoc(washingtonRef1, {
+            Size: classsize+1
+        });
         // add the accepted student to their courses
         await setDoc(doc(db, "Students", e,"Courses",a), data);
         // delete the doc with instrcutor userdata
