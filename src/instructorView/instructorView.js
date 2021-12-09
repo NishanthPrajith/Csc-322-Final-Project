@@ -35,7 +35,7 @@ export default function InstructorView() {
     const [InputValue, setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
     const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
-                    {label: "Drop", value: "drop"} , {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];
+                     {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];  //{label: "Drop", value: "drop"} ,
                     
     const handleInputChange = value => {
         setInputValue(value);
@@ -341,6 +341,7 @@ export default function InstructorView() {
         }
         // query to get the students GPA
         let studentGPA;
+        let studentSemesterGPA;
         let studentscoursespassed;
         let studentgraduate;
         let studentscoursepasstolerance = 2;
@@ -354,6 +355,7 @@ export default function InstructorView() {
             for(let i = 0; i<instComp.length; i++){
                 if(instComp[i].useruiid === a){
                     studentGPA = instComp[i].GPA;
+                    studentSemesterGPA = instComp[i].semesterGPA;
                     studentscoursespassed = instComp[i].numCoursesPassed;
                     studentgraduate = instComp[i].Graduate;
                     break; 
@@ -397,12 +399,19 @@ export default function InstructorView() {
             case 'A':
             case 'A+':
                 let avg = ((parseFloat(studentGPA) + 4.0) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0){
+                    var avgSemester = (parseFloat(studentSemesterGPA) + 4.0).toFixed(2).toString();
+                }
+                else{
+                    var avgSemester = ((parseFloat(studentSemesterGPA) + 4.0) /2).toFixed(2).toString();
+                }
                 let new_total = (t_total) + (4.0);
                 var new_updated_total = (new_total)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg,
+                semesterGPA: avgSemester,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -419,12 +428,19 @@ export default function InstructorView() {
                 break;
             case 'A-':
                 let avg1 = ((parseFloat(studentGPA) + 3.7) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0){
+                    var avgSemester1 = (parseFloat(studentSemesterGPA) + 3.7).toFixed(2).toString();
+                }
+                else{
+                    var avgSemester1 = ((parseFloat(studentSemesterGPA) + 3.7) /2).toFixed(2).toString();
+                }
                 let new_total1 = (t_total) + (3.7);
                 var new_updated_total1 = (new_total1)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg1,
+                semesterGPA: avgSemester1,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -441,12 +457,17 @@ export default function InstructorView() {
                 break;
             case 'B+':
                 let avg2 = ((parseFloat(studentGPA) + 3.3) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester2 = (parseFloat(studentSemesterGPA) + 3.3).toFixed(2).toString();
+                else
+                    var avgSemester2 = ((parseFloat(studentSemesterGPA) + 3.3) /2).toFixed(2).toString();                
                 let new_total2 = (t_total) + (3.3);
                 var new_updated_total2 = (new_total2)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg2,
+                semesterGPA: avgSemester2,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -463,12 +484,17 @@ export default function InstructorView() {
                 break;
             case 'B':
                 let avg3 = ((parseFloat(studentGPA) + 3.0) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester3 = (parseFloat(studentSemesterGPA) + 3.0).toFixed(2).toString();
+                else
+                    var avgSemester3 = ((parseFloat(studentSemesterGPA) + 3.0) /2).toFixed(2).toString();                     
                 let new_total3 = (t_total) + (3.0);
                 var new_updated_total3 = (new_total3)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg3,
+                semesterGPA: avgSemester3,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -485,12 +511,17 @@ export default function InstructorView() {
                 break;
             case 'B-':
                 let avg4 = ((parseFloat(studentGPA) + 2.7) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester4 = (parseFloat(studentSemesterGPA) + 2.7).toFixed(2).toString();
+                else
+                    var avgSemester4 = ((parseFloat(studentSemesterGPA) + 2.7) /2).toFixed(2).toString();                   
                 let new_total4 = (t_total) + (2.7);
                 var new_updated_total4 = (new_total4)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg4,
+                semesterGPA: avgSemester4,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -507,12 +538,17 @@ export default function InstructorView() {
                 break;
             case 'C+':
                 let avg5 = ((parseFloat(studentGPA) + 2.3) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester5 = (parseFloat(studentSemesterGPA) + 2.3).toFixed(2).toString();
+                else
+                    var avgSemester5 = ((parseFloat(studentSemesterGPA) + 2.3) /2).toFixed(2).toString();                   
                 let new_total5 = (t_total) + (2.3);
                 var new_updated_total5 = (new_total5)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg5,
+                semesterGPA: avgSemester5,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -529,12 +565,17 @@ export default function InstructorView() {
                 break;
             case 'C':
                 let avg6 = ((parseFloat(studentGPA) + 2.0) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester6 = (parseFloat(studentSemesterGPA) + 2.0).toFixed(2).toString();
+                else
+                    var avgSemester6 = ((parseFloat(studentSemesterGPA) + 2.0) /2).toFixed(2).toString();                   
                 let new_total6 = (t_total) + (2.0);
                 var new_updated_total6 = (new_total6)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg6,
+                semesterGPA: avgSemester6,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -551,12 +592,17 @@ export default function InstructorView() {
                 break;
             case 'C-':
                 let avg7 = ((parseFloat(studentGPA) + 1.7) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester7 = (parseFloat(studentSemesterGPA) + 1.7).toFixed(2).toString();
+                else
+                    var avgSemester7 = ((parseFloat(studentSemesterGPA) + 1.7) /2).toFixed(2).toString();                   
                 let new_total7 = (t_total) + (1.7);
                 var new_updated_total7 = (new_total7)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg7,
+                semesterGPA: avgSemester7,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -573,12 +619,17 @@ export default function InstructorView() {
                 break;
             case 'D+':
                 let avg8 = ((parseFloat(studentGPA) + 1.3) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester8 = (parseFloat(studentSemesterGPA) + 1.3).toFixed(2).toString();
+                else
+                    var avgSemester8 = ((parseFloat(studentSemesterGPA) + 1.3) /2).toFixed(2).toString();                   
                 let new_total8 = (t_total) + (1.3);
                 var new_updated_total8 = (new_total8)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg8,
+                semesterGPA: avgSemester8,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -595,12 +646,17 @@ export default function InstructorView() {
                 break;
             case 'D':
                 let avg9 = ((parseFloat(studentGPA) + 1.0) /2).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === 0.0)
+                    var avgSemester9 = (parseFloat(studentSemesterGPA) + 1.0).toFixed(2).toString();
+                else
+                    var avgSemester9 = ((parseFloat(studentSemesterGPA) + 1.0) /2).toFixed(2).toString();                   
                 let new_total9 = (t_total) + (1.0);
                 var new_updated_total9 = (new_total9)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
                 await updateDoc(washingtonRef1, {
                 GPA: avg9,
+                semesterGPA: avgSemester9,
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
@@ -619,7 +675,7 @@ export default function InstructorView() {
           }
         // since the student got the grade and the GPA was updated sucesfully, now we can delte the current course from his schedule
         await deleteDoc(doc(db, "Students",a,"Courses",studentassigncourse));
-        alert("Sucessfully graded studnet!");
+        alert("Sucessfully graded student!");
         // now we also need to update the class GPA average
 
         toggleRosterclosePopup()
@@ -692,7 +748,7 @@ export default function InstructorView() {
                         </div>  
                         }
                         
-                        {(OptionSelected.value === "drop") && <table className = "instructor-drop-table">
+                        {/*(OptionSelected.value === "drop") && <table className = "instructor-drop-table">
                                  <tr>
                                     <th>Class</th>
                                     <th>Time</th>
@@ -708,7 +764,7 @@ export default function InstructorView() {
                                     <td><button className= "drop-instructor-button">Drop</button></td>
                                 </tr>
                             ))}
-                        </table>    
+                        </table>    */
                         }
                         
                         {(OptionSelected.value === "complaints") && 
@@ -791,7 +847,7 @@ export default function InstructorView() {
                     <div className='Card'>
                     <div className='upper-container'>
                             <div className='image-container2'>
-                                <img src= "https://i.pravatar.cc/150?img=17" alt='' height="100px" width="100px"/>
+                                <img src= "https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px"/>
                             </div>
                     </div>
                     <div className="lower-container">

@@ -154,9 +154,12 @@ export default function StudentView() {
                         }, 3000);
                         break;
                     }
-                    if ((parseFloat(warning[i].GPA)) >= 3.5 && userData.getPeriod() === 4 && popupswitch === false) {
+                    if (((parseFloat(warning[i].GPA)) >= 3.5 || parseFloat(warning[i].semesterGPA) >= 3.75) && userData.getPeriod() === 4 && popupswitch === false) {
                         setTimeout(async function () {
-                            alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciatiom, we have decided to remove a warning from your record.");
+                            if(parseFloat(warning[i].GPA) > parseFloat(warning[i].semesterGPA))
+                                alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + userData.getGPA() + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciation, we have decided to remove a warning from your record.");
+                            if(parseFloat(warning[i].GPA) <= parseFloat(warning[i].semesterGPA))
+                                alert("Hello " + userData.getFirstname() + " " + userData.getLastname() + ". You have achieved a " + parseFloat(warning[i].SemesterGPA)  + " we are pleased to offer you our congratulations for being a honor roll student this semester. As a token of appreciation, we have decided to remove a warning from your record.");    
                             // remove a random warning
                             popupswitch = true;
                             return
