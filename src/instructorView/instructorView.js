@@ -380,6 +380,7 @@ export default function InstructorView() {
         let studentscoursespassed;
         let studentgraduate;
         let studentscoursepasstolerance = 2;
+        let studentNumCourses;
         const StuGPA = collection(db, "Students");
         setLoading(true);
         onSnapshot(StuGPA, (querySnapshot) => {
@@ -392,6 +393,7 @@ export default function InstructorView() {
                     studentGPA = instComp[i].GPA;
                     studentSemesterGPA = instComp[i].semesterGPA;
                     studentscoursespassed = instComp[i].numCoursesPassed;
+                    studentNumCourses = instComp[i].numCourses;
                     studentgraduate = instComp[i].Graduate;
                     break; 
                 }
@@ -444,11 +446,14 @@ export default function InstructorView() {
                 var new_updated_total = (new_total)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg,
                 semesterGPA: avgSemester,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
+
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -474,11 +479,13 @@ export default function InstructorView() {
                 var new_updated_total1 = (new_total1)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg1,
                 semesterGPA: avgSemester1,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -502,11 +509,13 @@ export default function InstructorView() {
                 var new_updated_total2 = (new_total2)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg2,
                 semesterGPA: avgSemester2,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -530,11 +539,13 @@ export default function InstructorView() {
                 var new_updated_total3 = (new_total3)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg3,
                 semesterGPA: avgSemester3,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -558,11 +569,13 @@ export default function InstructorView() {
                 var new_updated_total4 = (new_total4)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg4,
                 semesterGPA: avgSemester4,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -586,11 +599,14 @@ export default function InstructorView() {
                 var new_updated_total5 = (new_total5)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg5,
                 semesterGPA: avgSemester5,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
+
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -614,11 +630,14 @@ export default function InstructorView() {
                 var new_updated_total6 = (new_total6)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg6,
                 semesterGPA: avgSemester6,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
+
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -642,11 +661,13 @@ export default function InstructorView() {
                 var new_updated_total7 = (new_total7)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg7,
                 semesterGPA: avgSemester7,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -670,11 +691,13 @@ export default function InstructorView() {
                 var new_updated_total8 = (new_total8)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg8,
                 semesterGPA: avgSemester8,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -698,11 +721,14 @@ export default function InstructorView() {
                 var new_updated_total9 = (new_total9)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
                 ++studentscoursespassed;
+                --studentNumCourses;
                 await updateDoc(washingtonRef1, {
                 GPA: avg9,
                 semesterGPA: avgSemester9,
                 numCoursesPassed: studentscoursespassed,
-                Graduate : studentgraduate
+                Graduate : studentgraduate,
+                numCourses: studentNumCourses,
+
                 });
                 await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
@@ -717,6 +743,7 @@ export default function InstructorView() {
                 });
                 break;
             default:
+                
           }
         // since the student got the grade and the GPA was updated sucesfully, now we can delte the current course from his schedule
         await deleteDoc(doc(db, "Students",cou,"Courses",studentassigncourse));

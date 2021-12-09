@@ -65,6 +65,7 @@ export default function SignUp() {
       });
     }
     else if (role === '0') {
+      alert("Submission to be an student is now pending approval by Registrars.");
       history.push({
         pathname: '/SignUp',
         state: data // your data array of objects
