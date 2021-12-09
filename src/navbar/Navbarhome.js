@@ -22,11 +22,9 @@ export default function NavBar() {
             </Link>
           }
           <div className="nav-menu">
-            {(userData.getRole() === 0 || userData.getRole() === 1) &&
               <Link to='/AboutUs' onClick={closeNavLink}>
                 <p className="nav-links">About Us</p>
               </Link>
-            }
             {(userData.getRole() === 1) &&
               <Link to='/instructorView' onClick={closeNavLink}>
                 <p className="nav-links">Instructor Center</p>

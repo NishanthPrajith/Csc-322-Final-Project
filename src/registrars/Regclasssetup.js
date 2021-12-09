@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
 import { setDoc,doc } from 'firebase/firestore';
+import validator from 'validator';
 
 export default function Regclasssetup(){
     const classRef = useRef();
@@ -21,12 +22,40 @@ export default function Regclasssetup(){
           Room: roomRef.current.value,
           Size: sizeRef.current.value
         }
+        
+        // check the date format using validor, check the day and time 
         // checks to see if the value is null or not
         if((classRef.current.value === "") || (secRef.current.value === "") || (dayRef.current.value === "") || (roomRef.current.value === "") || (sizeRef.current.value === "")){
           alert("Failed to create class, check your field values!");
           await history.push('Regclasssetup');
           return 
         }
+        if(classRef.current.value===undefined || secRef.current.value===undefined || dayRef.current.value===undefined || roomRef.current.value===undefined  || sizeRef.current.value===undefined ){
+          alert("Enter the empty feilds!")
+          await history.push("/Regclasssetup")
+          return
+        }
+        let str = dayRef.current.value.split("-");
+        if ((validator.isNumeric(str[0])) || (validator.isNumeric(str[1]))) {
+          alert('Cannot put number as date!')
+          return
+        }
+        if (!validator.isNumeric(str[2].split(":").join("")) || !validator.isNumeric(str[3].split(":").join(""))) {
+          alert('Cannot put letters in time!')
+          return
+        }
+        if(str[0]===str[1]){
+          alert("Cannot put the same date!")
+          return
+        } 
+        if (parseInt(str[2].split(":").join(""))===parseInt(str[3].split(":").join(""))) {
+          alert('Enter valid time!')
+          return
+        }
+        if (parseInt(str[3].split(":").join(""))<parseInt(str[2].split(":").join(""))) {
+          alert('Enter valid start to end time!')
+          return
+        }   
         if(sizeRef.current.value>10){
           alert("Failed to create class, due to class size!");
           await history.push('Regclasssetup');

@@ -27,6 +27,8 @@ export default function SignUp() {
       alert("GPA out of range! (4)");
       // set the gpa back to ""
       gpa="";
+      await history.push("/SignUp")
+      // set the gpa back to ""
     } 
     var dob = x.elements[3].value; // user dob 
     if (!validator.isDate(dob)) {

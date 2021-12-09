@@ -233,7 +233,7 @@ export default function RegistrarsApplications() {
                 Quota: q,
             });
             }else{
-                alert("Quota has already been met, student will be requested");
+                alert("Quota has already been met, student should be rejected");
             }
 
         }else{

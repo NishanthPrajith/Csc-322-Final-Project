@@ -186,6 +186,7 @@ export default function StudentView() {
                     }
                 }
             }
+            popupswitch = true;
             setWarnings(warning);
         });
         setLoading(false);
@@ -945,7 +946,7 @@ export default function StudentView() {
                     <div className='Card'>
                         <div className='upper-container'>
                             <div className='image-container2'>
-                                <img src="https://i.pravatar.cc/150?img=56" alt='' height="100px" width="100px" />
+                                <img src="https://www.logolynx.com/images/logolynx/ab/ab3cf43cb423c7d9c20eadde6a051a5d.jpeg" alt='' height="100px" width="100px" />
                             </div>
                         </div>
                         <div className="lower-container">
@@ -1160,7 +1161,25 @@ export default function StudentView() {
                         </table>
                     </div>
                     }
-                    {(OptionSelected.value === "warning" && userData.getPeriod() !== 4) && <div className="warning-page">
+                    {/* {(OptionSelected.value === "warning" && (parseFloat(userData.getGPA()) >= 2) && (parseFloat(userData.getGPA()) <=2.25) && userData.getPeriod() === 4) && <div className="warning-page">
+                        <h1>Total Warnings:</h1>
+                        <p>Reminder: Getting 3 warnings will result in a suspension!</p>
+                        <table className="CourseStyler-warning">
+                            <tr>
+                                <th>Amount</th>
+                                <th>Reason</th>
+                            </tr>
+                            {StudentsWarnings.map((warn) => (
+                                <tr>
+                                    <td> {warn.numofWarn} </td>
+                                    <td> {warn.Warn} </td>
+                                </tr>
+                            ))}
+                        </table>
+                    </div>
+                        
+                    } */}
+                    {(OptionSelected.value === "warning") && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">
