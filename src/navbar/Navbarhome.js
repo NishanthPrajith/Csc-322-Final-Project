@@ -7,6 +7,24 @@ import React from 'react';
 
 export default function NavBar() {
   const { logout } = useAuth();
+  let period;
+  switch (parseInt(userData.getPeriod())) {
+    case 0:
+      period = "Class Set- Up Period"
+      break;
+    case 1:
+      period = "Course-Registration Period"
+      break;
+    case 2:
+        period = "Class-Running Period"
+        break;
+    case 3:
+        period = "Grading Period"
+        break;
+    default:
+      period = ""
+      break;
+  }
 
   function closeNavLink() {
     window.scroll(0, 0);
@@ -31,7 +49,7 @@ export default function NavBar() {
               </Link>
             }
             {
-              userData.getStatus() && <p className="username"> {userData.getName()} </p>
+              userData.getStatus() && <p className="username"> {userData.getName() + " " +period } </p>
             }
             {
               userData.getStatus() && <button onClick={() => logout()} className="signout"> Sign Out</button>
