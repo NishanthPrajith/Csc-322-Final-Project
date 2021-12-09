@@ -9,7 +9,6 @@ export default function RegistrarsComplain(){
   const [complains, setComplains] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
-  // const [Students, setInstructor2] = useState([]);
   const [loading, setLoading] = useState(false);
 
   async function getComplaints(db) {
@@ -71,25 +70,11 @@ export default function RegistrarsComplain(){
     setLoading(false);
   }
 
-  // async function getStudents(db) {
-  //   const stuCol = collection(db, 'Students');
-  //   setLoading(true);
-  //   onSnapshot(stuCol, (querySnapshot) => {
-  //     const stu = [];
-  //     querySnapshot.forEach((doc) => {
-  //       stu.push(doc.data());
-  //     });
-  //     setInstructor2(stu);
-  //   });
-  //   setLoading(false);
-  // }
-
   useEffect(() => {
     setLoading(true);
     getComplaints(db);
     getReviews(db);
     getInstructors(db);
-    // getStudents(db)
   }, []);
 
   async function HandleComplaint(a){ 
@@ -128,7 +113,6 @@ export default function RegistrarsComplain(){
         querySnapshot.forEach((doc) => {
           inst.push(doc.data());
       });
-      const docRef = doc(db, "Instructor", a);
       var q ; 
       for(let i =0; i < complains.length; i++){
         q = complains[i].Suspended;
@@ -194,14 +178,13 @@ export default function RegistrarsComplain(){
             break;
           }
           //setDoc(doc(db, "Suspended", a), update);
-          //deleteDoc(doc(db, "Instructor", a));
           break;
         }
       }
     });
         });
       });
-    alert("Instructor has been suspended");
+    alert("Be sure to suspend this instructor as they have met the 3 warnings needed to be suspended!");
     }
   }
     
