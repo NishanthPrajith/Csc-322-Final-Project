@@ -441,6 +441,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total,
                 StudentsGraded: numberinstructorclassgpa
@@ -463,6 +464,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total1,
                 StudentsGraded: numberinstructorclassgpa
@@ -485,6 +487,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total2,
                 StudentsGraded: numberinstructorclassgpa
@@ -507,6 +510,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total3,
                 StudentsGraded: numberinstructorclassgpa
@@ -529,6 +533,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total4,
                 StudentsGraded: numberinstructorclassgpa
@@ -551,6 +556,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total5,
                 StudentsGraded: numberinstructorclassgpa
@@ -573,6 +579,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total6,
                 StudentsGraded: numberinstructorclassgpa
@@ -595,6 +602,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total7,
                 StudentsGraded: numberinstructorclassgpa
@@ -617,6 +625,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total8,
                 StudentsGraded: numberinstructorclassgpa
@@ -639,6 +648,7 @@ export default function InstructorView() {
                 numCoursesPassed: studentscoursespassed,
                 Graduate : studentgraduate
                 });
+                await deleteDoc(doc(db, "Students", cou,"Courses",studentassigncourse));
                 await updateDoc(washingtonRef2, {
                 ClassGPA: new_updated_total9,
                 StudentsGraded: numberinstructorclassgpa
