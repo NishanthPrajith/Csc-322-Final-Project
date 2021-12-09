@@ -251,6 +251,12 @@ export default function RegistrarsApplications() {
     }
 
     async function Assign(a,b,c,d,f){
+        for(let i = 0; i < AssignedClasses.length; i++){
+            if(AssignedClasses[i].Class === a){
+                alert("Course has been assigned already!");
+                return;
+            }
+        }
         classes=a;
         try{
         await setDoc(doc(db, "Instructor", ud, "Courses", a), {
