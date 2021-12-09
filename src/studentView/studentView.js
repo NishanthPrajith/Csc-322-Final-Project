@@ -858,6 +858,11 @@ export default function StudentView() {
         if(warncount>=3){
             alert("Student suspended due to 3 warnings!");
             await setDoc(doc(db, "SuspendedStudents", userData.getUd()), data);
+            const washingtonRef = doc(db, "SuspendedStudents", userData.getUd());
+            await updateDoc(washingtonRef, {
+            message: userData.getFirstname() + " " + userData.getLastname()+ "You have been suspended due to 3 warnings"
+            });
+            logout();
         }
     }
 
@@ -1035,7 +1040,12 @@ export default function StudentView() {
 
                     </div>
                     }
-
+                    {(OptionSelected.value === "drop" && (userData.getPeriod() === 3)) && 
+                         <div className="student-rate-table-after-period">
+                         <h1>You cannot enroll for classes during this period.</h1>
+                         <h2>Please try again next period!</h2>
+                        </div>
+                    }
                     {(OptionSelected.value === "drop") && <table className="student-drop-table">
                         <tr>
                             <th>Class</th>

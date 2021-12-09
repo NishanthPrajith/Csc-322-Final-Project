@@ -15,6 +15,10 @@ export default function ForgotPassword() {
     async function changePassword(event) {
       event.preventDefault()
       try {
+        if(passwordRef.current.value===""){
+          alert("Password cannot be empty")
+          return
+        }
         await resetPassword(passwordRef.current.value);
         const washingtonRef = doc(db, "Students", userData.getUd());
         await updateDoc(washingtonRef, {
