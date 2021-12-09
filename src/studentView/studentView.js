@@ -1049,7 +1049,7 @@ export default function StudentView() {
                          <h2>Please try again next period!</h2>
                         </div>
                     }
-                    {(OptionSelected.value === "drop") && <table className="student-drop-table">
+                    {(OptionSelected.value === "drop" && (userData.getPeriod() !== 3)) && <table className="student-drop-table">
                         <tr>
                             <th>Class</th>
                             <th>Time</th>
