@@ -128,6 +128,17 @@ export default function RegistrarsComplain(){
         querySnapshot.forEach((doc) => {
           inst.push(doc.data());
       });
+      const docRef = doc(db, "Instructor", a);
+      var q ; 
+      for(let i =0; i < complains.length; i++){
+        q = complains[i].Suspended;
+        break;
+    }
+      q = true;
+      const washingtonRef = doc(db, "Instructor",a);
+      updateDoc(washingtonRef, {
+        Suspended: q
+      });
          
       const instRef2 = collection(db, 'AssignedClasses');
       setLoading(true);
@@ -162,11 +173,15 @@ export default function RegistrarsComplain(){
                         password: varpush.password,
                         Role: varpush.Role,
                         numWarn: 0, 
-                        numReview: 0, 
-                        Review: 0,
-                        useruiid: a
+                        numReview: varpush.numReview, 
+                        Review: varpush.Review,
+                        useruiid: a,
+                        numCourses: varpush.numCourses,
+                        Suspended: varpush.Suspended,
+                        canceledCourses: varpush.canceledCourses,
+                        gradingTime: varpush.gradingTime,
                       }
-          //setDoc(doc(db, "Instructor", a), update);
+          setDoc(doc(db, "Instructor", a), update);
           for(let c = 0; c < complains.length; c++){
             if(complains[c].IssuedName === varpush.firstname + " " + varpush.lastname){
               deleteDoc(doc(db, "Complaints", complains[c].Uid));
@@ -178,8 +193,8 @@ export default function RegistrarsComplain(){
             }
             break;
           }
-          setDoc(doc(db, "Suspended", a), update);
-          deleteDoc(doc(db, "Instructor", a));
+          //setDoc(doc(db, "Suspended", a), update);
+          //deleteDoc(doc(db, "Instructor", a));
           break;
         }
       }
@@ -197,7 +212,7 @@ export default function RegistrarsComplain(){
           <tr>
             <th>From</th>
             <th>To</th>
-            <th>Complaint</th>
+            <th className="complain-table-th-for-complaint">Complaint</th>
           </tr>
           { complains.map((complain) => (
           <tr>
@@ -213,10 +228,10 @@ export default function RegistrarsComplain(){
         <h2>Reviews</h2>
           <tr>
             <th>Name</th>
-            <th>Course</th>
-            <th>Instructor</th>
-            <th>Rating</th>
-            <th>Review</th>
+            <th className="review-table-th-for-course">Course</th>
+            <th className="review-table-th-for-instructor">Instructor</th>
+            <th className="review-table-th-for-rating">Rating</th>
+            <th className="review-table-th-for-review">Review</th>
           </tr>
           { Reviews.map((review) => (
           <tr>
