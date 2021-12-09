@@ -28,6 +28,7 @@ export default function RegistrarsApplications() {
     const [waitlist, setWaitlist] = useState([]);
     const [complains, setComplains] = useState([]);
     const [Reviews, setReviews] = useState([]);
+    const [AssignedClasses, setAssignedClasses] = useState([]);
 
     const togglecourseAssignPopup = (a) => {
         setIsOpen(!isOpen);
@@ -86,6 +87,19 @@ export default function RegistrarsApplications() {
         });
         setLoading(false);
     }
+
+    async function getAssigned(db) {
+        const assigned = collection(db, "AssignedClasses");
+        setLoading(true);
+        onSnapshot(assigned, (querySnapshot) => {
+            const assignedClasses = [];
+            querySnapshot.forEach((doc) => {
+                assignedClasses.push(doc.data());
+            });
+            setAssignedClasses(assignedClasses);
+        });
+        setLoading(false);
+    }   
 
     async function getQuota(db) {
         const max = collection(db, 'Quota');
@@ -210,6 +224,7 @@ export default function RegistrarsApplications() {
         getReviews(db);
         getComplaint(db);
         getWaitlist(db);
+        getAssigned(db);
     }, []);
 
     if (loading) {
@@ -233,7 +248,7 @@ export default function RegistrarsApplications() {
                 Quota: q,
             });
             }else{
-                alert("Quota has already been met, student will be requested");
+                alert("Quota has already been met, student should be rejected!");
             }
 
         }else{
