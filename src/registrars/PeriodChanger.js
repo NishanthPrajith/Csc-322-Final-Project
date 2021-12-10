@@ -166,7 +166,6 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
               });
         }
         }
-        // add the doc to the warnings
     }
     
 
