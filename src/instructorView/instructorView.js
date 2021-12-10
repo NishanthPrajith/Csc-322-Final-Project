@@ -145,10 +145,8 @@ export default function InstructorView() {
           for(let i = 0; i<course.length; i++){
               if(parseInt(course[i].Size)!==course[i].StudentsGraded){
                 if (userData.getPeriod() === 4 && popupswitch === false) {
-                    console.log(Warnings);
                     setTimeout(async function () {
                         alert("You have recieved a warning, because you have not graded all students")
-                        console.log(Warnings);
                         await addDoc(collection(db, "Instructor", userData.getUd(),"Warnings"), {
                             Warn: "You have recieved a warning, because you have not graded all students",
                             numofWarn: 1
@@ -205,7 +203,6 @@ export default function InstructorView() {
            querySnapshot.forEach((doc) => {
                instComp.push(doc.data());
            });
-           console.log(instComp)
            for(let i = 0; i<Students.length; i++){
                for(let j = 0; j<instComp.length; j++){
                    if(Students[i].useruiid === instComp[j].Student){;
@@ -270,7 +267,6 @@ export default function InstructorView() {
           for(let i = 0; i<uidtoName.length; i++){
               if(uidtoName[i].Class === a){
                 classsize = uidtoName[i].Size;
-                console.log(classsize)
                 break;
               }
           }

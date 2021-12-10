@@ -86,9 +86,7 @@ export default function RegistrarsComplain(){
   async function InstructorWarn(a,b){
     if(b<4){
       for(let i = 0; i<Instructor.length; i++){
-        console.log(a)
         if(Instructor[i].useruiid === a){
-          console.log("I am here")
           var count = Instructor[i].numWarn;
           count  = ++count;
           const washingtonRef = doc(db, "Instructor",a);

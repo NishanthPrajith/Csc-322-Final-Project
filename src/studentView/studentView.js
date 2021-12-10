@@ -281,15 +281,6 @@ export default function StudentView() {
                 amount_of_student_courses = Warnings[i].numCourses;
             }
         }
-        console.log(course);
-        // // delete the student from the instructors roster
-        // for(let i = 0; i<course.length; i++){
-        //     console.log("I am here!")
-        //     if(course[i].Student===userData.getUd()){
-        //         console.log("I am here!")
-        //         await deleteDoc(doc(db, 'Instructor',c,"Courses",a,"Roster",course[i].Docid));
-        //     }
-        // }
         if (userData.getPeriod() === 1){
             await deleteDoc(doc(db, "Students", userData.getUd(), "Courses", a));
             for (let i = 0; i < enrollcourses.length; i++) {
@@ -707,7 +698,6 @@ export default function StudentView() {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
             InstructorTable = docSnap
-            console.log("Document data:", docSnap.data());
         } else {
             // doc.data() will be undefined in this case
             console.log("No such document!");
@@ -720,8 +710,6 @@ export default function StudentView() {
             querySnapshot.forEach((doc) => {
                 complain.push(doc.data());
             });
-
-            console.log(complain);
             for (let i = 0; i < complain.length; i++) {
                 for (let j = 0; j < Warnings.length; j++) {
                     if (complain[i].Student === Warnings[j].useruiid) {
@@ -779,7 +767,6 @@ export default function StudentView() {
         let check = document.getElementById("input-details").value
         check = check.split(' ');
         let count = 0;
-        console.log(check);
         for (let i = 0; i < check.length; i++) {
             if (taboowords.includes(check[i])) {
                 check[i] = "*";
@@ -881,7 +868,6 @@ export default function StudentView() {
 
     async function deleteWarning(a) {
         // a == warn id
-        console.log(" I am here!")
         if (onewarning === false) {
             let data = await getDoc(doc(db, "Students", userData.getUd(), "Warnings", a));
             if(data.data().numofWarn === 2){

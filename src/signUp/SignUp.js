@@ -21,7 +21,6 @@ export default function SignUp() {
     var firstname = x.elements[0].value; // user first name 
     var lastname = x.elements[1].value; // user last name
     var gpa = x.elements[2].value; // user gpa
-    console.log(gpa);
     if(parseFloat(gpa)>4){
       // alert the user that he is out of range
       alert("GPA out of range! (4)");

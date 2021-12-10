@@ -107,8 +107,6 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
     else if(docData === "4") {
         alert("Semester End");
             for(let p = 0; p < complainings.length; p++){
-              console.log(complainings[p]);
-              console.log("10");
               var varpush = complainings[p];
               varpush.numCourses = 0;
               varpush.Suspended = false;
