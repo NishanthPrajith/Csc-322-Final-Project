@@ -1,11 +1,13 @@
 import './GradingReview.css'
 import { useState, useEffect } from 'react';
 import { db } from "../firebase.js";
+import { useHistory } from 'react-router-dom';
 import { collection, addDoc,setDoc,doc,onSnapshot, deleteDoc, updateDoc } from 'firebase/firestore';
 
 var instructordata;
 export default function GradingReview(){
     const [Loading, setLoading] = useState('false');
+    const history = useHistory();
     const [CurrentClasses, setGradedClasses] = useState([]);
     const [CurrentInstructors, setInstructors] = useState([]);
 
@@ -58,7 +60,7 @@ export default function GradingReview(){
             // the instructor has 3 or more warnings, so we need to suspend him
             // add the doc to the warnings 
             await setDoc(doc(db, "Suspended", a), instructordata);
-            // await deleteDoc(doc(db, "Instructor", a));
+            await deleteDoc(doc(db, "Instructor", a));
             const washingtonRef = doc(db, "Suspended", a);
             await updateDoc(washingtonRef, {
             message: "You have been suspended due 3+ warnings!"
@@ -85,17 +87,28 @@ export default function GradingReview(){
     async function Delete_Investigation(a) {
         // a === class === doc id 
         await deleteDoc(doc(db, "GradedClasses", a));
+        await history.push("GradingReview");
         return
     }
-    async function Terminate_Instructor(a) {
+    async function Terminate_Instructor(a,b) {
+        // a == instuiid
+        // b == class
+        const washingtonRef = doc(db, "Suspended", a);
+        for(let i = 0; i<CurrentInstructors.length; i++){
+            if(CurrentInstructors[i].useruiid===a){
+                instructordata = CurrentInstructors[i];
+                break;
+            }
+        }
         // a == instructor uiid
         await setDoc(doc(db, "Suspended", a), instructordata);
-        // await deleteDoc(doc(db, "Instructor", a));
-        const washingtonRef = doc(db, "Suspended", a);
+        await deleteDoc(doc(db, "Instructor", a));
+        await deleteDoc(doc(db, "GradedClasses", b));
         await updateDoc(washingtonRef, {
-        message: "You have been suspended due 3+ warnings!"
+        message: "You have been suspended after grading review!"
         });
         alert("Instructor has been terminated!");
+        await history.push("GradingReview");
         return
     }
 
@@ -125,7 +138,7 @@ export default function GradingReview(){
                     <td> { Class.Instructor } </td>
                     <td> { Class.ClassGPA.toFixed(2) } </td>
                     <td className="all-the-buttons"> <button className="warn-button-grading-review" onClick = {() => Warn_Instructor(Class.InstructorUIID)}>Warn</button> 
-                         <button className="terminate-button-grading-review" onClick = {() => Terminate_Instructor(Class.InstructorUIID)}>Terminate</button> 
+                         <button className="terminate-button-grading-review" onClick = {() => Terminate_Instructor(Class.InstructorUIID,Class.Class)}>Terminate</button> 
                          <button className="delete-button-grading-review" onClick = {() => Delete_Investigation(Class.Class)}>X</button> </td>
                 </tr>
             ))}
