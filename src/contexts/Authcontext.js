@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react"
 import { auth } from "../firebase"
-import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword} from 'firebase/auth';
+import { onAuthStateChanged, signOut, createUserWithEmailAndPassword, signInWithEmailAndPassword, updatePassword, getAuth,sendPasswordResetEmail } from 'firebase/auth';
 import { useHistory } from "react-router-dom";
 import { userData } from './userProfile';
 import { db } from "../firebase"
@@ -60,16 +60,18 @@ export function AuthProvider({ children }) {
   }
 
   async function resetPassword(password) {
-    console.log("im in updatepassword")
-    const user = auth.currentUser;
-    updatePassword(user, password).then(() => {
-      var data = {
-        password: password,
-      };
-      updateDoc(doc(db, "Users", user.uid), data);
-      }).catch((error) => {
-        console.log(error);
-      });
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, password)
+    .then(() => {
+      // Password reset email sent!
+      // ..
+      alert("Check your email, for the password link")
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode + errorMessage);
+    });
   };
 
   useEffect(() => {
