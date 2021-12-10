@@ -37,6 +37,7 @@ npm install react scripts --save
  - Firebase Hosting
  - Firebase Firestore Database
  - React.js
+ - Node.js
 
 ## Repository Structure
 - `src`
@@ -51,12 +52,20 @@ npm install react scripts --save
   - `home/` : The main page for the logged in user 
   - `navbar/` : The code for the navigation bar and its may states
   - `reSubmitPass/` : The code that verifies the correct password when a user signs up
-  - `components/` : 
+  - `components/` : tab files
   - `contexts/` : Has all the authorization & authentication implementation for creating an account, logging in and signing out.
+  - `App.css/`: styling sheet for App.js
+  - `Apptest.js/`: Render
+  - `App.js/`: Routes to specific path
+  - `firebase.js`: Connection from firebase to React.js
+  - `index.css`:styling sheet for index.js
+  - `index.js`: Browser router and ReactDOM render
+  - `reportWebVitals.js`: Performance measure (if wanted)
+  - `setupTest.js`: Import DOM nodes
 
 
 ## Default Users
- 1. test
+ 1. admin account - username lol69@gmail.com, password: test1234
  
 ## Project Documentation
 1. [Phase 1 Report : Software Requirements & Description](https://github.com/NishanthPrajith/Csc-322-Final-Project/blob/a050d190daded7f6b248075960b23d0b98ee545a/Phase1report.docx.pdf)
