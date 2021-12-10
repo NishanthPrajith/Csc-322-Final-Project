@@ -32,17 +32,13 @@ export default function InstructorView() {
     const [isOpen3, setIsOpen3] = useState(false);
     const [isOpen4, setIsOpen4] = useState(false);
     const [isOpen5, setIsOpen5] = useState(false);
-    const [Loading, setLoading] = useState('false');
     const history = useHistory();
     const complaint = useRef();
-    const [InputValue, setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
     const options = [{label: "Schedule", value: "schedule"}, {label:"Grades", value: "grades"}, 
                      {label: "Complaints", value: "complaints"}, {label: "Warning", value: "warning"},{label: "Waitlist", value: "waitlist"}];  //{label: "Drop", value: "drop"} ,
                     
-    const handleInputChange = value => {
-        setInputValue(value);
-    }
+
                   
     const handleChange = value => {
         setOptionSelected(value);
@@ -94,7 +90,6 @@ export default function InstructorView() {
     // GET WAITLIST
     async function getWaitlist(db) {
         const waitlistCol = collection(db, 'Waitlist');
-        setLoading(true);
         onSnapshot(waitlistCol, (querySnapshot) => {
         const waitlist = [];
         querySnapshot.forEach((doc) => {
@@ -102,12 +97,10 @@ export default function InstructorView() {
         });
         setWaitlist(waitlist);
         });
-        setLoading(false);
     }
 
     async function getWarnings1(db){
         const instWarnings = collection(db, 'Instructor', userData.getUd(),"Warnings");
-        setLoading(true);
        onSnapshot(instWarnings, (querySnapshot) => {
           const warn = [];
           querySnapshot.forEach((doc) => {
@@ -115,13 +108,11 @@ export default function InstructorView() {
           });
           setWarnings(warn);
         });
-        setLoading(false);
     }
 
     // gets the student database
     async function getWarnings(db){
         const stuUidtoName = collection(db, 'Students');
-        setLoading(true);
        onSnapshot(stuUidtoName, (querySnapshot) => {
           const uidtoName = [];
           querySnapshot.forEach((doc) => {
@@ -129,15 +120,13 @@ export default function InstructorView() {
           });
           setStudents(uidtoName);
         });
-        setLoading(false);
     }
 
 
     // get instructor courses 
     async function getInstructorCourses(db) {
         const coursesCol = collection(db, 'Instructor', userData.getUd(), "Courses");
-        setLoading(true);
-       onSnapshot(coursesCol, (querySnapshot) => {
+       onSnapshot(coursesCol, async(querySnapshot) => {
           const course = [];
           querySnapshot.forEach((doc) => {
               course.push(doc.data());
@@ -145,12 +134,10 @@ export default function InstructorView() {
           for(let i = 0; i<course.length; i++){
               if(parseInt(course[i].Size)!==course[i].StudentsGraded){
                 if (userData.getPeriod() === 4 && popupswitch === false) {
-                    console.log(Warnings);
-                    setTimeout(async function () {
-                        alert("You have recieved a warning, because you have not graded all students")
-                        console.log(Warnings);
+                    setTimeout(async function() {
+                        alert("You have received a warning, because you have not graded all students")
                         await addDoc(collection(db, "Instructor", userData.getUd(),"Warnings"), {
-                            Warn: "You have recieved a warning, because you have not graded all students",
+                            Warn: "You have received a warning, because you have not graded all students",
                             numofWarn: 1
                           });                          
                         popupswitch = true;
@@ -162,11 +149,9 @@ export default function InstructorView() {
           }
           setInstructorCourses(course);
         });
-        setLoading(false);
       }
 
     useEffect(() => {
-        setLoading(true);
         getWarnings(db);
         getWarnings1(db);
         getInstructorCourses(db);
@@ -176,7 +161,6 @@ export default function InstructorView() {
       async function Complain(a){
         // get instructor roster 
        const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
-        setLoading(true);
         onSnapshot(instComplainStu, (querySnapshot) => {
             const instComp = [];
             querySnapshot.forEach((doc) => {
@@ -191,7 +175,6 @@ export default function InstructorView() {
             }
             setInstructorRoster(instComp);
         });
-        setLoading(false);
         toggleComplainPopup();
      }
 
@@ -199,13 +182,11 @@ export default function InstructorView() {
         // a == class name to get the roster
         // get instructor roster 
        const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
-       setLoading(true);
        await onSnapshot(instComplainStu, (querySnapshot) => {
            const instComp = [];
            querySnapshot.forEach((doc) => {
                instComp.push(doc.data());
            });
-           console.log(instComp)
            for(let i = 0; i<Students.length; i++){
                for(let j = 0; j<instComp.length; j++){
                    if(Students[i].useruiid === instComp[j].Student){;
@@ -215,14 +196,12 @@ export default function InstructorView() {
            }
            setInstructorRoster(instComp);
        });
-       setLoading(false);
        toggleRosterRecordPopup();
      }
 
      async function StudentRecordPopUp1(a){
         // a== studentuiid
         const instComplainStu = collection(db, 'Students', a,"Record");
-       setLoading(true);
        await onSnapshot(instComplainStu, (querySnapshot) => {
            const instComp = [];
            querySnapshot.forEach((doc) => {
@@ -230,7 +209,6 @@ export default function InstructorView() {
            });
            setInstructorRoster1(instComp);
        });
-       setLoading(false);
        toggleRosterRecordPopup1();
      }
 
@@ -261,7 +239,6 @@ export default function InstructorView() {
         // e == studnetuiid
         let classsize;
         const instcourse = collection(db, "Instructor", userData.getUd(),"Courses");
-        setLoading(true);
         await onSnapshot(instcourse, (querySnapshot) => {
           const uidtoName = [];
           querySnapshot.forEach((doc) => {
@@ -270,12 +247,10 @@ export default function InstructorView() {
           for(let i = 0; i<uidtoName.length; i++){
               if(uidtoName[i].Class === a){
                 classsize = uidtoName[i].Size;
-                console.log(classsize)
                 break;
               }
           }
         });
-        setLoading(false);
         let data={
             Class:a,
             DayTime:b,
@@ -310,7 +285,6 @@ export default function InstructorView() {
         // a == course name
         // get instructor roster 
        const instComplainStu = collection(db, 'Instructor', userData.getUd(), "Courses", a, "Roster");
-        setLoading(true);
         onSnapshot(instComplainStu, (querySnapshot) => {
             const instComp = [];
             querySnapshot.forEach((doc) => {
@@ -325,7 +299,6 @@ export default function InstructorView() {
             }
             setInstructorRoster(instComp);
         });
-        setLoading(false);
         toggleRosterPopup(a);
      }
     // function for terminating the student
@@ -333,7 +306,6 @@ export default function InstructorView() {
         let studentdata; 
         // a == studentuiid
         const StuRecord = collection(db, "Students");
-        setLoading(true);
         onSnapshot(StuRecord, (querySnapshot) => {
             const instComp = [];
             querySnapshot.forEach((doc) => {
@@ -381,8 +353,17 @@ export default function InstructorView() {
         let studentgraduate;
         let studentscoursepasstolerance = 2;
         let studentNumCourses;
+        let avgSemester;
+        let avgSemester1;
+        let avgSemester2;
+        let avgSemester3;
+        let avgSemester4;
+        let avgSemester5;
+        let avgSemester6;
+        let avgSemester7;
+        let avgSemester8;
+        let avgSemester9;                                                        
         const StuGPA = collection(db, "Students");
-        setLoading(true);
         onSnapshot(StuGPA, (querySnapshot) => {
             const instComp = [];
             querySnapshot.forEach((doc) => {
@@ -401,7 +382,6 @@ export default function InstructorView() {
         });
         // check if the student is getting their second "F"
         const StuRecord = collection(db, "Students",cou, "Record");
-        setLoading(true);
         onSnapshot(StuRecord, (querySnapshot) => {
             const instComp = [];
             querySnapshot.forEach((doc) => {
@@ -436,11 +416,11 @@ export default function InstructorView() {
             case 'A':
             case 'A+':
                 let avg = ((parseFloat(studentGPA) + 4.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0"){
-                    var avgSemester = (parseFloat(studentSemesterGPA) + 4.0).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00"){
+                    avgSemester = (parseFloat(studentSemesterGPA) + 4.0).toFixed(2).toString();
                 }
                 else{
-                    var avgSemester = ((parseFloat(studentSemesterGPA) + 4.0) /2).toFixed(2).toString();
+                    avgSemester = ((parseFloat(studentSemesterGPA) + 4.0) /2).toFixed(2).toString();
                 }
                 let new_total = (t_total) + (4.0);
                 var new_updated_total = (new_total)/((numberinstructorclassgpa) + 1);
@@ -469,11 +449,11 @@ export default function InstructorView() {
                 break;
             case 'A-':
                 let avg1 = ((parseFloat(studentGPA) + 3.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0"){
-                    var avgSemester1 = (parseFloat(studentSemesterGPA) + 3.7).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00"){
+                    avgSemester1 = (parseFloat(studentSemesterGPA) + 3.7).toFixed(2).toString();
                 }
                 else{
-                    var avgSemester1 = ((parseFloat(studentSemesterGPA) + 3.7) /2).toFixed(2).toString();
+                    avgSemester1 = ((parseFloat(studentSemesterGPA) + 3.7) /2).toFixed(2).toString();
                 }
                 let new_total1 = (t_total) + (3.7);
                 var new_updated_total1 = (new_total1)/((numberinstructorclassgpa) + 1);
@@ -501,10 +481,10 @@ export default function InstructorView() {
                 break;
             case 'B+':
                 let avg2 = ((parseFloat(studentGPA) + 3.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester2 = (parseFloat(studentSemesterGPA) + 3.3).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester2 = (parseFloat(studentSemesterGPA) + 3.3).toFixed(2).toString();
                 else
-                    var avgSemester2 = ((parseFloat(studentSemesterGPA) + 3.3) /2).toFixed(2).toString();                
+                    avgSemester2 = ((parseFloat(studentSemesterGPA) + 3.3) /2).toFixed(2).toString();                
                 let new_total2 = (t_total) + (3.3);
                 var new_updated_total2 = (new_total2)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -531,10 +511,10 @@ export default function InstructorView() {
                 break;
             case 'B':
                 let avg3 = ((parseFloat(studentGPA) + 3.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester3 = (parseFloat(studentSemesterGPA) + 3.0).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester3 = (parseFloat(studentSemesterGPA) + 3.0).toFixed(2).toString();
                 else
-                    var avgSemester3 = ((parseFloat(studentSemesterGPA) + 3.0) /2).toFixed(2).toString();                     
+                    avgSemester3 = ((parseFloat(studentSemesterGPA) + 3.0) /2).toFixed(2).toString();                     
                 let new_total3 = (t_total) + (3.0);
                 var new_updated_total3 = (new_total3)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -561,10 +541,10 @@ export default function InstructorView() {
                 break;
             case 'B-':
                 let avg4 = ((parseFloat(studentGPA) + 2.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester4 = (parseFloat(studentSemesterGPA) + 2.7).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester4 = (parseFloat(studentSemesterGPA) + 2.7).toFixed(2).toString();
                 else
-                    var avgSemester4 = ((parseFloat(studentSemesterGPA) + 2.7) /2).toFixed(2).toString();                   
+                    avgSemester4 = ((parseFloat(studentSemesterGPA) + 2.7) /2).toFixed(2).toString();                   
                 let new_total4 = (t_total) + (2.7);
                 var new_updated_total4 = (new_total4)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -591,10 +571,10 @@ export default function InstructorView() {
                 break;
             case 'C+':
                 let avg5 = ((parseFloat(studentGPA) + 2.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester5 = (parseFloat(studentSemesterGPA) + 2.3).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester5 = (parseFloat(studentSemesterGPA) + 2.3).toFixed(2).toString();
                 else
-                    var avgSemester5 = ((parseFloat(studentSemesterGPA) + 2.3) /2).toFixed(2).toString();                   
+                    avgSemester5 = ((parseFloat(studentSemesterGPA) + 2.3) /2).toFixed(2).toString();                   
                 let new_total5 = (t_total) + (2.3);
                 var new_updated_total5 = (new_total5)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -622,10 +602,10 @@ export default function InstructorView() {
                 break;
             case 'C':
                 let avg6 = ((parseFloat(studentGPA) + 2.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester6 = (parseFloat(studentSemesterGPA) + 2.0).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester6 = (parseFloat(studentSemesterGPA) + 2.0).toFixed(2).toString();
                 else
-                    var avgSemester6 = ((parseFloat(studentSemesterGPA) + 2.0) /2).toFixed(2).toString();                   
+                    avgSemester6 = ((parseFloat(studentSemesterGPA) + 2.0) /2).toFixed(2).toString();                   
                 let new_total6 = (t_total) + (2.0);
                 var new_updated_total6 = (new_total6)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -653,10 +633,10 @@ export default function InstructorView() {
                 break;
             case 'C-':
                 let avg7 = ((parseFloat(studentGPA) + 1.7) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester7 = (parseFloat(studentSemesterGPA) + 1.7).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester7 = (parseFloat(studentSemesterGPA) + 1.7).toFixed(2).toString();
                 else
-                    var avgSemester7 = ((parseFloat(studentSemesterGPA) + 1.7) /2).toFixed(2).toString();                   
+                    avgSemester7 = ((parseFloat(studentSemesterGPA) + 1.7) /2).toFixed(2).toString();                   
                 let new_total7 = (t_total) + (1.7);
                 var new_updated_total7 = (new_total7)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -683,10 +663,10 @@ export default function InstructorView() {
                 break;
             case 'D+':
                 let avg8 = ((parseFloat(studentGPA) + 1.3) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester8 = (parseFloat(studentSemesterGPA) + 1.3).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester8 = (parseFloat(studentSemesterGPA) + 1.3).toFixed(2).toString();
                 else
-                    var avgSemester8 = ((parseFloat(studentSemesterGPA) + 1.3) /2).toFixed(2).toString();                   
+                    avgSemester8 = ((parseFloat(studentSemesterGPA) + 1.3) /2).toFixed(2).toString();                   
                 let new_total8 = (t_total) + (1.3);
                 var new_updated_total8 = (new_total8)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -713,10 +693,10 @@ export default function InstructorView() {
                 break;
             case 'D':
                 let avg9 = ((parseFloat(studentGPA) + 1.0) /2).toFixed(2).toString();
-                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.0")
-                    var avgSemester9 = (parseFloat(studentSemesterGPA) + 1.0).toFixed(2).toString();
+                if(parseFloat(studentSemesterGPA).toFixed(2) === "0.00")
+                    avgSemester9 = (parseFloat(studentSemesterGPA) + 1.0).toFixed(2).toString();
                 else
-                    var avgSemester9 = ((parseFloat(studentSemesterGPA) + 1.0) /2).toFixed(2).toString();                   
+                    avgSemester9 = ((parseFloat(studentSemesterGPA) + 1.0) /2).toFixed(2).toString();                   
                 let new_total9 = (t_total) + (1.0);
                 var new_updated_total9 = (new_total9)/((numberinstructorclassgpa) + 1);
                 ++numberinstructorclassgpa;
@@ -773,7 +753,7 @@ export default function InstructorView() {
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
             
-                            <Select className ="Selection" options = { options } value ={OptionSelected} onInputChange = {handleInputChange} onChange = {handleChange}>
+                            <Select className ="Selection" options = { options } value ={OptionSelected}  onChange = {handleChange}>
                             </Select>
                         </div>
                     </div>
@@ -826,27 +806,8 @@ export default function InstructorView() {
                                 <h2>Please try again next period!</h2>
                         </div>  
                         }
-                        
-                        {/*(OptionSelected.value === "drop") && <table className = "instructor-drop-table">
-                                 <tr>
-                                    <th>Class</th>
-                                    <th>Time</th>
-                                    <th>Room</th>
-                                    <th>Section</th>
-                                </tr>
-                            { InstructorCourses.map((Class) => (
-                                <tr>
-                                    <td> { Class.Class } </td>
-                                    <td> { Class.DayTime } </td>
-                                    <td> { Class.Room } </td>
-                                    <td> { Class.Secion } </td>
-                                    <td><button className= "drop-instructor-button">Drop</button></td>
-                                </tr>
-                            ))}
-                        </table>    */
-                        }
-                        
 
+                        
                         {((userData.getPeriod() === 0 || userData.getPeriod() === 4) && OptionSelected.value === "complaints") && 
                         <div >
                                 <h1>You cannot complain during this period.</h1>
@@ -854,7 +815,7 @@ export default function InstructorView() {
                         </div>  
                         }
 
-                        {((userData.getPeriod() === 1 ||userData.getPeriod() === 2 ||userData.getPeriod() === 3 ||userData.getPeriod() === 4) && (OptionSelected.value === "complaints")) && 
+                        {((userData.getPeriod() === 1 ||userData.getPeriod() === 2 ||userData.getPeriod() === 3) && (OptionSelected.value === "complaints")) && 
                         <div className="instructor-complaint-page"style={styles.container}>
                         <table className = "CourseStyler-complaint-instructor">
                             <tr>
@@ -1040,7 +1001,7 @@ export default function InstructorView() {
         />}  
         {isOpen4 && <StudentRecordPopUpone
             content={<>
-                <h2 className="complaint-h2">Students Roster</h2>
+                <h2 className="complaint-h2">Student's Record</h2>
                 <table className="roster-2-popup-table-instructor">
                 <tr>
                     <th>Class</th>

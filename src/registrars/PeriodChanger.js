@@ -9,9 +9,8 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
         alert("Class Set-Up Period");
         for(let i = 0; i < Students.length; i++){
           let studentID = Students[i].useruiid;
-          Students[i].registerAllow = false;
           Students[i].canceledCourses = false;
-          updateDoc(doc(db, "Students", studentID), {registerAllow: false, canceledCourses: false}); //lessThan2CoursesWarning: false
+          updateDoc(doc(db, "Students", studentID), {canceledCourses: false}); //lessThan2CoursesWarning: false
         }
         for(let i = 0; i < Instructors.length; i++){
           let instructorID = Instructors[i].useruiid;
@@ -21,28 +20,20 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
     }
     else if(docData === "1"){
       alert("Class Registration Period");
-      for(let i = 0; i < Students.length; i++){
-        let studentID = Students[i].useruiid;
-        if(Students[i].registerAllow === false){
-          Students[i].registerAllow = true;
-          updateDoc(doc(db, "Students", studentID), {registerAllow: true});
-        }
-      }
     }
     else if(docData === "2"){ //This is Req 4
        alert("Class Running Period");
         for(let i = 0; i < Students.length; i++){
           let studentID = Students[i].useruiid;
-          Students[i].registerAllow = false;
           if(Students[i].numCourses < 2 && !(Students[i].lessThan2CoursesWarning)){
             StudentWarn2(studentID,"You have received a warning for enrolling in less than 2 classes", Students, waitlist, complains, Reviews);
             Students[i].lessThan2CoursesWarning = true;
           }
-          updateDoc(doc(db, "Students", studentID), {registerAllow: false, lessThan2CoursesWarning: Students[i].lessThan2CoursesWarning});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
+          updateDoc(doc(db, "Students", studentID), { lessThan2CoursesWarning: Students[i].lessThan2CoursesWarning});     // lessThan2CoursesWarning: false, // ,  canceledCourses: false
         }
         
         //CancelCourses();           
-        const coursesCol = query(collection(db,'AssignedClasses'), where("StudentsEnrolled" , "<", 2)); 
+        const coursesCol = query(collection(db,'AssignedClasses'), where("StudentsEnrolled" , "<", 1)); 
         onSnapshot(coursesCol, async function(courseSnapshot) {   //canceledCourses = True for instructors and warn each one affected.
           courseSnapshot.forEach(async function(classes){
             if(classes.exists){
@@ -98,103 +89,20 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
 
     else if(docData === "3"){
         alert("Grading Period");
-        for(let i = 0; i <Instructors.length; i++){
-            Instructors[i].gradingTime = true;
-            updateDoc(doc(db, "Instructor", Instructors[i].useruiid), {gradingTime: true});
-        }   //Technically, we dont need this. We can simply check the period of the user or the period in general and make the grade button do nothing if not docData === "3".
     }
 
     else if(docData === "4") {
         alert("Semester End");
-        // //Not Yet Tested
-        // // AssignGradesMissed();
-        // for(let i = 0; i < Instructors.length; i++){
-        //     let instructorID = Instructors[i].useruiid;
-        //     if(Instructors[i].AssignGradesMissedWarning == true)
-        //         break;
-        //     let courseRef =collection(db,"Instructor", instructorID,"Courses");
-        //     onSnapshot(courseRef, (coursesList) => {
-        //         coursesList.forEach((course) => {
-        //             let courseName = course.data().Class;
-        //             let rosterRef = collection(db,"Instructor", instructorID,"Courses",courseName, "Roster");
-        //             onSnapshot(rosterRef, (rosterList) => {
-        //                 let warningGiven = getDoc(doc(db,"Instructor", instructorID)).data().AssignGradesMissedWarning;
-        //                 rosterList.forEach((entry) => {
-        //                     if(entry.data().Grade == "" && !warningGiven){
-        //                        InstructorWarn(instructorID, `You failed to grade all of your students within ${courseName} and possibly other classes as well, please assign grades ASAP!`);
-        //                        updateDoc(doc(db,"Instructor", instructorID), {AssignGradesMissedWarning: true});
-        //                     }
-        //                 });
-        //             });
-        //         });
-        //     }); 
-        // }  
-
-        // // InstructorInterrogation();
-        // for(let i = 0; i < Instructors.length; i++){
-        //     let instructorID = Instructors[i].useruiid;
-        //     let courseRef = collection(db,"Instructor", instructorID, "Courses");
-        //     onSnapshot(courseRef, (coursesList) => {
-        //         coursesList.forEach((course) => {
-        //             if(course.data().ClassGPA > 3.5 && !(course.data().Interrogated) )
-        //                 QuestionRegistrar(`Why is your class GPA for ${course.data().Class} so High? Who bribed you?`);
-        //                 updateDoc(doc(db, "Instructor", instructorID, "Courses", course.data().Class), {Interrogated:  true});
-        //             if(course.data().ClassGPA < 2.5 && !course.data().Interrogated)
-        //                 QuestionRegistrar(`Why is your class GPA for ${course.data().Class} so Low? Who hurt you?`);
-        //                 updateDoc(doc(db, "Instructor", instructorID, "Courses", course.data().Class), {Interrogated:  true});
-        //         })
-        //     });
-        // }        
-        // // StudentTermination();
-        // for(let i = 0; i < Students.length; i++){
-        //     let studentID = Students[i].useruiid;
-        //     if(Students[i].GPA < 2.0){
-        //       terminateStudent(studentID, "You have been kicked out due to your GPA < 2.0.");
-        //       break;
-        //     }
-        //     let studentRef = collection(db,"Students", studentID, "Record");
-        //     onSnapshot((studentRef), (recordList) => {
-        //       recordList.forEach((record) => {
-        //         if(record.data().GradeArray == 2 && GradeArray[0] == GradeArray[1]){
-        //           terminateStudent(studentID, "You have been kicked for failing the same course twice. Not once...but Twice.");
-        //         }
-        //       });
-        //     });
-        //   }        
-        // // StudentIntervention();
-        // for(let i = 0; i < Students.length; i++){
-        //     if((Students[i].GPA > 2.0 && Students[i].GPA < 2.25) && (!Students[i].Intervened)){
-        //       warnStudent(Students[i].useruiid, "The Registrar demands an interview from you to discuss your poor Academic progress.");
-        //       updateDoc(doc(db,"Students",Students[i].useruiid), {Intervened: true});
-        //     }
-        // } 
-
-        // // StudentHonorRoll();         //GraduationCheck for students.
-        // for(let i = 0; i < Students.length; i++){
-        //     let studentID = Students[i].useruiid;
-        //     if(Students[i].SemesterGPA > 3.75 || Students[i].GPA > 3.5) 
-        //         updateDoc(doc(db, "Students", studentID), {HonorRoll: true});
-        //     else
-        //       updateDoc(doc(db, "Students", studentID), {HonorRoll: false})
-        
-        //     if(Students[i].HonorRoll && Students[i].numWarn > 0){     //Update Warnings for every student (and Instructors too) to have TimeStamp field (Date + Time)
-        //         let oldestWarning = query(collection(db,"Students",studentID, "Warnings"), orderBy("Timestamp"), limit(1));
-        //         deleteDoc(doc(db,"Students", studentID, oldestWarning));
-        //         updateDoc(doc(db,"Students", studentID), {numWarn: increment(-1)});
-        //     } 
-        // }
-            for(let p = 0; p < complainings.length; p++){
-              console.log(complainings[p]);
-              console.log("10");
-              var varpush = complainings[p];
-              varpush.numCourses = 0;
-              varpush.Suspended = false;
-              varpush.numWarn = 0;
-              varpush.canceledCourses =  false;
-              await updateDoc(doc(db, "Suspended", varpush.useruiid), varpush);
-              await setDoc(doc(db, "Instructor", varpush.useruiid), varpush);
-              await deleteDoc(doc(db, "Suspended", varpush.useruiid));
-            }
+        for(let p = 0; p < complainings.length; p++){
+          var varpush = complainings[p];
+          varpush.numCourses = 0;
+          varpush.Suspended = false;
+          varpush.numWarn = 0;
+          varpush.canceledCourses =  false;
+          await updateDoc(doc(db, "Suspended", varpush.useruiid), varpush);
+          await setDoc(doc(db, "Instructor", varpush.useruiid), varpush);
+          await deleteDoc(doc(db, "Suspended", varpush.useruiid));
+        }
 
         for(let k = 0; k < Instructors.length; k++){
           if(Instructors[k].Suspended === true){
@@ -203,6 +111,7 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
           }
         }
     }
+
     else{
         return;
     }
@@ -260,28 +169,6 @@ export default async function PeriodChanger(Students, Instructors, waitlist,comp
         // add the doc to the warnings
     }
     
-      // IMPLEMENT LATER
-      async function InstructorWarn2(a,message,instructors){    //FIX THIS
-         // isue a warning to the instructor
-        for(let i = 0; i<instructors.length; i++){
-          if(instructors[i].useruiid === a){
-            let warncount = instructors[i].numWarn + 1;
-            alert(warncount);
-              const washingtonRef = doc(db, "Instructor",a);
-              // Set the "capital" field of the city 'DC'
-              await updateDoc(washingtonRef, {
-                  numWarn: warncount
-              });
-            //  break;
-            // add the doc to the warnings
-            await addDoc(collection(db, "Instructor",a,"Warnings"), {
-            Warn: message,
-            numofWarn: warncount
-            });
-            }
-        }
-
-      }
 
 
 

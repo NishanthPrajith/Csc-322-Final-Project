@@ -5,13 +5,11 @@ import React, { useState, useEffect } from 'react';
 
 export default function SuspendedStudents() {
 
-    const [loading, setLoading] = useState(false);
     const [suspendedStudents, setSuspendedStudents] = useState([]);
 
     // Getting suspended students from firebase
     async function getSuspendedStudents(db) {
         const suspendedStudentsCol = collection(db, 'SuspendedStudents');
-        setLoading(true);
         onSnapshot(suspendedStudentsCol, (querySnapshot) => {
           const suspendedStudents = [];
           querySnapshot.forEach((doc) => {
@@ -19,11 +17,9 @@ export default function SuspendedStudents() {
           });
           setSuspendedStudents(suspendedStudents);
         });
-        setLoading(false);
       }
 
       useEffect(() => {
-        setLoading(true);
         getSuspendedStudents(db)
       }, []);
 

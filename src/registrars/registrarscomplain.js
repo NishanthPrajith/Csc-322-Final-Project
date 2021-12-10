@@ -9,12 +9,10 @@ export default function RegistrarsComplain(){
   const [complains, setComplains] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [Instructor, setInstructor] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   async function getComplaints(db) {
     const complainsCol = collection(db, 'Complaints');
     const complainsColid = collection(db, 'Complaints');
-    setLoading(true);
     onSnapshot(complainsCol, (querySnapshot) => {
       let complain = [];
       querySnapshot.forEach((doc) => {
@@ -31,13 +29,11 @@ export default function RegistrarsComplain(){
         setComplains(complain)
         });
     });
-    setLoading(false);
   }
   
   async function getReviews(db) {
     const reviewsCol = collection(db, 'Reviews');
     const reviewsColid = collection(db, 'Reviews');
-    setLoading(true);
     onSnapshot(reviewsCol, (querySnapshot) => {
       const review = [];
       querySnapshot.forEach((doc) => { 
@@ -54,12 +50,10 @@ export default function RegistrarsComplain(){
       setReviews(review);
       });
     });
-    setLoading(false);
   }
 
   async function getInstructors(db) {
     const complainsCol = collection(db, 'Instructor');
-    setLoading(true);
     onSnapshot(complainsCol, (querySnapshot) => {
       const complain = [];
       querySnapshot.forEach((doc) => {
@@ -67,11 +61,9 @@ export default function RegistrarsComplain(){
       });
       setInstructor(complain);
     });
-    setLoading(false);
   }
 
   useEffect(() => {
-    setLoading(true);
     getComplaints(db);
     getReviews(db);
     getInstructors(db);
@@ -107,7 +99,6 @@ export default function RegistrarsComplain(){
     if(count===3){
       // To copy a collections contents to another collection we do this:
       const instRef = collection(db, 'Instructor');
-      setLoading(true);
       onSnapshot(instRef, (querySnapshot) => {
         const inst = [];
         querySnapshot.forEach((doc) => {
@@ -125,7 +116,6 @@ export default function RegistrarsComplain(){
       });
          
       const instRef2 = collection(db, 'AssignedClasses');
-      setLoading(true);
       onSnapshot(instRef2, (querySnapshot) => {
         const inst2 = [];
         querySnapshot.forEach((doc) => {
@@ -133,7 +123,6 @@ export default function RegistrarsComplain(){
         });
 
         const complRef = collection(db, 'Complaints');
-      setLoading(true);
       onSnapshot(complRef, (querySnapshot) => {
         const complaintCol = [];
         querySnapshot.forEach((doc) => {

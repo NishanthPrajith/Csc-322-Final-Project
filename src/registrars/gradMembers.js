@@ -15,7 +15,6 @@ export default function GradMembers(){
   const [complains, setComplains] = useState([]);
   const [Reviews, setReviews] = useState([]);
   const [studentscourses, setStudentscourses] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   // POP UP FUNCTIONS 
@@ -28,7 +27,6 @@ const closetogglestudentcoursePopup = () => {
   // GET WAITLIST
   async function getWaitlist(db) {
     const waitlistCol = collection(db, 'Waitlist');
-    setLoading(true);
     onSnapshot(waitlistCol, (querySnapshot) => {
       const waitlist = [];
       querySnapshot.forEach((doc) => {
@@ -36,13 +34,11 @@ const closetogglestudentcoursePopup = () => {
       });
       setWaitlist(waitlist);
     });
-    setLoading(false);
   }
   // COMPLAIN AND REVIEW
   async function getComplaint(db) {
     const complainsCol = collection(db, 'Complaints');
     const complainsColid = collection(db, 'Complaints');
-    setLoading(true);
     onSnapshot(complainsCol, (querySnapshot) => {
       let complain = [];
       querySnapshot.forEach((doc) => {
@@ -59,13 +55,11 @@ const closetogglestudentcoursePopup = () => {
         setComplains(complain)
         });
     });
-    setLoading(false);
   }
   
   async function getReviews(db) {
     const reviewsCol = collection(db, 'Reviews');
     const reviewsColid = collection(db, 'Reviews');
-    setLoading(true);
     onSnapshot(reviewsCol, (querySnapshot) => {
       const review = [];
       querySnapshot.forEach((doc) => { 
@@ -82,12 +76,10 @@ const closetogglestudentcoursePopup = () => {
       setReviews(review);
       });
     });
-    setLoading(false);
   }
 
   async function getStudents(db) {
     const studentsCol = collection(db, 'Students');
-    setLoading(true);
    onSnapshot(studentsCol, (querySnapshot) => {
       const student = [];
       querySnapshot.forEach((doc) => {
@@ -95,12 +87,10 @@ const closetogglestudentcoursePopup = () => {
       });
       setStudents(student);
     });
-    setLoading(false);
   }
 
   async function getInstructor(db) {
     const schoolsCol = collection(db, 'Instructor');
-    setLoading(true);
     onSnapshot(schoolsCol, (querySnapshot) => {
       const instructor = [];
       querySnapshot.forEach((doc) => {
@@ -108,11 +98,9 @@ const closetogglestudentcoursePopup = () => {
       });
       setInstructors(instructor);
     });
-    setLoading(false);
   }
 
   useEffect(() => {
-    setLoading(true);
     getStudents(db);
     getInstructor(db);
     getReviews(db);
@@ -207,7 +195,6 @@ const closetogglestudentcoursePopup = () => {
     // DEREGISTER THE STUDENT FROM THE COURSE 
     // FIRST WE NEED TO GET THE COURSES FROM THE STUDENT COLLECTION
     const studentCourses = collection(db, 'Students', a,"Courses");
-    setLoading(true);
    onSnapshot(studentCourses, (querySnapshot) => {
       const studentcourses = [];
       querySnapshot.forEach((doc) => {
@@ -215,7 +202,6 @@ const closetogglestudentcoursePopup = () => {
       });
       setStudentscourses(studentcourses);
     });
-    setLoading(false);
     togglestudentcoursePopup();
   }
   // IMPLEMENT LATER

@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { db } from "../firebase.js";
 import validator from 'validator';
-import { collection, doc, onSnapshot,deleteDoc, addDoc, setDoc, updateDoc} from 'firebase/firestore';
+import { collection, doc, onSnapshot,setDoc} from 'firebase/firestore';
 import React, { useState, useEffect } from 'react';
 
 export default function Regclasssetup(){
@@ -41,7 +41,7 @@ export default function Regclasssetup(){
         }
         
         for(let k = 0; k < Courses.length; k++){
-          if(Courses[k].Class == classRef.current.value){
+          if(Courses[k].Class === classRef.current.value){
             alert("Course already created");
             return;
           }

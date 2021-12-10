@@ -23,8 +23,6 @@ export default function RegistrarsApplications() {
     const [isOpen, setIsOpen] = useState(false);
     const [isOpen2, setIsOpen2] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [In, setUserIn] = useState(false);
-    const [In2, setUserIn2] = useState(false);
     const periodNum = useRef();
     const [waitlist, setWaitlist] = useState([]);
     const [complains, setComplains] = useState([]);
@@ -111,19 +109,6 @@ export default function RegistrarsApplications() {
                 courseQ.push(doc.data());
             });
             setQuota(courseQ);
-        });
-        setLoading(false);
-    }
-
-    async function getInstructor(db) {
-        const wash2 = collection(db, "Instructor");
-        setLoading(true);
-        onSnapshot(wash2, (querySnapshot) => {
-            const userIn2 = [];
-            querySnapshot.forEach((doc) => {
-                userIn2.push(doc.data());
-            });
-            setUserIn2(userIn2);
         });
         setLoading(false);
     }
@@ -228,7 +213,6 @@ export default function RegistrarsApplications() {
 
     useEffect(() => {
         setLoading(true);
-        getInstructor(db);
         getQuota(db);
         getPeriod(db);
         getCourses(db);
@@ -323,17 +307,6 @@ export default function RegistrarsApplications() {
         }
         setCourses(v);
         
-
-        const washingtonRef = collection(db, "Instructor", ud, "Courses");
-        setLoading(true);
-        onSnapshot(washingtonRef, (querySnapshot) => {
-            const userIn = [];
-            querySnapshot.forEach((doc) => {
-                userIn.push(doc.data());
-            });
-            setUserIn(userIn); 
-        });
-
         const docRef = doc(db, "Instructor", ud);
         const docSnap = await getDoc(docRef);
         
@@ -368,7 +341,7 @@ export default function RegistrarsApplications() {
         var templateParams3 = {
             message: "Dear " + a + " "+ b + ", Thank you for applying to our graduate program, however, we have decided to not accept you as a student, please try again at a later date!",
             };
-            const docRef = doc(db, "Quota", "rnBTGZKiLSm6dBEseZcF");
+            //const docRef = doc(db, "Quota", "rnBTGZKiLSm6dBEseZcF");
             var q ; 
         for(let i =0; i < courseQ.length; i++){
             q = courseQ[i].Quota;
@@ -394,8 +367,7 @@ export default function RegistrarsApplications() {
 
     async function changePeriod(event) {
         event.preventDefault();
-        var period = {  classsetup: periodNum.current.value,
-                                                            }
+        var period = {  classsetup: periodNum.current.value }
         try{
             await setDoc(doc(db, "gradingperiod", "0t678Obx9SKShD3NR3I4"), period);
             alert("Class Period Updated Sucessfully");

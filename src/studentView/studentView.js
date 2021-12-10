@@ -43,15 +43,15 @@ export default function StudentView() {
     const [StudentsWarnings, setStudentsWarnings] = useState([]);
     const [ClassStudents, setClassStudents] = useState([]);
     const [Loading, setLoading] = useState(false);
-    const [InputValue,setInputValue] = useState('');
+    // const [InputValue,setInputValue] = useState('');
     const [OptionSelected, setOptionSelected] = useState("schedule");
     const options = [{ label: "Schedule", value: "schedule" }, { label: "Grades", value: "grades" }, { label: "Enroll", value: "enroll" },
     { label: "Drop", value: "drop" }, { label: "Complaints", value: "complaints" },
     { label: "Rate", value: "rate" }, { label: "Warning", value: "warning" }, { label: "Graduate", value: "graduate" }];
 
-    const handleInputChange = value => {
-        setInputValue(value);
-    }
+    // const handleInputChange = value => {
+    //     setInputValue(value);
+    // }
 
     const handleChange = value => {
         setOptionSelected(value);
@@ -787,7 +787,7 @@ export default function StudentView() {
             }
         }
         check = check.join(" ");
-        if(count==0){
+        if(count===0){
             await addDoc(collection(db, "Reviews"), {
                 SentByUIID: userData.getUd(),
                 SentBy: userData.getFirstname() + " " + userData.getLastname(),
@@ -802,12 +802,14 @@ export default function StudentView() {
             closeratePopup();
             return
         }
+        var warncount;
+        var data;
         if (count < 3) {
             // author recieves one warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    var warncount = Warnings[i].numWarn;
-                    var data = Warnings[i];
+                    warncount = Warnings[i].numWarn;
+                    data = Warnings[i];
                     warncount += 1;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
@@ -839,8 +841,8 @@ export default function StudentView() {
             // author recieves two warning 
             for (let i = 0; i < Warnings.length; i++) {
                 if (Warnings[i].useruiid === userData.getUd()) {
-                    var warncount = Warnings[i].numWarn;
-                    var data = Warnings[i];
+                    warncount = Warnings[i].numWarn;
+                    data = Warnings[i];
                     warncount += 2;
                     const washingtonRef = doc(db, "Students", userData.getUd());
                     // Set the "capital" field of the city 'DC'
@@ -963,7 +965,7 @@ export default function StudentView() {
                         <div className="lower-container2">
                             <h2>Selection Menu</h2>
 
-                            <Select className="Selection" options={options} value={OptionSelected} onInputChange={handleInputChange} onChange={handleChange}>
+                            <Select className="Selection" options={options} value={OptionSelected} onChange={handleChange}>
                             </Select>
                         </div>
                     </div>
@@ -1199,7 +1201,7 @@ export default function StudentView() {
                     </div>
                     }
         
-                    {(OptionSelected.value === "warning" && ((parseFloat(userData.getGPA()) <= 3.5) && parseFloat(userData.getSemesterGPA()) <= 3.75) && userData.getPeriod() === 4) && <div className="warning-page">
+                    {(((parseFloat(userData.getGPA()) <= 3.5) && parseFloat(userData.getSemesterGPA()) <= 3.75) && OptionSelected.value === "warning" && userData.getPeriod() === 4) && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">
@@ -1216,7 +1218,7 @@ export default function StudentView() {
                         </table>
                     </div>
                     }
-                    {(OptionSelected.value === "warning" && (userData.getPeriod() === 3 || userData.getPeriod() === 2|| userData.getPeriod() === 1)|| userData.getPeriod() === 0) && <div className="warning-page">
+                    {((userData.getPeriod() === 0 || userData.getPeriod() === 1|| userData.getPeriod() === 2|| userData.getPeriod() === 3) && OptionSelected.value === "warning")  && <div className="warning-page">
                         <h1>Total Warnings:</h1>
                         <p>Reminder: Getting 3 warnings will result in a suspension!</p>
                         <table className="CourseStyler-warning">
