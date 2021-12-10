@@ -104,7 +104,7 @@ export default function GraduatingStudents() {
         else {
             // add the doc to the warnings
             await addDoc(collection(db, "Students", a, "Warnings"), {
-                Warn: "You have been given one warning for reckless graduation applciation",
+                Warn: "You have been given one warning for reckless graduation application",
                 numofWarn: 1
             });
             const studentRef = doc(db, "Students", a);
